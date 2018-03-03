@@ -1,4 +1,4 @@
-package com.example.lirongl.walkinggroup;
+package ca.sfu.Navy.walkinggroup;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

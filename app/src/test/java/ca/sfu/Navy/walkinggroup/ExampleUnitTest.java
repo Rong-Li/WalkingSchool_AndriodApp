@@ -1,4 +1,4 @@
-package com.example.lirongl.walkinggroup;
+package ca.sfu.Navy.walkinggroup;
 
 import org.junit.Test;
 
