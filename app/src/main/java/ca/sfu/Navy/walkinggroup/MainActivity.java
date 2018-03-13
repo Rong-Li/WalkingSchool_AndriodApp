@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         MapActivityStart();
         logInActivityStart();
         logOutActivityStart();
+        monitorActivityStart();
     }
 
     private void checkLoggedIn(){
@@ -66,6 +67,17 @@ public class MainActivity extends AppCompatActivity {
                 SavedSharedPreference.clearUserLogged(MainActivity.this);
                 Intent intent = getIntent();
                 finish();
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void monitorActivityStart(){
+        Button button = (Button) findViewById(R.id.monitor_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MonitorActivity.newIntent(MainActivity.this);
                 startActivity(intent);
             }
         });
