@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,7 +29,7 @@ import com.google.android.gms.location.LocationListener;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        GoogleMap.OnMarkerClickListener, com.google.android.gms.location.LocationListener {
+        /*GoogleMap.OnMarkerClickListener,*/ com.google.android.gms.location.LocationListener {
 
     private GoogleMap mMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -50,7 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // 1
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
+                    .addConnectionCallbacks(this)//provides callbacks that are triggered when
+                                                // the client is connected (onConnected())
+                                                // or temporarily disconnected (onConnectionSuspended()) from the service
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
@@ -75,15 +78,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        //LatLng sydney = new LatLng(-34, 151);
+        /////enable zoom in zoom out; enable
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")); ////add a marker
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); ////centered to that location
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")); ////add a marker
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); ////centered to that location
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 2
+        mGoogleApiClient.connect();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 3
+        if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+
+    //checks if the app has been granted the ACCESS_FINE_LOCATION permission.//////******main purpose
+    //If it hasn’t, then request it from the user.
+    //it is called by onconnected() function, and onconnected() is called if the clients is connected!!!!!!*********
     private void setUpMap() {
         if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -93,10 +116,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
+
+        //////////////////*Below is useful and functional impelementations*//////////////////////
+
+        //finding user's current location
         // 1
         mMap.setMyLocationEnabled(true);
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); //you can do it this way; but do notice that you have
+                                                                            //no way to store your current location in a variabel
+                                                                            //in order to be the first argument to call the func
 
-        // 2
+        // 2 So Last location is needed, in this case, your last location was the location u get from mMap.setMyLocationEnabled(true)
+        // i.e your current location
         LocationAvailability locationAvailability =
                 LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
         if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
@@ -106,10 +137,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
                         .getLongitude());
+                placeMarkerOnMap(currentLocation);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
             }
         }
-    }
+
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+    }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
     @Override
@@ -133,29 +174,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        return false;
-    }
+//    @Override
+//    public boolean onMarkerClick(Marker marker) {
+//        Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+//        return false;
+//    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+
+
+    //function for placing a marker on the map based on its latitude and longtitude
+    protected void placeMarkerOnMap(LatLng location) {
+        // 1
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
         // 2
-        mGoogleApiClient.connect();
+        mMap.addMarker(markerOptions);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // 3
-        if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-
-
     public static Intent newIntent(Context context){
         return new Intent(context, MapsActivity.class);
     }
