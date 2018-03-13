@@ -13,6 +13,7 @@
     <string name="login_hint_password">Password</string>
     <string name="txt_monitoringList">You are monitoring the following users:</string>
     <string name="txt_monitoredByList">You are being monitored by the following users:</string>
+    <string name="btn_addUser">Add user</string>
 
 
 </resources>
