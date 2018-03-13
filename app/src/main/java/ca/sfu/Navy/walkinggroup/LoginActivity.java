@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w("Login Server", "   --> NOW HAVE TOKEN: " + token);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
+        SavedSharedPreference.setPrefUserToken(LoginActivity.this, token);
     }
 
     private void response(Void returnedNothing) {
@@ -87,7 +88,6 @@ public class LoginActivity extends AppCompatActivity {
         SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
         finish();
     }
-
 
 
     public static Intent newIntent(Context context){

@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             // Stay at the current activity.
+            // Assume the JWT authorization token of the user is still valid
+
         }
     }
 
