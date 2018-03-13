@@ -64,7 +64,6 @@ public class SignUpActivity extends AppCompatActivity {
                 Call<User> caller = proxy.createNewUser(user);
                 ServerProxyBuilder.callProxy(SignUpActivity.this, caller, returnedUser -> response(returnedUser));
 
-                finish();
             }
         });
     }
