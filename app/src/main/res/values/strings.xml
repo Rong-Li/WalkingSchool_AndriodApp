@@ -11,4 +11,8 @@
     <string name="signup_hint_password">Password</string>
     <string name="login_hint_email">Email</string>
     <string name="login_hint_password">Password</string>
+    <string name="txt_monitoringList">You are monitoring the following users:</string>
+    <string name="txt_monitoredByList">You are being monitored by the following users:</string>
+
+
 </resources>
