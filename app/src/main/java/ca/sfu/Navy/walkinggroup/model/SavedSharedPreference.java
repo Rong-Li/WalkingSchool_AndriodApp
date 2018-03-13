@@ -1,0 +1,48 @@
+package ca.sfu.Navy.walkinggroup.model;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+
+public class SavedSharedPreference {
+    static final String PREF_USER_EMAIL = "User email";
+    static final String PREF_USER_PW = "User Password";
+
+    static SharedPreferences getSharedPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    // Save user email for log in
+    public static void setUserEmail(Context context, String userEmail)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(PREF_USER_EMAIL, userEmail);
+        editor.commit();
+    }
+
+    // Save user pw for log in
+    public static void setPrefUserPw(Context context, String userPW){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(PREF_USER_PW, userPW);
+        editor.commit();
+    }
+
+    public static String getPrefUserEmail(Context context)
+    {
+        return getSharedPreferences(context).getString(PREF_USER_EMAIL, "");
+    }
+
+    public static String getPrefUserPw(Context context){
+        return getSharedPreferences(context).getString(PREF_USER_PW, "");
+    }
+
+
+    // This function clears the saved user info to log the user out
+    public static void clearUserLogged(Context context){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.clear();
+        editor.commit();
+    }
+
+}

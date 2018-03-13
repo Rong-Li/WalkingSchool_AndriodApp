@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
@@ -80,7 +81,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void response(Void returnedNothing) {
         Log.w("Login Server", "Server replied to login request (no content was expected).");
+        String email = email_edit.getText().toString();
+        String pw = pw_edit.getText().toString();
+        SavedSharedPreference.setUserEmail(LoginActivity.this,email);
+        SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
+        finish();
     }
+
+
 
     public static Intent newIntent(Context context){
         return new Intent(context, LoginActivity.class);
