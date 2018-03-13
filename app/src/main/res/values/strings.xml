@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Walking Group</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="apikey">AFFEECE5-BE48-494C-8C62-73ACA348FD1D</string>
+    <string name="btn_str_login">Login</string>
+    <string name="btn_str_signup">Signup</string>
+    <string name="btn_str_register">Register</string>
+    <string name="signup_hint_name">Name</string>
+    <string name="signup_hint_email">Email</string>
+    <string name="signup_hint_password">Password</string>
+    <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Password</string>
 </resources>

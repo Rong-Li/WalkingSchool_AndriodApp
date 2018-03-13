@@ -13,6 +13,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MapActivityStart();
+        logInActivityStart();
+    }
+
+    private void logInActivityStart() {
+        Button button = (Button) findViewById(R.id.login_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = LoginActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void MapActivityStart() {
@@ -25,4 +37,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
