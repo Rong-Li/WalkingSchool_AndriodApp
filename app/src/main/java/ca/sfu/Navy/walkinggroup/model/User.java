@@ -1,9 +1,11 @@
 package ca.sfu.Navy.walkinggroup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private Long id;
     private String name;
@@ -39,6 +41,9 @@ public class User {
     public List<Void> getMemberOfGroups() {
         return memberOfGroups;
     }
+    public List<Void> getLeadsGroups() {
+        return leadsGroups;
+    }
     public String getHref() {
         return href;
     }
@@ -63,6 +68,9 @@ public class User {
     }
     public void setMemberOfGroups(List<Void> memberOfGroups) {
         this.memberOfGroups = memberOfGroups;
+    }
+    public void setLeadsGroups(List<Void> leadsGroups) {
+        this.leadsGroups = leadsGroups;
     }
     public void setHref(String href) {
         this.href = href;
