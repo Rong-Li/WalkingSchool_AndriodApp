@@ -68,6 +68,16 @@ public class User {
         this.href = href;
     }
 
+    // List items modifiers
+    public void addUsertoMonitor(User user){
+        monitorsUsers.add(user);
+    }
+    public void removeUserfromMonitor(int index){
+        monitorsUsers.remove(index);
+    }
+
+
+
     @Override
     public String toString() {
         return "User{" +

@@ -30,6 +30,22 @@ public class MonitorActivity extends AppCompatActivity {
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
         getUserLoggedin();
+        populateList();
+    }
+
+    private void populateList(){
+        // Create list of item
+        List<User> listUser = user_loggedin.getMonitorsUsers();
+
+        // Build Adapter
+        ArrayAdapter<User> adapter = new ArrayAdapter<User>(
+                this,          // Context for the activity
+                R.layout.user_list,   // Layout to use (create)
+                listUser);                // Items to be displayed
+
+        // Configure the list view
+        ListView List = (ListView) findViewById(R.id.monitor_userlist);
+        List.setAdapter(adapter);
     }
 
     private void getUserLoggedin(){
