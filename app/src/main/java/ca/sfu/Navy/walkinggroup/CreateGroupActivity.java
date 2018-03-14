@@ -55,22 +55,21 @@ public class CreateGroupActivity extends AppCompatActivity {
                 // Make call
                 Call<Group> caller = proxy.createNewGroup(group);
                 ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedGroup -> response(returnedGroup));
+
+                /** function for List groups*/
+
+                /**Call<Group> caller = proxy.getGroups();
+                ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnGroups -> response(returnGroups));*/
             }
         });
-    }
-
-    private void onReceiveToken(String token) {
-        // Replace the current proxy with one that uses the token!
-        Log.w("Server Test", "   --> NOW HAVE TOKEN: " + token);
-        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
     }
 
     private void response(Group group) {
         Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
     }
 
-    private void response(User user) {
-        Log.w("Server Test", "Server replied with user: " + user.toString());
+    private void respinse(Group group){
+        Log.w("Server Test", "There are:" + group.getRouteLatArray() + "and " + group.getRouteLngArray());
     }
 
     public static Intent newIntent(Context context){

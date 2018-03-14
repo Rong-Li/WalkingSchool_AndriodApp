@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Build the server proxy
-        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), SavedSharedPreference.getPrefUserToken(this));
+        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
 
         setupEditText();
         setupSignupButton();
@@ -60,13 +60,15 @@ public class LoginActivity extends AppCompatActivity {
                 String pw = pw_edit.getText().toString();
                 user.setEmail(email);
                 user.setPassword(pw);
+                SavedSharedPreference.setUserEmail(LoginActivity.this, email);
+                SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
 
                 // Receive token
                 ServerProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
 
                 // Make call
-                Call<User> caller = proxy.login(user);
-                ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
+                Call<Void> caller = proxy.login(user);
+                ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
 
             }
         });
@@ -79,15 +81,17 @@ public class LoginActivity extends AppCompatActivity {
         SavedSharedPreference.setPrefUserToken(LoginActivity.this, token);
     }
 
-    private void response(User user) {
+    private void response(Void returnedNothing) {
         Log.w("Login Server", "Server replied to login request (no content was expected).");
-        String email = email_edit.getText().toString();
-        String pw = pw_edit.getText().toString();
-        Long id = user.getId();
-        SavedSharedPreference.setUserEmail(LoginActivity.this,email);
-        SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
-        SavedSharedPreference.setPrefUserId(this, id);
+        Call<User> caller = proxy.getUserByEmail(SavedSharedPreference.getPrefUserEmail(this));
+        ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
         finish();
+    }
+
+    private void response(User user){
+        Log.w("Server Test: ", "Server replied a " + user.toString());
+        Long id = user.getId();
+        SavedSharedPreference.setPrefUserId(this, id);
     }
 
     public static Intent newIntent(Context context){

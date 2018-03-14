@@ -26,10 +26,6 @@ public class ServerProxyBuilder {
         receivedTokenCallback = callback;
     }
 
-    public static ServerProxy getProxy(String apiKey) {
-        return getProxy(apiKey, null);
-    }
-
     public static ServerProxy getProxy(String apiKey, String token) {
         // Enable Logging
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -109,7 +105,7 @@ public class ServerProxyBuilder {
 
 
     private static class AddHeaderInterceptor implements Interceptor {
-        private String apiKey = "AFFEECE5-BE48-494C-8C62-73ACA348FD1D";
+        private String apiKey;
         private String token;
 
         public AddHeaderInterceptor(String apiKey, String token) {

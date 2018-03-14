@@ -18,7 +18,7 @@ public interface ServerProxy {
     Call<User> createNewUser(@Body User user);
 
     @POST("/login")
-    Call<User> login(@Body User userWithEmailAndPassword);
+    Call<Void> login(@Body User userWithEmailAndPassword);
 
     @GET("/users")
     Call<List<User>> getUsers();
