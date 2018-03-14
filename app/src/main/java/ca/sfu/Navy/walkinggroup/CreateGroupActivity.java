@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -47,12 +46,10 @@ public class CreateGroupActivity extends AppCompatActivity {
                 String desctiption = groupDescription.getText().toString();
 
                 group.setGroupDescription(desctiption);
-                JSONObject leader = new JSONObject();
-                try {
-                    leader.put("id", SavedSharedPreference.getPrefUserId(CreateGroupActivity.this));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", SavedSharedPreference.getPrefUserId(CreateGroupActivity.this));
+
+                JSONObject leader = new JSONObject(map);
                 group.setLeader(leader);
 
                 // Make call
@@ -61,8 +58,6 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
