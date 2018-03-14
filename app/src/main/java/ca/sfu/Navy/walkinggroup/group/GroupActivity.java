@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -20,6 +21,10 @@ public class GroupActivity extends AppCompatActivity {
 
         setupCreateNewGroupbtn();
 
+    }
+
+    private setupCreateNewGroupbtn(){
+        Button btn = new Button(findViewById())
     }
 
     public static Intent newIntent(Context context){
