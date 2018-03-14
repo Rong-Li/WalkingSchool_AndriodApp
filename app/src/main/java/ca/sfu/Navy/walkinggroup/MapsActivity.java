@@ -73,19 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        /////enable zoom in zoom out; enable
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")); ////add a marker
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); ////centered to that location
-
-    }
 
     @Override
     protected void onStart() {
@@ -103,6 +91,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        //LatLng sydney = new LatLng(-34, 151);
+        /////enable zoom in zoom out; enable
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")); ////add a marker
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); ////centered to that location
+
+    }
 
     //checks if the app has been granted the ACCESS_FINE_LOCATION permission.//////******main purpose
     //If it hasn’t, then request it from the user.
@@ -122,6 +124,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //finding user's current location
         // 1
         mMap.setMyLocationEnabled(true);
+        mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
+
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); //you can do it this way; but do notice that you have
                                                                             //no way to store your current location in a variabel
                                                                             //in order to be the first argument to call the func
