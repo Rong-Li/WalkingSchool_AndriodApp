@@ -13,10 +13,11 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
+import ca.sfu.Navy.walkinggroup.model.UserInfoStore;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private UserInfoStore userInfoStore;
     private ServerProxy proxy;
     private EditText email_edit;
     private EditText pw_edit;
@@ -66,8 +67,8 @@ public class LoginActivity extends AppCompatActivity {
                 ServerProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
 
                 // Make call
-                Call<Void> caller = proxy.login(user);
-                ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
+                Call<User> caller = proxy.login(user);
+                ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
 
             }
         });
@@ -77,14 +78,22 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w("Login Server", "   --> NOW HAVE TOKEN: " + token);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
+        userInfoStore.setToken(token);
     }
 
-    private void response(Void returnedNothing) {
+    private void response(User user) {
         Log.w("Login Server", "Server replied to login request (no content was expected).");
         String email = email_edit.getText().toString();
         String pw = pw_edit.getText().toString();
+        long id = user.getId();
+        String name = user.getName();
+        String theEmail = user.getEmail();
+        userInfoStore.setId(id);
+        userInfoStore.setName(name);
+        userInfoStore.setEmail(theEmail);
         SavedSharedPreference.setUserEmail(LoginActivity.this,email);
         SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
+
         finish();
     }
 

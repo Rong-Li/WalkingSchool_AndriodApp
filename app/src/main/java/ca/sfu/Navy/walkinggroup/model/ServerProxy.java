@@ -15,7 +15,7 @@ public interface ServerProxy {
     Call<User> createNewUser(@Body User user);
 
     @POST("/login")
-    Call<Void> login(@Body User userWithEmailAndPassword);
+    Call<User> login(@Body User userWithEmailAndPassword);
 
     @GET("/users")
     Call<List<User>> getUsers();
@@ -45,7 +45,7 @@ public interface ServerProxy {
     Call<Group> getGroups();
 
     @POST("/groups")
-    Call<Group> creatNewGroup(@Path("Leader") Long userID, @Query("groupDescription") String groupDescription);
+    Call<Void> creatNewGroup(@Path("Leader") Long userID, @Query("groupDescription") String groupDescription);
 
     @GET("/groups/{id}")
     Call<Group> getGroupDetails(@Path("id") Long groupID);
