@@ -25,19 +25,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/User_label_name"
-            android:layout_toStartOf="@id/User_btn_stop"
             android:gravity="center_vertical"
             android:paddingStart="20dp"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/User_btn_stop"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:background="@mipmap/input_textfield_2"
-            android:src="@drawable/stop" />
     </RelativeLayout>
 
     <RelativeLayout

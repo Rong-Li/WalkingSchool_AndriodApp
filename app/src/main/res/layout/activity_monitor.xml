@@ -16,8 +16,7 @@
         android:text="@string/txt_monitoringList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/monitor_userlist"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ListView
         android:id="@+id/monitor_userlist"

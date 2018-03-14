@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.adapter.UserListAdapter;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -18,8 +22,11 @@ import retrofit2.Call;
 
 public class MonitorActivity extends AppCompatActivity {
 
-    private User user_loggedin;
+    private User user_loggedin = new User();
     private ServerProxy proxy;
+    private ListView listView;
+    private UserListAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,56 +37,50 @@ public class MonitorActivity extends AppCompatActivity {
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
         getUserLoggedin();
-        populateList();
+        addMonitorUser();
     }
 
     private void populateList(){
+
         // Create list of item
-        List<User> listUser = user_loggedin.getMonitorsUsers();
+        List<User> monitorList = new ArrayList<>();
+        monitorList = user_loggedin.getMonitorsUsers();
+        // Configure the list view
+        listView = (ListView) findViewById(R.id.monitor_userlist);
 
         // Build Adapter
-        ArrayAdapter<User> adapter = new ArrayAdapter<User>(
-                this,          // Context for the activity
-                R.layout.user_list,   // Layout to use (create)
-                listUser);                // Items to be displayed
+        mAdapter = new UserListAdapter(MonitorActivity.this, monitorList);
 
-        // Configure the list view
-        ListView List = (ListView) findViewById(R.id.monitor_userlist);
-        List.setAdapter(adapter);
+        listView.setAdapter(mAdapter);
+    }
+
+    private void addMonitorUser(){
+        Button button = (Button) findViewById(R.id.add_monitor_user);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = AddMonitorActivity.makeIntent(MonitorActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getUserLoggedin(){
-        // Encode user email
         String email = SavedSharedPreference.getPrefUserEmail(MonitorActivity.this);
-        String encode_email = email.substring(0, email.indexOf('@')) + "%40" + email.substring(email.indexOf('@') +1, email.length());
 
         // Make call to retrieve user info
-        Call<User> caller = proxy.getUserByEmail(encode_email);
+        Call<User> caller = proxy.getUserByEmail(email);
         ServerProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
 
     }
 
     private void response(User user) {
         Log.w("Register Server", "Server replied with user: " + user.toString());
-        user_loggedin.setId(user.getId());
-        user_loggedin.setEmail(user.getEmail());
-        user_loggedin.setPassword(user.getPassword());
-        user_loggedin.setName(user.getName());
-        user_loggedin.setHref(user.getHref());
-        user_loggedin.setMonitorsUsers(user.getMonitorsUsers());
-        user_loggedin.setMonitoredByUsers(user.getMonitoredByUsers());
-        user_loggedin.setMemberOfGroups(user.getMemberOfGroups());
+        user_loggedin = user;
+        Log.w("Test receive", "server receive test " + user_loggedin.toString());
+        populateList();
 
     }
-
-
-
-
-
-
-
-
-
 
     public static Intent newIntent(Context context){
         return new Intent(context, MonitorActivity.class);

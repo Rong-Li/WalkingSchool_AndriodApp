@@ -24,7 +24,7 @@ public class UserListAdapter extends ArrayAdapter<User> {
     private Context mcontext;
     private List<User> userList = new ArrayList<>();
 
-    public UserListAdapter(@NonNull Context context, ArrayList<User> list){
+    public UserListAdapter(@NonNull Context context, List<User> list){
         super(context, 0, list);
         mcontext = context;
         userList = list;
@@ -46,13 +46,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
         TextView userEmail = (TextView) listItem.findViewById(R.id.User_text_email);
         userEmail.setText(currentUser.getEmail());
 
-        ImageButton stopButton = (ImageButton) listItem.findViewById(R.id.User_btn_stop);
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userList.remove(position);
-            }
-        });
 
         return listItem;
     }

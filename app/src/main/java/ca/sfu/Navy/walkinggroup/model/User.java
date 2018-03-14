@@ -1,5 +1,9 @@
 package ca.sfu.Navy.walkinggroup.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +16,11 @@ public class User {
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
-    private List<Void> memberOfGroups = new ArrayList<>();
-    private List<Void> leadsGroups = new ArrayList<>();
+    private List<Group> memberOfGroups = new ArrayList<>();
+    private List<Group> leadsGroups = new ArrayList<>();
 
     private String href;
+
 
     //getters
     public Long getId() {
@@ -36,12 +41,16 @@ public class User {
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
-    public List<Void> getMemberOfGroups() {
+    public List<Group> getMemberOfGroups() {
         return memberOfGroups;
     }
     public String getHref() {
         return href;
     }
+    public List<Group> getLeadsGroups() {
+        return leadsGroups;
+    }
+
 
 
     //setters
@@ -61,11 +70,14 @@ public class User {
     public void setMonitorsUsers(List<User> monitorsUsers) {
         this.monitorsUsers = monitorsUsers;
     }
-    public void setMemberOfGroups(List<Void> memberOfGroups) {
+    public void setMemberOfGroups(List<Group> memberOfGroups) {
         this.memberOfGroups = memberOfGroups;
     }
     public void setHref(String href) {
         this.href = href;
+    }
+    public void setLeadsGroups(List<Group> leadsGroups) {
+        this.leadsGroups = leadsGroups;
     }
 
     // List items modifiers
@@ -88,6 +100,7 @@ public class User {
                 ", monitoredByUsers=" + monitoredByUsers +
                 ", monitorsUsers=" + monitorsUsers +
                 ", memberOfGroups=" + memberOfGroups +
+                ", leadsGroups=" + leadsGroups +
                 '}';
     }
 }
