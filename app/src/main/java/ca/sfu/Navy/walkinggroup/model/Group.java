@@ -9,7 +9,7 @@ import java.util.List;
 public class Group {
     private Long id;
     private String groupDescription;
-    private User leader;
+    private Long leader;
 
     private List<User> memberUsers = new ArrayList<>();
     private List<Void> routeLatArray = new ArrayList<>();
@@ -23,7 +23,7 @@ public class Group {
     public String getGroupDescription() {
         return groupDescription;
     }
-    public User getLeader() {
+    public Long getLeader() {
         return leader;
     }
     public List<User> getMemberUsers() {
@@ -47,7 +47,7 @@ public class Group {
     public void setGroupDescription(String groupDescription) {
         this.groupDescription = groupDescription;
     }
-    public void setLeader(User leader) {
+    public void setLeader(Long leader) {
         this.leader = leader;
     }
     public void setRouteLatArray(List<Void> routeLatArray) {

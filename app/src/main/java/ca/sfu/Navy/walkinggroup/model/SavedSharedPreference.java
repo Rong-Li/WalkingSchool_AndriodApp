@@ -28,6 +28,9 @@ public class SavedSharedPreference {
         editor.commit();
     }
 
+    public static String getUserEmail(){
+        return PREF_USER_EMAIL;
+    }
     public static String getPrefUserEmail(Context context)
     {
         return getSharedPreferences(context).getString(PREF_USER_EMAIL, "");

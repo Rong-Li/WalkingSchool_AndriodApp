@@ -20,6 +20,9 @@ public interface ServerProxy {
     @GET("/users")
     Call<List<User>> getUsers();
 
+    @GET("/users")
+    Call<User> getUserDetails();
+
     @GET("/users/{id}")
     Call<User> getUserById(@Path("id") Long userId);
 

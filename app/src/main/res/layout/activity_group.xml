@@ -19,7 +19,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupdescription_btn"
         app:layout_constraintVertical_bias="1.0" />
 
     <ListView
@@ -34,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/groupdescription_btn"
+        android:id="@+id/groupdescription_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -42,7 +41,8 @@
         android:hint="@string/group_description"
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@+id/group_list"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView"

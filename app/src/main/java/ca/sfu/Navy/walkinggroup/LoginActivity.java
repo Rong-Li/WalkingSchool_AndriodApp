@@ -88,8 +88,6 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-
-
     public static Intent newIntent(Context context){
         return new Intent(context, LoginActivity.class);
     }
