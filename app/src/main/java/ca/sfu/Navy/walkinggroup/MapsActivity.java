@@ -1,5 +1,6 @@
 package ca.sfu.Navy.walkinggroup;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -101,6 +106,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         /////enable zoom in zoom out; enable
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
+        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
+
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")); ////add a marker
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); ////centered to that location
 
@@ -124,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //finding user's current location
         // 1
         mMap.setMyLocationEnabled(true);
-        mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
+        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); //you can do it this way; but do notice that you have
                                                                             //no way to store your current location in a variabel
@@ -150,10 +157,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+//                View mWindow;
+//                mWindow = LayoutInflater.from(MapsActivity.this).inflate(R.layout.custom_info_window, null);
+//                //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+//                Button button = (Button) mWindow.findViewById(R.id.YESbtnID);
+//                button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+//                Log.i("MyApp","****************************");
+//                }
+//            });
+                android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+                MessageFragment dialog = new MessageFragment();
+                dialog.show(manager, "MEssgaDialog");
+
+                Log.i("MyApp","showed the dialog");
                 return false;
             }
         });
+
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 

@@ -25,14 +25,16 @@ public class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
     public CustomWindowAdapter(Context mContext) {
         this.mContext = mContext;
         this.mWindow = LayoutInflater.from(mContext).inflate(R.layout.custom_info_window, null);
+        Log.i("MyApp","****************************");
     }
 
 
     private void rendowWindowText(Marker marker, View view){
-//        Button button = (Button) findViewById(R.id.YESbtnID);
+//        Button button = (Button) view.findViewById(R.id.YESbtnID);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
+//                //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
 //                Log.i("MyApp","****************************");
 //            }
 //        });
@@ -40,13 +42,13 @@ public class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
     }
     @Override
     public View getInfoWindow(Marker marker) {
-        rendowWindowText(marker, mWindow);
+        //rendowWindowText(marker, mWindow);
         return mWindow;
     }
 
     @Override
     public View getInfoContents(Marker marker) {
-        rendowWindowText(marker, mWindow);
+        //rendowWindowText(marker, mWindow);
         return mWindow;
     }
 }
