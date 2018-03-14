@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -35,7 +37,6 @@ public class AddMonitorActivity extends AppCompatActivity {
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
         getUserLoggedin();
-
     }
 
     private void populateList(){
@@ -44,9 +45,29 @@ public class AddMonitorActivity extends AppCompatActivity {
 
         // Build Adapter
         mAdapter = new UserListAdapter(AddMonitorActivity.this, allUsers);
-
         listView.setAdapter(mAdapter);
+        clickCallSetting();
+
     }
+
+    private void clickCallSetting(){
+        listView = (ListView) findViewById(R.id.all_userList);
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View viewclicked, int position, long id) {
+                User user = allUsers.get(position);
+                long addUserId = user.getId();
+                long userId = user_loggedin.getId();
+                // Make call to add
+                Call<List<User>> caller = proxy.addUsertoMonitor(userId, user);
+                ServerProxyBuilder.callProxy(AddMonitorActivity.this, caller, returnedUsers -> response(returnedUsers));
+                finish();
+            }
+        });
+
+    }
+
 
     private void getAllUser(){
         // Make call to server for all User

@@ -16,13 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.R;
+import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
+import ca.sfu.Navy.walkinggroup.model.ServerProxy;
+import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
+
 
 
 public class UserListAdapter extends ArrayAdapter<User> {
 
     private Context mcontext;
     private List<User> userList = new ArrayList<>();
+    private String userName;
+    private String userEmail;
+    private ServerProxy proxy;
+
 
     public UserListAdapter(@NonNull Context context, List<User> list){
         super(context, 0, list);
@@ -49,5 +57,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
 
         return listItem;
     }
+
 
 }

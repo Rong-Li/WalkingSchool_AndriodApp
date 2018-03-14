@@ -1,7 +1,5 @@
 package ca.sfu.Navy.walkinggroup.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -82,11 +80,12 @@ public class User {
 
     // List items modifiers
     public void addUsertoMonitor(User user){
-        monitorsUsers.add(user);
+        this.monitorsUsers.add(user);
     }
     public void removeUserfromMonitor(int index){
-        monitorsUsers.remove(index);
+        this.monitorsUsers.remove(index);
     }
+
 
 
 

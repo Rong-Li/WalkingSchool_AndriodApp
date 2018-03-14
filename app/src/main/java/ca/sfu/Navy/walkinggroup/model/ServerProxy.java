@@ -4,6 +4,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -20,10 +21,17 @@ public interface ServerProxy {
     Call<List<User>> getUsers();
 
     @GET("/users/{id}")
-    Call<User> getUserById(@Path("id") Long userId);
+    Call<User> getUserById(@Path("id") long userId);
 
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
+
+    @POST("/users/{id}/monitorsUsers")
+    Call<List<User>> addUsertoMonitor(@Path("id") long userId, @Body User addUserModel);
+
+    @DELETE("/users/{idA}/monitorsUsers/{idB}")
+    Call<Void> cancelmonitor(@Path("idA") long monitorId, @Path("idB") long monitoredId);
+
 /**
     @GET("/users/{id}/monitorsUsers")
     Call<User> getMonitorsUsers(@Path("id") Long userId);

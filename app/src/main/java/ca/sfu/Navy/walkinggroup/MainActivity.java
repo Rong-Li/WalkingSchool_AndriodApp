@@ -22,6 +22,12 @@ public class MainActivity extends AppCompatActivity {
         monitorActivityStart();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkLoggedIn();
+    }
+
     private void checkLoggedIn(){
         if(SavedSharedPreference.getPrefUserEmail(MainActivity.this).length() == 0)
         {
