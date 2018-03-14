@@ -13,11 +13,9 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
-import ca.sfu.Navy.walkinggroup.model.UserInfoStore;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
-    private UserInfoStore userInfoStore;
     private ServerProxy proxy;
     private EditText email_edit;
     private EditText pw_edit;
@@ -27,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Build the server proxy
-        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
+        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), SavedSharedPreference.getPrefUserToken(this));
 
         setupEditText();
         setupSignupButton();
@@ -78,22 +76,17 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w("Login Server", "   --> NOW HAVE TOKEN: " + token);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userInfoStore.setToken(token);
+        SavedSharedPreference.setPrefUserToken(LoginActivity.this, token);
     }
 
     private void response(User user) {
         Log.w("Login Server", "Server replied to login request (no content was expected).");
         String email = email_edit.getText().toString();
         String pw = pw_edit.getText().toString();
-        long id = user.getId();
-        String name = user.getName();
-        String theEmail = user.getEmail();
-        userInfoStore.setId(id);
-        userInfoStore.setName(name);
-        userInfoStore.setEmail(theEmail);
+        Long id = user.getId();
         SavedSharedPreference.setUserEmail(LoginActivity.this,email);
         SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
-
+        SavedSharedPreference.setPrefUserId(this, id);
         finish();
     }
 

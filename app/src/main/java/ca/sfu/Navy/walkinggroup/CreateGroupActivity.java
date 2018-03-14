@@ -9,32 +9,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
-import ca.sfu.Navy.walkinggroup.model.UserInfoStore;
 import retrofit2.Call;
 
 public class CreateGroupActivity extends AppCompatActivity {
     private ServerProxy proxy;
-    private UserInfoStore userInfoStore;
-    private EditText groupDescription;
-    private EditText emailaddress;
-    private long leader = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
 
-        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
+        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), SavedSharedPreference.getPrefUserToken(CreateGroupActivity.this));
 
         setupCreateNewGroupbtn();
-        setupEditText();
-    }
-    private void setupEditText(){
-        groupDescription = (EditText) findViewById(R.id.groupdescription_txt);
     }
 
     private void setupCreateNewGroupbtn() {
@@ -43,18 +41,23 @@ public class CreateGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Build new user
+                Group group = new Group();
+
+                EditText groupDescription = findViewById(R.id.groupdescription_txt);
                 String desctiption = groupDescription.getText().toString();
-                String email = emailaddress.getText().toString();
 
-                // Register for token received:
-                ServerProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
-
-                Call<User> caller = proxy.getUserByEmail(email);
-                ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedUser -> response(returnedUser));
+                group.setGroupDescription(desctiption);
+                JSONObject leader = new JSONObject();
+                try {
+                    leader.put("id", SavedSharedPreference.getPrefUserId(CreateGroupActivity.this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                group.setLeader(leader);
 
                 // Make call
-                Call<Void> callergroup = proxy.creatNewGroup(leader, desctiption);
-                ServerProxyBuilder.callProxy(CreateGroupActivity.this, callergroup, returnedNothing -> response(returnedNothing));
+                Call<Group> caller = proxy.createNewGroup(group);
+                ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedGroup -> response(returnedGroup));
             }
         });
     }
@@ -67,13 +70,12 @@ public class CreateGroupActivity extends AppCompatActivity {
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
     }
 
-    private void response(Void returnedNothing) {
-        Log.w("Server Test", "Server replied to Create New Group request (no content was expected).");
+    private void response(Group group) {
+        Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
     }
 
     private void response(User user) {
         Log.w("Server Test", "Server replied with user: " + user.toString());
-        leader = user.getId();
     }
 
     public static Intent newIntent(Context context){

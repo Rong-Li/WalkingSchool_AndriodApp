@@ -1,5 +1,8 @@
 package ca.sfu.Navy.walkinggroup.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,7 +48,7 @@ public interface ServerProxy {
     Call<Group> getGroups();
 
     @POST("/groups")
-    Call<Void> creatNewGroup(@Path("Leader") Long userID, @Query("groupDescription") String groupDescription);
+    Call<Group> createNewGroup(@Body Group group);
 
     @GET("/groups/{id}")
     Call<Group> getGroupDetails(@Path("id") Long groupID);

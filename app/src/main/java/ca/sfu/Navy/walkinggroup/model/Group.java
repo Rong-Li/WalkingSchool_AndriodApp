@@ -2,14 +2,19 @@ package ca.sfu.Navy.walkinggroup.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Group {
     private Long id;
     private String groupDescription;
-    private Long leader;
+    private JSONObject leader = new JSONObject();
 
     private List<User> memberUsers = new ArrayList<>();
     private List<Void> routeLatArray = new ArrayList<>();
@@ -23,7 +28,7 @@ public class Group {
     public String getGroupDescription() {
         return groupDescription;
     }
-    public Long getLeader() {
+    public JSONObject getLeader() {
         return leader;
     }
     public List<User> getMemberUsers() {
@@ -47,7 +52,8 @@ public class Group {
     public void setGroupDescription(String groupDescription) {
         this.groupDescription = groupDescription;
     }
-    public void setLeader(Long leader) {
+
+    public void setLeader(JSONObject leader){
         this.leader = leader;
     }
     public void setRouteLatArray(List<Void> routeLatArray) {

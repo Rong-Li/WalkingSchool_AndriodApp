@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 public class SavedSharedPreference {
     static final String PREF_USER_EMAIL = "User email";
     static final String PREF_USER_PW = "User Password";
+    static final String PREF_USER_TOKEN = "User Authorization Token";
+    static final String PREF_USER_ID = "User id";
 
     static SharedPreferences getSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -28,9 +30,19 @@ public class SavedSharedPreference {
         editor.commit();
     }
 
-    public static String getUserEmail(){
-        return PREF_USER_EMAIL;
+    // Save user token when logged in
+    public static void setPrefUserToken(Context context, String userToken){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(PREF_USER_TOKEN, userToken);
+        editor.commit();
     }
+
+    public static void setPrefUserId(Context context, Long userID){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putLong(PREF_USER_ID, userID);
+        editor.commit();
+    }
+
     public static String getPrefUserEmail(Context context)
     {
         return getSharedPreferences(context).getString(PREF_USER_EMAIL, "");
@@ -40,6 +52,13 @@ public class SavedSharedPreference {
         return getSharedPreferences(context).getString(PREF_USER_PW, "");
     }
 
+    public static String getPrefUserToken(Context context){
+        return getSharedPreferences(context).getString(PREF_USER_TOKEN, "");
+    }
+
+    public static long getPrefUserId(Context context){
+        return getSharedPreferences(context).getLong(PREF_USER_ID, 0);
+    }
 
     // This function clears the saved user info to log the user out
     public static void clearUserLogged(Context context){
