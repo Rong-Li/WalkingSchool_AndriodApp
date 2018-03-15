@@ -87,7 +87,6 @@ public class AddMonitorActivity extends AppCompatActivity {
         // Make call to retrieve user info
         Call<User> caller = proxy.getUserByEmail(email);
         ServerProxyBuilder.callProxy(AddMonitorActivity.this, caller, returnedUser -> response(returnedUser));
-
     }
 
     private void response(User user) {

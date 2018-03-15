@@ -24,7 +24,7 @@ import retrofit2.Call;
 public class CreateGroupActivity extends AppCompatActivity {
     private ServerProxy proxy;
     private User user_login = new User();
-
+    private Long id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +43,8 @@ public class CreateGroupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Build new user
                 Group group = new Group();
-                Long id =  SavedSharedPreference.getPrefUserId(CreateGroupActivity.this);
                 String herf = user_login.getHref();
+                getUserID();
 
                 EditText groupDescription = findViewById(R.id.groupdescription_txt);
                 String desctiption = groupDescription.getText().toString();
@@ -64,8 +64,21 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
     }
 
+    private void getUserID(){
+        // Encode user email
+        String email = SavedSharedPreference.getPrefUserEmail(CreateGroupActivity.this);
+        // Make call to retrieve user info
+        Call<User> caller = proxy.getUserByEmail(email);
+        ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedUser -> response(returnedUser));
+    }
+
     private void response(Group group) {
         Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
+    }
+
+    private void response(User user){
+        Log.w("Register Server", "Server replied with user: " + user.toString());
+        id = user.getId();
     }
 
     public static Intent newIntent(Context context){

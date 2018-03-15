@@ -86,11 +86,8 @@ public class LoginActivity extends AppCompatActivity {
         String pw = pw_edit.getText().toString();
         SavedSharedPreference.setUserEmail(LoginActivity.this,email);
         SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
-
         finish();
     }
-
-
 
     public static Intent newIntent(Context context){
         return new Intent(context, LoginActivity.class);
