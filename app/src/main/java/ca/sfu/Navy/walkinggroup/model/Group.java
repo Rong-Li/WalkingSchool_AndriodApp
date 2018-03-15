@@ -3,15 +3,12 @@ package ca.sfu.Navy.walkinggroup.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"id", "memberUsers"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Group {
     private Long id;
@@ -76,8 +73,8 @@ public class Group {
         return "Group{" +
                 "id=" + id +
                 ", groupDescription='" + groupDescription + '\'' +
-                ", routeLatArray='" + routeLatArray + '\'' +
-                ", routeLngArray='" + routeLngArray + '\'' +
+                ", routeLatArray=" + routeLatArray +
+                ", routeLngArray=" + routeLngArray +
                 ", leader=" + leader +
                 ", memberUsers=" + memberUsers +
                 '}';

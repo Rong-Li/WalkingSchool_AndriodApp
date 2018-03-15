@@ -18,7 +18,6 @@ import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
-import ca.sfu.Navy.walkinggroup.model.User;
 import retrofit2.Call;
 
 public class CreateGroupActivity extends AppCompatActivity {
@@ -55,21 +54,12 @@ public class CreateGroupActivity extends AppCompatActivity {
                 // Make call
                 Call<Group> caller = proxy.createNewGroup(group);
                 ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedGroup -> response(returnedGroup));
-
-                /** function for List groups*/
-
-                /**Call<Group> caller = proxy.getGroups();
-                ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnGroups -> response(returnGroups));*/
             }
         });
     }
 
     private void response(Group group) {
         Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
-    }
-
-    private void respinse(Group group){
-        Log.w("Server Test", "There are:" + group.getRouteLatArray() + "and " + group.getRouteLngArray());
     }
 
     public static Intent newIntent(Context context){
