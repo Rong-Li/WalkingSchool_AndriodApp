@@ -58,6 +58,10 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     private void response(Group group) {
         Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
+        try{
+            Thread.currentThread().sleep(500);
+        }catch(Exception e){}
+        finish();
     }
 
     private void getUserID(){
