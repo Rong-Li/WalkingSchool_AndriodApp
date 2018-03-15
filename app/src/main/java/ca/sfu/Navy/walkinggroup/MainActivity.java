@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         checkLoggedIn();
         MapActivityStart();
         logInActivityStart();
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         {
             // Stay at the current activity.
             // Assume the JWT authorization token of the user is still valid
-
         }
     }
 

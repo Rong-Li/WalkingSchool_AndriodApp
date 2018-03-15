@@ -112,7 +112,6 @@ public class MonitorActivity extends AppCompatActivity {
     }
     private void response(Void returnedNothing){
         // No content
-        getUserLoggedin();
     }
 
     private void getUserLoggedin(){

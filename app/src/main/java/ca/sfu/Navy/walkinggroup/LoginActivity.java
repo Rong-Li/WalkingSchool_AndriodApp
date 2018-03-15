@@ -86,17 +86,11 @@ public class LoginActivity extends AppCompatActivity {
         String pw = pw_edit.getText().toString();
         SavedSharedPreference.setUserEmail(LoginActivity.this,email);
         SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
-        Call<User> caller = proxy.getUserByEmail(SavedSharedPreference.getPrefUserEmail(this));
-        ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
 
         finish();
     }
 
-    private void response(User user){
-        Log.w("Server Test: ", "Server replied a " + user.toString());
-        Long id = user.getId();
-        SavedSharedPreference.setPrefUserId(this, id);
-    }
+
 
     public static Intent newIntent(Context context){
         return new Intent(context, LoginActivity.class);

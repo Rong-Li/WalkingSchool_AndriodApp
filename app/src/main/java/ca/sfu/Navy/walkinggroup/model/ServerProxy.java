@@ -23,9 +23,6 @@ public interface ServerProxy {
     @GET("/users")
     Call<List<User>> getUsers();
 
-    @GET("/users")
-    Call<User> getUserDetails();
-
     @GET("/users/{id}")
     Call<User> getUserById(@Path("id") long userId);
 
@@ -43,21 +40,6 @@ public interface ServerProxy {
 
     @DELETE("/users/{idA}/monitoredByUsers/{idB}")
     Call<Void> cancelMonitoredBy(@Path("idA") long monitoredId, @Path("idB") long monitorId);
-
-     @GET("/users/{id}/monitorsUsers")
-    Call<List<User>> getMonitorsUsers(@Path("id") Long userId);
-
-    @GET("/users/{id}/monitoredByUsers")
-    Call<List<User>> getMonitorsByUsers(@Path("id") Long userId);
-
-    @POST("/users/{id}/monitorsUsers")
-    Call<User> monitorsOthers(@Body User user);
-
-    @DELETE("/users/{idA}/monitorsUsers/{idB}")
-    Call<User> deleteMonitors();
-
-    @GET("/groups")
-    Call<Group> getGroups();
 
     @POST("/groups")
     Call<Group> createNewGroup(@Body Group group);
