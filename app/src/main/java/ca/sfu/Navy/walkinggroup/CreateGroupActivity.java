@@ -9,11 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -24,7 +19,7 @@ import retrofit2.Call;
 public class CreateGroupActivity extends AppCompatActivity {
     private ServerProxy proxy;
     private User user_login = new User();
-    private Long id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +38,13 @@ public class CreateGroupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Build new user
                 Group group = new Group();
-                String herf = user_login.getHref();
+                User leader = new User();
                 getUserID();
-
                 EditText groupDescription = findViewById(R.id.groupdescription_txt);
                 String desctiption = groupDescription.getText().toString();
 
-                group.setGroupDescription(desctiption);
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("id", id);
-                map.put("herf", herf);
-
-                JSONObject leader = new JSONObject(map);
+                leader.setId(user_login.getId());
+                leader.setHref(user_login.getHref());
                 group.setLeader(leader);
 
                 // Make call
@@ -78,7 +68,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.toString());
-        id = user.getId();
+        user_login = user;
     }
 
     public static Intent newIntent(Context context){
