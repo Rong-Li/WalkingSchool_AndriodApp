@@ -16,6 +16,7 @@ import ca.sfu.Navy.walkinggroup.model.User;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
+
     private ServerProxy proxy;
     private EditText email_edit;
     private EditText pw_edit;
@@ -60,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
                 String pw = pw_edit.getText().toString();
                 user.setEmail(email);
                 user.setPassword(pw);
-                SavedSharedPreference.setUserEmail(LoginActivity.this, email);
-                SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
 
                 // Receive token
                 ServerProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
@@ -78,13 +77,17 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w("Login Server", "   --> NOW HAVE TOKEN: " + token);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
-        SavedSharedPreference.setPrefUserToken(LoginActivity.this, token);
     }
 
     private void response(Void returnedNothing) {
         Log.w("Login Server", "Server replied to login request (no content was expected).");
+        String email = email_edit.getText().toString();
+        String pw = pw_edit.getText().toString();
+        SavedSharedPreference.setUserEmail(LoginActivity.this,email);
+        SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
         Call<User> caller = proxy.getUserByEmail(SavedSharedPreference.getPrefUserEmail(this));
         ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
+
         finish();
     }
 
@@ -93,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         Long id = user.getId();
         SavedSharedPreference.setPrefUserId(this, id);
     }
+
 
     public static Intent newIntent(Context context){
         return new Intent(context, LoginActivity.class);
