@@ -117,8 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //If it hasn’t, then request it from the user.
     //it is called by onconnected() function, and onconnected() is called if the clients is connected!!!!!!*********
     private void setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
                     {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
             return;
