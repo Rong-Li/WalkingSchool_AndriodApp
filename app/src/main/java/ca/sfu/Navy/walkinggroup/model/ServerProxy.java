@@ -40,6 +40,9 @@ public interface ServerProxy {
 
     @DELETE("/users/{idA}/monitoredByUsers/{idB}")
     Call<Void> cancelMonitoredBy(@Path("idA") long monitoredId, @Path("idB") long monitorId);
+    
+    @GET("/groups")
+    Call<List<Group>> getGroups();
 
     @POST("/groups")
     Call<Group> createNewGroup(@Body Group group);
