@@ -9,31 +9,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import ca.sfu.Navy.walkinggroup.model.ServerProxy;
+import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
+
 /**
  * Created by lirongl on 2018-03-13.
  */
 
 public class MessageFragment extends AppCompatDialogFragment {
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        // Use the Builder class for convenient dialog construction
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setMessage("Question")
-//                .setPositiveButton(R.string.Join, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // FIRE ZE MISSILES!
-//                    }
-//                })
-//                .setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // User cancelled the dialog
-//                    }
-//                });
-//        // Create the AlertDialog object and return it
-//        return builder.create();
-//    }
+    private ServerProxy proxy;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
+
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.custom_info_window,null);
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -42,6 +31,7 @@ public class MessageFragment extends AppCompatDialogFragment {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         Log.i("MyApp","YOU CLICK THE YESYESYESYES");
+
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         Log.i("MyApp","YOU CLICK THE NONONONONONO");

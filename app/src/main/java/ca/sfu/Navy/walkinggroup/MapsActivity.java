@@ -29,7 +29,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationListener;
 
+import java.util.ArrayList;
+import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.ServerProxy;
+import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
+import ca.sfu.Navy.walkinggroup.model.User;
+import retrofit2.Call;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -40,6 +47,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private ServerProxy proxy;
+    private List<Group> groups = new ArrayList<>();
+
 
 
 
@@ -51,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
 
 
         // 1
@@ -117,21 +128,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //If it hasn’t, then request it from the user.
     //it is called by onconnected() function, and onconnected() is called if the clients is connected!!!!!!*********
     private void setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
             ActivityCompat.requestPermissions(this, new String[]
                     {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+
             return;
         }
 
-
-
-        //////////////////*Below is useful and functional impelementations*//////////////////////
-
         //finding user's current location
         // 1
+        Call<List<Group>> caller = proxy.getGroups();
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
         mMap.setMyLocationEnabled(true);
-        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
 
+        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); //you can do it this way; but do notice that you have
                                                                             //no way to store your current location in a variabel
                                                                             //in order to be the first argument to call the func
@@ -176,7 +187,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    private void response(List returnedGroups) {
+        Log.w("Register Server", "*********************** " + returnedGroups.toString());
+        for(int i =0; i < returnedGroups.size(); i++)
+        {
+            Group temp = (Group) returnedGroups.get(i);
+            groups.add(temp);
+        }
+        Log.w("Register Server", "*********************** " + returnedGroups.toString());
+    }
 
 
     @Override
