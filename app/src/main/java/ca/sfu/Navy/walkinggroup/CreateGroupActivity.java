@@ -28,6 +28,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         String token = SavedSharedPreference.getPrefUserToken(CreateGroupActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
+        getUserID();
         setupCreateNewGroupbtn();
     }
 
@@ -36,15 +37,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Build new user
-                Group group = new Group();
-                User leader = new User();
-                getUserID();
+                // Build new group
                 EditText groupDescription = findViewById(R.id.groupdescription_txt);
-                String desctiption = groupDescription.getText().toString();
-
-                leader.setId(user_login.getId());
-                leader.setHref(user_login.getHref());
+                String description = groupDescription.getText().toString();
+                Group group = new Group();
+                long id = user_login.getId();
+                String href = user_login.getHref();
+                group.setGroupDescription(description);
+                User leader = new User();
+                leader.setId(id);
+                leader.setHref(href);
                 group.setLeader(leader);
 
                 // Make call
@@ -52,6 +54,10 @@ public class CreateGroupActivity extends AppCompatActivity {
                 ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedGroup -> response(returnedGroup));
             }
         });
+    }
+
+    private void response(Group group) {
+        Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
     }
 
     private void getUserID(){
@@ -62,12 +68,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedUser -> response(returnedUser));
     }
 
-    private void response(Group group) {
-        Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
-    }
-
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.toString());
+        SavedSharedPreference.setPrefUserId(CreateGroupActivity.this, user.getId());
         user_login = user;
     }
 

@@ -75,7 +75,7 @@ public class Group {
                 ", groupDescription='" + groupDescription + '\'' +
                 ", routeLatArray=" + routeLatArray +
                 ", routeLngArray=" + routeLngArray +
-                ", leader=" + leader +
+                ", leader=" + leader.toString() +
                 ", memberUsers=" + memberUsers +
                 '}';
     }
