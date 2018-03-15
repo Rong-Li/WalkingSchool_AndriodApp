@@ -14,11 +14,13 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ServerProxy {
-    @POST("/users/signup")
-    Call<User> createNewUser(@Body User user);
-
+    //API #3
     @POST("/login")
     Call<Void> login(@Body User userWithEmailAndPassword);
+
+    //API #4
+    @POST("/users/signup")
+    Call<User> createNewUser(@Body User user);
 
     @GET("/users")
     Call<List<User>> getUsers();
@@ -26,8 +28,18 @@ public interface ServerProxy {
     @GET("/users/{id}")
     Call<User> getUserById(@Path("id") long userId);
 
+    @DELETE("/users/{id}")
+    Call<Void> deleteUserbyId(@Path("id") long userId);
+
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
+
+    //API #5
+    @GET("/users/{id}/monitorsUsers")
+    Call<List<User>> getmonitorsUsers();
+
+    @GET("/users/{id}/monitoredByUsers")
+    Call<List<User>> getmonitoredByUsers();
 
     @POST("/users/{id}/monitorsUsers")
     Call<List<User>> addUsertoMonitor(@Path("id") long userId, @Body User addMonitor);
@@ -40,7 +52,8 @@ public interface ServerProxy {
 
     @DELETE("/users/{idA}/monitoredByUsers/{idB}")
     Call<Void> cancelMonitoredBy(@Path("idA") long monitoredId, @Path("idB") long monitorId);
-    
+
+    //API #6
     @GET("/groups")
     Call<List<Group>> getGroups();
 
@@ -51,16 +64,16 @@ public interface ServerProxy {
     Call<Group> getGroupDetails(@Path("id") Long groupID);
 
     @POST("/groups/{id}")
-    Call<Group> updateGroupDetails(@Path("id") Long groupID);
+    Call<Group> updateGroupDetails(@Path("id") Long groupID, @Body Group group);
 
     @DELETE("/groups/{id}")
-    Call<Group> deleteGroups(@Path("id") Long groupID);
+    Call<Void> deleteGroups(@Path("id") Long groupID);
 
     @GET("/groups/{id}/memberUsers")
     Call<Group> getGroupMenberUsers();
 
     @POST("/groups/{id}/memberUsers")
-    Call<Group> addNewGroupMember(@Path("id") Long userID);
+    Call<Group> addNewGroupMember(@Path("id") Long userID, @Body User user);
 
     @DELETE("/groups/{groupId}/memberUsers/{userId}")
     Call<Group> removeGroupMember(@Path("groupId") Long groupID, @Path("userId") Long userID);
