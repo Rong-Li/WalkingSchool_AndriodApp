@@ -1,9 +1,13 @@
 package ca.sfu.Navy.walkinggroup.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -19,17 +23,20 @@ public interface ServerProxy {
     @GET("/users")
     Call<List<User>> getUsers();
 
+    @GET("/users")
+    Call<User> getUserDetails();
+
     @GET("/users/{id}")
     Call<User> getUserById(@Path("id") Long userId);
 
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
-/**
-    @GET("/users/{id}/monitorsUsers")
-    Call<User> getMonitorsUsers(@Path("id") Long userId);
+
+     @GET("/users/{id}/monitorsUsers")
+    Call<List<User>> getMonitorsUsers(@Path("id") Long userId);
 
     @GET("/users/{id}/monitoredByUsers")
-    Call<User> getMonitorsByUsers(@Path("id") Long userId);
+    Call<List<User>> getMonitorsByUsers(@Path("id") Long userId);
 
     @POST("/users/{id}/monitorsUsers")
     Call<User> monitorsOthers(@Body User user);
@@ -38,27 +45,26 @@ public interface ServerProxy {
     Call<User> deleteMonitors();
 
     @GET("/groups")
-    Call<List<User>> getGroups();
+    Call<Group> getGroups();
 
     @POST("/groups")
-    Call<User> creatNewGroup(@Path("Leader") Long userIdr, @Query("groupDescription") String groupDescription);
+    Call<Group> createNewGroup(@Body Group group);
 
     @GET("/groups/{id}")
-    Call<User> getGroupDetails();
+    Call<Group> getGroupDetails(@Path("id") Long groupID);
 
     @POST("/groups/{id}")
-    Call<User> updateGroupDetails();
+    Call<Group> updateGroupDetails(@Path("id") Long groupID);
 
     @DELETE("/groups/{id}")
-    Call<User> deleteGroups();
+    Call<Group> deleteGroups(@Path("id") Long groupID);
 
     @GET("/groups/{id}/memberUsers")
-    Call<List<User>> getGroupMenberUsers();
+    Call<List<Group>> getGroupMenberUsers(@Path("id") Long groupID);
 
     @POST("/groups/{id}/memberUsers")
-    Call<User> addNewGroupMember(@Path("id") Long userId);
+    Call<Group> addNewGroupMember(@Path("id") Long groupID);
 
     @DELETE("/groups/{groupId}/memberUsers/{userId}")
-    Call<User> removeGroupMember(@Path("groupId") Long groupIDr, @Path("userId") Long userIDr);
-*/
+    Call<Group> removeGroupMember(@Path("groupId") Long groupID, @Path("userId") Long userID);
 }

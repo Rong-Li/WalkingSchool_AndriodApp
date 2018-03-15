@@ -16,43 +16,16 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-/**
- * General support for getting the Retrofit proxy object.
- * Adds:
- *   - Logging
- *   - Setting API key header
- *   - Setting Authorization header (and managing token received)
- *
- * For more on Retrofit, see http://square.github.io/retrofit/
- */
+
 public class ServerProxyBuilder {
     private static final String SERVER_URL = "https://cmpt276-1177-bf.cmpt.sfu.ca:8443/";
 
-    // Allow client-code to register callback for when the token is received.
-    // NOTE: the current proxy does not upgrade to using the token!
     private static SimpleCallback<String> receivedTokenCallback;
 
     public static void setOnTokenReceiveCallback(SimpleCallback<String> callback) {
         receivedTokenCallback = callback;
     }
 
-    /**
-     * Return the proxy that client code can use to call server.
-     *
-     * @param apiKey Your group's API key to communicate with the server.
-     * @return proxy object to call the server.
-     */
-    public static ServerProxy getProxy(String apiKey) {
-        return getProxy(apiKey, null);
-    }
-
-    /**
-     * Return the proxy that client code can use to call server.
-     *
-     * @param apiKey Your group's API key to communicate with the server.
-     * @param token  The token you have been issued
-     * @return proxy object to call the server.
-     */
     public static ServerProxy getProxy(String apiKey, String token) {
         // Enable Logging
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -72,39 +45,14 @@ public class ServerProxyBuilder {
         return retrofit.create(ServerProxy.class);
     }
 
-
-    /**
-     * Interface for simplifying the callbacks from the server.
-     */
     public interface SimpleCallback<T> {
         void callback(T ans);
     }
 
-    ;
-
-    /**
-     * Simplify the calling of the "Call"
-     * - Handle error checking in one place and log on failure.
-     * - Callback to simplified interface on success.
-     *
-     * @param caller   Call object returned by the proxy
-     * @param callback Client-code to execute when we have a good answer for them.
-     * @param <T>      The type of data that Call object is expected to fetch
-     */
     public static <T extends Object> void callProxy(Call<T> caller, final SimpleCallback<T> callback) {
         callProxy(null, caller, callback);
     }
 
-    /**
-     * Simplify the calling of the "Call"
-     * - Handle error checking in one place and put up toast & log on failure.
-     * - Callback to simplified interface on success.
-     *
-     * @param context  Current activity for showing toast if there's an error.
-     * @param caller   Call object returned by the proxy
-     * @param callback Client-code to execute when we have a good answer for them.
-     * @param <T>      The type of data that Call object is expected to fetch
-     */
     public static <T extends Object> void callProxy(
             final Context context, Call<T> caller, final SimpleCallback<T> callback) {
         caller.enqueue(new Callback<T>() {
@@ -157,7 +105,7 @@ public class ServerProxyBuilder {
 
 
     private static class AddHeaderInterceptor implements Interceptor {
-        private String apiKey = "AFFEECE5-BE48-494C-8C62-73ACA348FD1D";
+        private String apiKey;
         private String token;
 
         public AddHeaderInterceptor(String apiKey, String token) {
