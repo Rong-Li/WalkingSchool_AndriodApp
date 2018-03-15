@@ -13,7 +13,7 @@ import java.util.List;
 public class Group {
     private Long id;
     private String groupDescription;
-    private JSONObject leader = new JSONObject();
+    private User leader = new User();
 
     private List<User> memberUsers = new ArrayList<>();
     private List<Double> routeLatArray = new ArrayList<>();
@@ -27,7 +27,7 @@ public class Group {
     public String getGroupDescription() {
         return groupDescription;
     }
-    public JSONObject getLeader() {
+    public User getLeader() {
         return leader;
     }
     public List<User> getMemberUsers() {
@@ -52,7 +52,7 @@ public class Group {
         this.groupDescription = groupDescription;
     }
 
-    public void setLeader(JSONObject leader){
+    public void setLeader(User leader){
         this.leader = leader;
     }
     public void setRouteLatArray(List<Double> routeLatArray) {
@@ -75,7 +75,7 @@ public class Group {
                 ", groupDescription='" + groupDescription + '\'' +
                 ", routeLatArray=" + routeLatArray +
                 ", routeLngArray=" + routeLngArray +
-                ", leader=" + leader +
+                ", leader=" + leader.toString() +
                 ", memberUsers=" + memberUsers +
                 '}';
     }

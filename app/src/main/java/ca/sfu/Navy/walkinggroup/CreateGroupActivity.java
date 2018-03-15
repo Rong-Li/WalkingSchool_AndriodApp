@@ -24,7 +24,7 @@ import retrofit2.Call;
 public class CreateGroupActivity extends AppCompatActivity {
     private ServerProxy proxy;
     private User user_login = new User();
-    private Long id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,9 @@ public class CreateGroupActivity extends AppCompatActivity {
         String token = SavedSharedPreference.getPrefUserToken(CreateGroupActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
+        getUserID();
         setupCreateNewGroupbtn();
+
     }
 
     private void setupCreateNewGroupbtn() {
@@ -41,20 +43,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Build new user
-                Group group = new Group();
-                String herf = user_login.getHref();
-                getUserID();
-
+                // Build new group
                 EditText groupDescription = findViewById(R.id.groupdescription_txt);
-                String desctiption = groupDescription.getText().toString();
-
-                group.setGroupDescription(desctiption);
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("id", id);
-                map.put("herf", herf);
-
-                JSONObject leader = new JSONObject(map);
+                String description = groupDescription.getText().toString();
+                Group group = new Group();
+                long id = user_login.getId();
+                String href = user_login.getHref();
+                group.setGroupDescription(description);
+                User leader = new User();
+                leader.setId(id);
+                leader.setHref(href);
                 group.setLeader(leader);
 
                 // Make call
@@ -62,6 +60,11 @@ public class CreateGroupActivity extends AppCompatActivity {
                 ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedGroup -> response(returnedGroup));
             }
         });
+    }
+
+
+    private void response(Group group) {
+        Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
     }
 
     private void getUserID(){
@@ -72,14 +75,12 @@ public class CreateGroupActivity extends AppCompatActivity {
         ServerProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedUser -> response(returnedUser));
     }
 
-    private void response(Group group) {
-        Log.w("Server Test", "Server replied to Create New Group request:" + group.toString());
-    }
-
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.toString());
-        id = user.getId();
+        SavedSharedPreference.setPrefUserId(CreateGroupActivity.this, user.getId());
+        user_login = user;
     }
+
 
     public static Intent newIntent(Context context){
         return new Intent(context, CreateGroupActivity.class);
