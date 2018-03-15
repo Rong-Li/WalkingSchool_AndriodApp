@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"leadsGroups", "memberOfGroups", "monitoredByUsers", "monitorsUsers"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"leadsGroups", "memberOfGroups"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     private Long id;
@@ -16,10 +16,11 @@ public class User {
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
-    private List<Void> memberOfGroups = new ArrayList<>();
-    private List<Void> leadsGroups = new ArrayList<>();
+    private List<Group> memberOfGroups = new ArrayList<>();
+    private List<Group> leadsGroups = new ArrayList<>();
 
     private String href;
+
 
     //getters
     public Long getId() {
@@ -40,15 +41,17 @@ public class User {
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
-    public List<Void> getMemberOfGroups() {
-        return memberOfGroups;
-    }
-    public List<Void> getLeadsGroups() {
-        return leadsGroups;
+
+    public List<Group> getMemberOfGroups() {
+        return  this.memberOfGroups;
     }
     public String getHref() {
         return href;
     }
+    public List<Group> getLeadsGroups() {
+        return leadsGroups;
+    }
+
 
 
     //setters
@@ -68,15 +71,30 @@ public class User {
     public void setMonitorsUsers(List<User> monitorsUsers) {
         this.monitorsUsers = monitorsUsers;
     }
-    public void setMemberOfGroups(List<Void> memberOfGroups) {
+
+    public void setMemberOfGroups(List<Group> memberOfGroups) {
         this.memberOfGroups = memberOfGroups;
-    }
-    public void setLeadsGroups(List<Void> leadsGroups) {
-        this.leadsGroups = leadsGroups;
     }
     public void setHref(String href) {
         this.href = href;
     }
+    public void setLeadsGroups(List<Group> leadsGroups) {
+        this.leadsGroups = leadsGroups;
+    }
+
+    // List items modifiers
+    public void addUsertoMonitor(User user){
+        this.monitorsUsers.add(user);
+    }
+    public void removeUserfromMonitor(int index){
+        this.monitorsUsers.remove(index);
+    }
+    public void addUsertoMonitored(User user){
+        this.monitoredByUsers.add(user);
+    }
+    public void removeUserfromMonitored(int index){ this.monitoredByUsers.remove(index);}
+
+
 
     @Override
     public String toString() {
@@ -88,6 +106,7 @@ public class User {
                 ", monitoredByUsers=" + monitoredByUsers +
                 ", monitorsUsers=" + monitorsUsers +
                 ", memberOfGroups=" + memberOfGroups +
+                ", leadsGroups=" + leadsGroups +
                 '}';
     }
 }

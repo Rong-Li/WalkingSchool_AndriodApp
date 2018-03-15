@@ -23,29 +23,23 @@ public interface ServerProxy {
     @GET("/users")
     Call<List<User>> getUsers();
 
-    @GET("/users")
-    Call<User> getUserDetails();
-
     @GET("/users/{id}")
-    Call<User> getUserById(@Path("id") Long userId);
+    Call<User> getUserById(@Path("id") long userId);
 
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
 
-     @GET("/users/{id}/monitorsUsers")
-    Call<List<User>> getMonitorsUsers(@Path("id") Long userId);
-
-    @GET("/users/{id}/monitoredByUsers")
-    Call<List<User>> getMonitorsByUsers(@Path("id") Long userId);
-
     @POST("/users/{id}/monitorsUsers")
-    Call<User> monitorsOthers(@Body User user);
+    Call<List<User>> addUsertoMonitor(@Path("id") long userId, @Body User addMonitor);
 
     @DELETE("/users/{idA}/monitorsUsers/{idB}")
-    Call<User> deleteMonitors();
+    Call<Void> cancelmonitor(@Path("idA") long monitorId, @Path("idB") long monitoredId);
 
-    @GET("/groups")
-    Call<Group> getGroups();
+    @POST("/users/{id}/monitoredByUsers")
+    Call<List<User>> addUsertoMonitoredBy(@Path("id") long userId, @Body User addMonitored);
+
+    @DELETE("/users/{idA}/monitoredByUsers/{idB}")
+    Call<Void> cancelMonitoredBy(@Path("idA") long monitoredId, @Path("idB") long monitorId);
 
     @POST("/groups")
     Call<Group> createNewGroup(@Body Group group);

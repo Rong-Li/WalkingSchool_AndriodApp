@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
+import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,12 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         checkLoggedIn();
         MapActivityStart();
         logInActivityStart();
         logOutActivityStart();
         createGroupActivityStart();
+        monitorActivityStart();
     }
 
     private void createGroupActivityStart() {
@@ -33,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkLoggedIn();
+    }
+
     private void checkLoggedIn(){
         if(SavedSharedPreference.getPrefUserEmail(MainActivity.this).length() == 0)
         {
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             // Stay at the current activity.
+            // Assume the JWT authorization token of the user is still valid
         }
     }
 
@@ -76,6 +84,17 @@ public class MainActivity extends AppCompatActivity {
                 SavedSharedPreference.clearUserLogged(MainActivity.this);
                 Intent intent = getIntent();
                 finish();
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void monitorActivityStart(){
+        Button button = (Button) findViewById(R.id.monitor_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MonitorActivity.newIntent(MainActivity.this);
                 startActivity(intent);
             }
         });

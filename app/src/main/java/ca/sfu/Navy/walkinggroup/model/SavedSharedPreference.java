@@ -8,8 +8,8 @@ import android.preference.PreferenceManager;
 public class SavedSharedPreference {
     static final String PREF_USER_EMAIL = "User email";
     static final String PREF_USER_PW = "User Password";
-    static final String PREF_USER_TOKEN = "User Authorization Token";
     static final String PREF_USER_ID = "User id";
+    static final String PREF_USER_TOKEN = "User Authorization Token";
 
     static SharedPreferences getSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -42,6 +42,7 @@ public class SavedSharedPreference {
         editor.putLong(PREF_USER_ID, userID);
         editor.commit();
     }
+
 
     public static String getPrefUserEmail(Context context)
     {
