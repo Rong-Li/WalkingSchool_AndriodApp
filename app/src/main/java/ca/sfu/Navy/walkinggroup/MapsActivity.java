@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
@@ -63,7 +64,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
+        String token = SavedSharedPreference.getPrefUserToken(MapsActivity.this);
+        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
 
         // 1
@@ -118,12 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
         //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this, new String[]
-                    {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            return;
-        }
+
 
     }
 
@@ -132,8 +129,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //it is called by onconnected() function, and onconnected() is called if the clients is connected!!!!!!*********
 
     private void setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            return;
         }
 
             Function_Click();
@@ -187,7 +187,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void response(List returnedGroups) {
+    private void response(List<Group> returnedGroups) {
         Log.w("Register Server", "*********************** " + returnedGroups.toString());
         for(int i =0; i < returnedGroups.size(); i++)
         {
