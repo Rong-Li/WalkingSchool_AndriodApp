@@ -1,5 +1,6 @@
 package ca.sfu.Navy.walkinggroup;
 
+import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .addApi(LocationServices.API)
                     .build();
         }
+
     }
 
 
@@ -111,59 +114,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
         /////enable zoom in zoom out; enable
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
         //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
-
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney")); ////add a marker
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); ////centered to that location
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            return;
+        }
 
     }
 
     //checks if the app has been granted the ACCESS_FINE_LOCATION permission.//////******main purpose
     //If it hasn’t, then request it from the user.
     //it is called by onconnected() function, and onconnected() is called if the clients is connected!!!!!!*********
+
     private void setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
-            ActivityCompat.requestPermissions(this, new String[]
-                    {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-
-            return;
         }
 
-        //finding user's current location
-        // 1
-        Call<List<Group>> caller = proxy.getGroups();
-        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
-        mMap.setMyLocationEnabled(true);
+            Function_Click();
+            Function_callProxy();
 
-        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12)); //you can do it this way; but do notice that you have
-                                                                            //no way to store your current location in a variabel
-                                                                            //in order to be the first argument to call the func
-
-        // 2 So Last location is needed, in this case, your last location was the location u get from mMap.setMyLocationEnabled(true)
-        // i.e your current location
-        LocationAvailability locationAvailability =
-                LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
-        if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
-            // 3
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            // 4
-            if (mLastLocation != null) {
-                LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
-                        .getLongitude());
-                placeMarkerOnMap(currentLocation);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
+            mMap.setMyLocationEnabled(true);
+            LocationAvailability locationAvailability =
+                    LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
+            if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
+                // 3
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                // 4
+                if (mLastLocation != null) {
+                    LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
+                            .getLongitude());
+                    placeMarkerOnMap(currentLocation);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
+                }
             }
-        }
+    }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+    private void Function_Click(){
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -186,9 +179,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+    }
 
+    private void Function_callProxy(){
+        Call<List<Group>> caller = proxy.getGroups();
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
+    }
 
-    }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     private void response(List returnedGroups) {
         Log.w("Register Server", "*********************** " + returnedGroups.toString());
