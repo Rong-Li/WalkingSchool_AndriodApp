@@ -16,8 +16,8 @@ public class Group {
     private JSONObject leader = new JSONObject();
 
     private List<User> memberUsers = new ArrayList<>();
-    private List<Void> routeLatArray = new ArrayList<>();
-    private List<Void> routeLngArray = new ArrayList<>();
+    private List<Double> routeLatArray = new ArrayList<>();
+    private List<Double> routeLngArray = new ArrayList<>();
     private String href;
 
     //getters
@@ -33,10 +33,10 @@ public class Group {
     public List<User> getMemberUsers() {
         return memberUsers;
     }
-    public List<Void> getRouteLatArray() {
+    public List<Double> getRouteLatArray() {
         return routeLatArray;
     }
-    public List<Void> getRouteLngArray() {
+    public List<Double> getRouteLngArray() {
         return routeLngArray;
     }
     public String getHref() {
@@ -55,10 +55,10 @@ public class Group {
     public void setLeader(JSONObject leader){
         this.leader = leader;
     }
-    public void setRouteLatArray(List<Void> routeLatArray) {
+    public void setRouteLatArray(List<Double> routeLatArray) {
         this.routeLatArray = routeLatArray;
     }
-    public void setRouteLngArray(List<Void> routeLngArray) {
+    public void setRouteLngArray(List<Double> routeLngArray) {
         this.routeLngArray = routeLngArray;
     }
     public void setHref(String href) {
