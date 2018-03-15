@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup;
+package ca.sfu.Navy.walkinggroup.monitor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.adapter.UserListAdapter;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -41,7 +42,7 @@ public class AddMonitorActivity extends AppCompatActivity {
 
     private void populateList(){
         // Configure the list view
-        listView = (ListView) findViewById(R.id.all_userList);
+        listView = (ListView) findViewById(R.id.all_userList2);
 
         // Build Adapter
         mAdapter = new UserListAdapter(AddMonitorActivity.this, allUsers);
@@ -51,13 +52,12 @@ public class AddMonitorActivity extends AppCompatActivity {
     }
 
     private void clickCallSetting(){
-        listView = (ListView) findViewById(R.id.all_userList);
+        listView = (ListView) findViewById(R.id.all_userList2);
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewclicked, int position, long id) {
                 User user = allUsers.get(position);
-                long addUserId = user.getId();
                 long userId = user_loggedin.getId();
                 // Make call to add
                 Call<List<User>> caller = proxy.addUsertoMonitor(userId, user);

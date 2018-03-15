@@ -7,38 +7,40 @@
     tools:context="ca.sfu.Navy.walkinggroup.monitor.MonitorActivity">
 
     <TextView
-        android:id="@+id/monitor_text"
+        android:id="@+id/monitored_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:text="@string/txt_monitoringList"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/txt_monitoredByList"
+        android:layout_alignParentTop="true" />
 
     <ListView
         android:id="@+id/monitoredBy_userlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/monitor_text" />
-
-    <Button
-        android:id="@+id/add_monitor_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/btn_addUser"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_marginStart="8dp"
+        android:layout_below="@+id/monitored_text"
+        android:layout_centerHorizontal="true"/>
 
     <Button
-        android:id="@+id/btn_swapMonitored"
+        android:id="@+id/add_monitored_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_addUser"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/btn_swapMonitor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/btn_swapMonitor"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/monitor_text"/>
+        android:layout_below="@id/monitored_text"/>
 </RelativeLayout>

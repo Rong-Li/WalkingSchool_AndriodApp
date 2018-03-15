@@ -1,7 +1,6 @@
 package ca.sfu.Navy.walkinggroup.model;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +84,10 @@ public class User {
     public void removeUserfromMonitor(int index){
         this.monitorsUsers.remove(index);
     }
-
+    public void addUsertoMonitored(User user){
+        this.monitoredByUsers.add(user);
+    }
+    public void removeUserfromMonitored(int index){ this.monitoredByUsers.remove(index);}
 
 
 

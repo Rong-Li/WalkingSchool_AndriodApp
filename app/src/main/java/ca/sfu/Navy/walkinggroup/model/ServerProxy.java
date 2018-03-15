@@ -27,10 +27,16 @@ public interface ServerProxy {
     Call<User> getUserByEmail(@Query("email") String email);
 
     @POST("/users/{id}/monitorsUsers")
-    Call<List<User>> addUsertoMonitor(@Path("id") long userId, @Body User addUserModel);
+    Call<List<User>> addUsertoMonitor(@Path("id") long userId, @Body User addMonitor);
 
     @DELETE("/users/{idA}/monitorsUsers/{idB}")
     Call<Void> cancelmonitor(@Path("idA") long monitorId, @Path("idB") long monitoredId);
+
+    @POST("/users/{id}/monitoredByUsers")
+    Call<List<User>> addUsertoMonitoredBy(@Path("id") long userId, @Body User addMonitored);
+
+    @DELETE("/users/{idA}/monitoredByUsers/{idB}")
+    Call<Void> cancelMonitoredBy(@Path("idA") long monitoredId, @Path("idB") long monitorId);
 
 /**
     @GET("/users/{id}/monitorsUsers")
