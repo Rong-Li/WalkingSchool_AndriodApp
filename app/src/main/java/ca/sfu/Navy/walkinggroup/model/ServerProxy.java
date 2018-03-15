@@ -60,10 +60,10 @@ public interface ServerProxy {
     Call<Group> deleteGroups(@Path("id") Long groupID);
 
     @GET("/groups/{id}/memberUsers")
-    Call<List<Group>> getGroupMenberUsers(@Path("id") Long groupID);
+    Call<Group> getGroupMenberUsers();
 
     @POST("/groups/{id}/memberUsers")
-    Call<Group> addNewGroupMember(@Path("id") Long groupID);
+    Call<Group> addNewGroupMember(@Path("id") Long userID);
 
     @DELETE("/groups/{groupId}/memberUsers/{userId}")
     Call<Group> removeGroupMember(@Path("groupId") Long groupID, @Path("userId") Long userID);
