@@ -20,7 +20,19 @@ public class MainActivity extends AppCompatActivity {
         MapActivityStart();
         logInActivityStart();
         logOutActivityStart();
+        createGroupActivityStart();
         monitorActivityStart();
+    }
+
+    private void createGroupActivityStart() {
+        Button button = (Button) findViewById(R.id.creatgroup_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = CreateGroupActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

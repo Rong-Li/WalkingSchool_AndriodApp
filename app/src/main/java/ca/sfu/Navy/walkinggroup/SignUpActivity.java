@@ -20,7 +20,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText email_edit;
     private EditText pw_edit;
     private ServerProxy proxy;
-    private long UserID = 0;
 
     public static Intent makeRegisterIntent(Context context){
         Intent intent = new Intent(context, SignUpActivity.class);
@@ -70,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void response(User user) {
         Log.w("Register Server", "Server replied with user: " + user.toString());
-        UserID = user.getId();
+        finish();
     }
 
 

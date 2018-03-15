@@ -45,6 +45,8 @@
         <activity android:name=".monitor.AddMonitorActivity" />
         <activity android:name=".monitor.MonitoredbyActivity" />
         <activity android:name=".monitor.AddMonitoredbyActivity"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".CreateGroupActivity"></activity>
     </application>
 
 </manifest>

@@ -15,6 +15,9 @@
     <string name="txt_monitoredByList">You are being monitored by the following users:</string>
     <string name="btn_addUser">Add user</string>
     <string name="btn_swapMonitor">Swap</string>
+    <string name="Join" />
+    <string name="NO" />
+    <string name="CANCEL" />
 
 
 </resources>
