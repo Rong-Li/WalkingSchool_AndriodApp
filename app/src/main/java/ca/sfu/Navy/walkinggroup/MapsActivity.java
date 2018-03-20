@@ -182,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void Function_callProxy(){
-        Call<List<Group>> caller = proxy.getGroups();
+        Call<List<Group>> caller = proxy.listGroups();
         ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
     }
 

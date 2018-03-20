@@ -1,8 +1,5 @@
 package ca.sfu.Navy.walkinggroup.model;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,11 +11,11 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ServerProxy {
-    //API #3
+    //API #3 for Login & Logout
     @POST("/login")
     Call<Void> login(@Body User userWithEmailAndPassword);
 
-    //API #4
+    //API #4 for Users
     @POST("/users/signup")
     Call<User> createNewUser(@Body User user);
 
@@ -34,7 +31,10 @@ public interface ServerProxy {
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
 
-    //API #5
+    @POST("users/{id}")
+    Call<User> editUser(@Path("id") User userInfo);
+
+    //API #5 for Monitoring
     @GET("/users/{id}/monitorsUsers")
     Call<List<User>> getmonitorsUsers();
 
@@ -53,18 +53,18 @@ public interface ServerProxy {
     @DELETE("/users/{idA}/monitoredByUsers/{idB}")
     Call<Void> cancelMonitoredBy(@Path("idA") long monitoredId, @Path("idB") long monitorId);
 
-    //API #6
+    //API #6 for Groups
     @GET("/groups")
-    Call<List<Group>> getGroups();
+    Call<List<Group>> listGroups();
 
     @POST("/groups")
     Call<Group> createNewGroup(@Body Group group);
 
     @GET("/groups/{id}")
-    Call<Group> getGroupDetails(@Path("id") Long groupID);
+    Call<Group> getGroupDetails(@Path("id") long groupID);
 
     @POST("/groups/{id}")
-    Call<Group> updateGroupDetails(@Path("id") Long groupID, @Body Group group);
+    Call<Group> updateGroupDetails(@Body Group group);
 
     @DELETE("/groups/{id}")
     Call<Void> deleteGroups(@Path("id") Long groupID);
@@ -73,8 +73,27 @@ public interface ServerProxy {
     Call<Group> getGroupMenberUsers();
 
     @POST("/groups/{id}/memberUsers")
-    Call<Group> addNewGroupMember(@Path("id") Long userID, @Body User user);
+    Call<Group> addNewGroupMember(@Path("id") long userID);
 
     @DELETE("/groups/{groupId}/memberUsers/{userId}")
-    Call<Group> removeGroupMember(@Path("groupId") Long groupID, @Path("userId") Long userID);
+    Call<Group> removeGroupMember(@Path("groupId") long groupID, @Path("userId") long userID);
+
+    //API #7 for In-app Messaging
+    @GET("/messages")
+    Call<Message> listMessage();
+
+    @POST("/messages/togroup/{groupId}")
+    Call<Message> messageToGroup(@Path("text") String message, @Path("emergency") Boolean isEmergency);
+
+    @POST("/messages/toparents/{userId}")
+    Call<Message> messageToParents(@Path("text") String message, @Path("emergency") Boolean isEmergency);
+
+    @GET("/messages/{id}")
+    Call<Message> getMessage();
+
+    @DELETE("/messages/{id}")
+    Call<Void> deleteMessage();
+
+    @POST("/messages/{messageID}/reaby/{userId}")
+    Call<Message> changeReadStatus(@Body Boolean status);
 }
