@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity;
+import ca.sfu.Navy.walkinggroup.Group.ManageGroupActivity;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 
@@ -19,16 +22,16 @@ public class MainActivity extends AppCompatActivity {
         MapActivityStart();
         logInActivityStart();
         logOutActivityStart();
-        createGroupActivityStart();
+        manageGroupActivityStart();
         monitorActivityStart();
     }
 
-    private void createGroupActivityStart() {
-        Button button = (Button) findViewById(R.id.creatgroup_btn);
+    private void manageGroupActivityStart() {
+        Button button = (Button) findViewById(R.id.managegroup_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = CreateGroupActivity.newIntent(MainActivity.this);
+                Intent intent = ManageGroupActivity.intent(MainActivity.this);
                 startActivity(intent);
             }
         });

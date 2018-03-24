@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup;
+package ca.sfu.Navy.walkinggroup.Group;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -24,7 +25,6 @@ public class CreateGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-
         String token = SavedSharedPreference.getPrefUserToken(CreateGroupActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
@@ -41,7 +41,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                 EditText groupDescription = findViewById(R.id.groupdescription_txt);
                 String description = groupDescription.getText().toString();
                 Group group = new Group();
-                long id = user_login.getId();
+                Long id = user_login.getId();
                 String href = user_login.getHref();
                 group.setGroupDescription(description);
                 User leader = new User();
@@ -74,7 +74,6 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.toString());
-        SavedSharedPreference.setPrefUserId(CreateGroupActivity.this, user.getId());
         user_login = user;
     }
 
