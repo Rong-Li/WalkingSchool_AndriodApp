@@ -33,7 +33,6 @@ public class MemberInfo extends AppCompatActivity {
 
         extractDataFromIntent();
         getUserInfo(userId);
-        setUserInfo(user_info);
         setUpOkButton();
         setUpRemoveButton();
     }
@@ -88,6 +87,7 @@ public class MemberInfo extends AppCompatActivity {
     private void response(User user) {
         Log.w("Test receive", "server receive test " + user.toString());
         user_info = user;
+        setUserInfo(user_info);
     }
 
     private void extractDataFromIntent() {
@@ -97,7 +97,7 @@ public class MemberInfo extends AppCompatActivity {
     }
 
     public static Intent intent(Context context, Long userId, Long groupId) {
-        Intent intent = new Intent(context, MemberListActivity.class);
+        Intent intent = new Intent(context, MemberInfo.class);
         intent.putExtra(id, userId);
         intent.putExtra(gid, groupId);
         return intent;

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.model.Group;
@@ -22,7 +23,8 @@ public class AddNewMemberActivity extends AppCompatActivity {
     private ServerProxy proxy;
     private User user_temp = new User();
     EditText email_edit;
-    Long groupId;
+    private boolean check = false;
+    private Long groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,6 @@ public class AddNewMemberActivity extends AppCompatActivity {
 
         extractDataFromIntent();
         setupEditText();
-        getUserId();
         setUpAddButton();
         setUpCancelButton();
     }
@@ -48,6 +49,10 @@ public class AddNewMemberActivity extends AppCompatActivity {
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.toString());
         user_temp = user;
+        check = true;
+        if(check == true){
+            Call<Group> caller = proxy.addNewGroupMember(groupId, user_temp);
+            ServerProxyBuilder.callProxy(AddNewMemberActivity.this, caller, returnedGroup -> response(returnedGroup));}
     }
 
     private void setUpAddButton() {
@@ -55,14 +60,18 @@ public class AddNewMemberActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<Group> caller = proxy.addNewGroupMember(groupId, user_temp);
-                ServerProxyBuilder.callProxy(AddNewMemberActivity.this, caller, returnedGroup -> response(returnedGroup));
+                getUserId();
             }
         });
     }
 
     private void response(Group group){
         Log.w("Register Server", "Server replied with: " + group.toString());
+        Toast.makeText(getApplicationContext(),
+                "Add new Member Successfully",
+                Toast.LENGTH_LONG)
+                .show();
+
         finish();
     }
 
@@ -87,7 +96,7 @@ public class AddNewMemberActivity extends AppCompatActivity {
     }
 
     public static Intent intent(Context context, Long groupId){
-        Intent intent = new Intent(context, MemberListActivity.class);
+        Intent intent = new Intent(context, AddNewMemberActivity.class);
         intent.putExtra(id, groupId);
         return intent;
     }

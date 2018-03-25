@@ -36,13 +36,12 @@ public class ListGroupAsParentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_group_as_parent);
-        setContentView(R.layout.activity_list_group_as_member);
         String token = SavedSharedPreference.getPrefUserToken(ListGroupAsParentActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
+        getUserId();
         asLeaderButton();
         asMemberButton();
-        getUserId();
     }
 
     private void asLeaderButton(){
@@ -101,7 +100,7 @@ public class ListGroupAsParentActivity extends AppCompatActivity {
         user_id = user;
         Log.w("Test receive", "server receive test " + user_id.toString());
         // Create list of item
-        monitorList = user_id.getMonitorsUsers();
+        groupList = user_id.getMemberOfGroups();
         updateListagain();
     }
 

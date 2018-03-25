@@ -43,11 +43,11 @@ public class MemberListActivity extends AppCompatActivity {
         String token = SavedSharedPreference.getPrefUserToken(MemberListActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
+        setUpAddMemberButton();
         extractDataFromIntent();
         getGroupMemberId();
         TextView groupName = (TextView) findViewById(R.id.group_description_txt);
         groupName.setText(groupDescription);
-        setUpAddMemberButton();
     }
 
     private void getGroupMemberId() {
