@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +37,9 @@ import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
-import ca.sfu.Navy.walkinggroup.model.User;
 import retrofit2.Call;
+
+import static java.security.AccessController.getContext;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -51,8 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private ServerProxy proxy;
-    private List<Group> groups = new ArrayList<>();
-
+    private List<Group> List_groups = new ArrayList<>();
+    private List<LatLng> List_startingLocations = new ArrayList<>();
 
 
 
@@ -68,6 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
 
+
         // 1
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -78,7 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .addApi(LocationServices.API)
                     .build();
         }
-
     }
 
 
@@ -116,10 +116,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        /////enable zoom in zoom out; enable
+
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
-        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
 
 
     }
@@ -127,34 +125,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //checks if the app has been granted the ACCESS_FINE_LOCATION permission.//////******main purpose
     //If it hasn’t, then request it from the user.
     //it is called by onconnected() function, and onconnected() is called if the clients is connected!!!!!!*********
-
     private void setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
                     {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
             return;
+
         }
 
-            Function_Click();
-            Function_callProxy();
 
-            mMap.setMyLocationEnabled(true);
-            LocationAvailability locationAvailability =
-                    LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
-            if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
-                // 3
-                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                // 4
-                if (mLastLocation != null) {
-                    LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
-                            .getLongitude());
-                    placeMarkerOnMap(currentLocation);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
-                }
+
+
+        mMap.setMyLocationEnabled(true);
+
+        LocationAvailability locationAvailability =
+                LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
+        if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
+            // 3
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            // 4
+            if (mLastLocation != null) {
+                LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
+                        .getLongitude());
+                placeMarkerOnMap(currentLocation);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
             }
+        }
+
+        Function_Click();
+        Function_callProxy();
+        Function_setStartLocation();
+        Log.i("MyApp","****$$$$$$$$$$$********" + List_startingLocations.size());
+        Log.i("MyApp","******$$$$$$$$$$$******" + List_groups.size());
+        Function_showGroups();
+
+
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        onStart();
+//
+//    }
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                return;
+            } else {
+                onStart();
+            }
+        }
+    }
 
     private void Function_Click(){
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -186,18 +214,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
     }
 
-
     private void response(List<Group> returnedGroups) {
-        Log.w("Register Server", "*********************** " + returnedGroups.toString());
-        for(int i =0; i < returnedGroups.size(); i++)
-        {
-            Group temp = (Group) returnedGroups.get(i);
-            groups.add(temp);
-        }
-        Log.w("Register Server", "*********************** " + returnedGroups.toString());
+//        Log.i("Register Server", "*********************** " + returnedGroups.toString());
+        List_groups = returnedGroups;
+//        Log.i("Register Server", "*********************** " + returnedGroups.toString());
     }
 
 
+    private void Function_setStartLocation(){
+        double ini_Lat;
+        double ini_Lng;
+        for(int i = 0; i < List_groups.size(); i++){
+            if(List_groups.get(i).getRouteLatArray().isEmpty() || List_groups.get(i).getRouteLngArray().isEmpty()){
+                LatLng coord = new LatLng(49.271260,-122.928073);
+                List_startingLocations.add(i, coord);
+            }else{
+                ini_Lat = List_groups.get(i).getRouteLatArray().get(0);
+                ini_Lng = List_groups.get(i).getRouteLngArray().get(0);
+                LatLng coord = new LatLng(ini_Lat, ini_Lng);
+                List_startingLocations.add(i, coord);
+            }
+        }
+    }
+
+    private void Function_showGroups(){
+
+        for (int i = 0; i < 4; i++){
+            Log.i("MyApp","!!!!!!!!!!!" );
+                //placeMarkerOnMap(List_startingLocations.get(i));
+
+        }
+    }
+
+//    public static void joinGroup(){
+//        public static Intent newIntent(Context context){
+//    }
     @Override
     public void onLocationChanged(Location location) {
 
@@ -218,12 +269,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-//    @Override
-//    public boolean onMarkerClick(Marker marker) {
-//        Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
-//        return false;
-//    }
 
 
 
