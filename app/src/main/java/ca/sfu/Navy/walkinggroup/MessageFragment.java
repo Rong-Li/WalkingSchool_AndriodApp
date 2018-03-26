@@ -16,24 +16,7 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
  */
 
 public class MessageFragment extends AppCompatDialogFragment {
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        // Use the Builder class for convenient dialog construction
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setMessage("Question")
-//                .setPositiveButton(R.string.Join, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // FIRE ZE MISSILES!
-//                    }
-//                })
-//                .setNegativeButton(R.string.NO, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // User cancelled the dialog
-//                    }
-//                });
-//        // Create the AlertDialog object and return it
-//        return builder.create();
-//    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.custom_info_window,null);

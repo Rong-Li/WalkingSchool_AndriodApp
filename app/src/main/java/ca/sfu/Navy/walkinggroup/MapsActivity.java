@@ -33,10 +33,12 @@ import com.google.android.gms.location.LocationListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
+import ca.sfu.Navy.walkinggroup.model.User;
 import retrofit2.Call;
 
 import static java.security.AccessController.getContext;
@@ -53,6 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ServerProxy proxy;
     private List<Group> List_groups = new ArrayList<>();
     private List<LatLng> List_startingLocations = new ArrayList<>();
+    private User user_login = new User();
+
 
 
 
@@ -154,11 +158,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Function_Click();
         Function_callProxy();
-        //Function_setStartLocation();
-        //Function_showGroups();
 
+        //Join Group preparation
+        //Get current user info
+        Function_getUserInfo();
 
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -186,17 +193,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-//                View mWindow;
-//                mWindow = LayoutInflater.from(MapsActivity.this).inflate(R.layout.custom_info_window, null);
-//                //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
-//                Button button = (Button) mWindow.findViewById(R.id.YESbtnID);
-//                button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
-//                Log.i("MyApp","****************************");
-//                }
-//            });
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 MessageFragment dialog = new MessageFragment();
                 dialog.show(manager, "MEssgaDialog");
@@ -210,6 +206,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void Function_callProxy(){
         Call<List<Group>> caller = proxy.listGroups();
         ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
+    }
+
+    private void Function_getUserInfo() {
+        String email = SavedSharedPreference.getPrefUserEmail(MapsActivity.this);
+        // Make call to retrieve user info
+        Call<User> caller = proxy.getUserByEmail(email);
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response(returnedUser));
+    }
+
+    private void response(User user){
+        Log.w("Register Server", "Server replied with user: " + user.toString());
+        user_login = user;
     }
 
     private void response(List<Group> returnedGroups) {
@@ -251,6 +259,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //    public static void joinGroup(){
 //        public static Intent newIntent(Context context){
 //    }
+
+
     @Override
     public void onLocationChanged(Location location) {
 
