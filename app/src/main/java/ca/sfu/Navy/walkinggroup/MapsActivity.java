@@ -154,10 +154,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Function_Click();
         Function_callProxy();
-        Function_setStartLocation();
-        Log.i("MyApp","****$$$$$$$$$$$********" + List_startingLocations.size());
-        Log.i("MyApp","******$$$$$$$$$$$******" + List_groups.size());
-        Function_showGroups();
+        //Function_setStartLocation();
+        //Function_showGroups();
 
 
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -217,31 +215,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void response(List<Group> returnedGroups) {
 //        Log.i("Register Server", "*********************** " + returnedGroups.toString());
         List_groups = returnedGroups;
-//        Log.i("Register Server", "*********************** " + returnedGroups.toString());
+        Response_updateList();
+        Response_showGroups();
     }
 
-
-    private void Function_setStartLocation(){
+    private void Response_updateList(){
         double ini_Lat;
         double ini_Lng;
-        for(int i = 0; i < List_groups.size(); i++){
-            if(List_groups.get(i).getRouteLatArray().isEmpty() || List_groups.get(i).getRouteLngArray().isEmpty()){
-                LatLng coord = new LatLng(49.271260,-122.928073);
-                List_startingLocations.add(i, coord);
-            }else{
-                ini_Lat = List_groups.get(i).getRouteLatArray().get(0);
-                ini_Lng = List_groups.get(i).getRouteLngArray().get(0);
-                LatLng coord = new LatLng(ini_Lat, ini_Lng);
-                List_startingLocations.add(i, coord);
+        LatLng coord;
+        for(Group group: List_groups){
+            if(group.getRouteLatArray().isEmpty() || group.getRouteLngArray().isEmpty()){
+                coord = new LatLng(0.0, 0.0);
+                List_startingLocations.add(coord);
             }
+            else{
+                ini_Lat = (double) group.getRouteLatArray().get(0);
+                ini_Lng = (double) group.getRouteLngArray().get(0);
+                Log.i("MyApp","！！！！！！$$$$$$$$$$$！！！！！" + ini_Lat);
+                Log.i("MyApp","！！！！！$$$$$$$$$$$！！！！！" + ini_Lng);
+
+                coord = new LatLng(ini_Lat, ini_Lng);
+                List_startingLocations.add(coord);
+            }
+
         }
     }
 
-    private void Function_showGroups(){
-
-        for (int i = 0; i < 4; i++){
-            Log.i("MyApp","!!!!!!!!!!!" );
-                //placeMarkerOnMap(List_startingLocations.get(i));
+    private void Response_showGroups(){
+        for (int i = 0; i < List_startingLocations.size(); i++){
+            placeMarkerOnMap(List_startingLocations.get(i));
 
         }
     }
