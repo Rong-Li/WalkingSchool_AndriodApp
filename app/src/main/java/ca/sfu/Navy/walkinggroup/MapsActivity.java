@@ -183,7 +183,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void Function_callProxy(){
         Call<List<Group>> caller = proxy.listGroups();
-        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, this::response);
     }
 
 
@@ -191,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.w("Register Server", "*********************** " + returnedGroups.toString());
         for(int i =0; i < returnedGroups.size(); i++)
         {
-            Group temp = (Group) returnedGroups.get(i);
+            Group temp = returnedGroups.get(i);
             groups.add(temp);
         }
         Log.w("Register Server", "*********************** " + returnedGroups.toString());

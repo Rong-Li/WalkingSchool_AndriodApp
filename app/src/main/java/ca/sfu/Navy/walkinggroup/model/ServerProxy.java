@@ -80,13 +80,20 @@ public interface ServerProxy {
 
     //API #7 for In-app Messaging
     @GET("/messages")
-    Call<Message> listMessage();
+    Call<List<Message>> listMessage(@Query("is-emergency") boolean isEmergency);
+
+    //API #7 for In-app Messaging
+    @GET("/messages")
+    Call<List<Message>> listUserMessage(@Query("foruser") long user_id, @Query("is-emergency") boolean isEmergency);
+
+    @GET("/messages")
+    Call<List<Message>> listGroupMessage(@Query("togroup") long group_id, @Query("is-emergency") boolean isEmergency);
 
     @POST("/messages/togroup/{groupId}")
-    Call<Message> messageToGroup(@Path("text") String message, @Path("emergency") Boolean isEmergency);
+    Call<Message> messageToGroup(@Path("groupId") long groupId, @Body SendMessage sendMessage);
 
-    @POST("/messages/toparents/{userId}")
-    Call<Message> messageToParents(@Path("text") String message, @Path("emergency") Boolean isEmergency);
+    @POST("/messages/toparentsof/{userId}")
+    Call<Message> messageToParents(@Path("userId") long userId, @Body SendMessage sendMessage);
 
     @GET("/messages/{id}")
     Call<Message> getMessage();
@@ -96,4 +103,6 @@ public interface ServerProxy {
 
     @POST("/messages/{messageID}/reaby/{userId}")
     Call<Message> changeReadStatus(@Body Boolean status);
+
+
 }

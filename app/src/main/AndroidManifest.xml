@@ -47,6 +47,11 @@
         <activity android:name=".monitor.AddMonitoredbyActivity"></activity>
             android:label="@string/title_activity_maps" />
         <activity android:name=".CreateGroupActivity"></activity>
+        <activity android:name=".AllMessageActivity" />
+        <activity android:name=".ListGroupActivity" />
+        <activity android:name=".GroupSendMsgActivity" />
+        <activity android:name=".ListUserMessageActivity" />
+        <activity android:name=".UserSendMsgActivity" />
     </application>
 
 </manifest>

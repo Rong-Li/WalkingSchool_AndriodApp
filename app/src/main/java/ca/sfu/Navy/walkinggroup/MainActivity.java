@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 
@@ -21,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
         logOutActivityStart();
         createGroupActivityStart();
         monitorActivityStart();
+    }
+
+    public void list_group(View view){
+        startActivity(new Intent(this,ListGroupActivity.class));
+    }
+
+    public void all_message(View view) {
+        startActivity(new Intent(this,AllMessageActivity.class));
     }
 
     private void createGroupActivityStart() {
@@ -40,15 +49,12 @@ public class MainActivity extends AppCompatActivity {
         checkLoggedIn();
     }
 
-    private void checkLoggedIn(){
-        if(SavedSharedPreference.getPrefUserEmail(MainActivity.this).length() == 0)
-        {
+    private void checkLoggedIn() {
+        if (SavedSharedPreference.getPrefUserEmail(MainActivity.this).length() == 0) {
             // call Login Activity
             Intent intent = LoginActivity.newIntent(MainActivity.this);
             startActivity(intent);
-        }
-        else
-        {
+        } else {
             // Stay at the current activity.
             // Assume the JWT authorization token of the user is still valid
         }
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void logOutActivityStart(){
+    private void logOutActivityStart() {
         Button button = (Button) findViewById(R.id.logout_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void monitorActivityStart(){
+    private void monitorActivityStart() {
         Button button = (Button) findViewById(R.id.monitor_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
+    public void user_message(View view) {
+        startActivity(new Intent(this,ListUserMessageActivity.class));
+    }
 }
