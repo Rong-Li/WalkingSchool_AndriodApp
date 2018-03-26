@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
@@ -18,8 +21,12 @@ import ca.sfu.Navy.walkinggroup.model.User;
 import retrofit2.Call;
 
 public class CreateGroupActivity extends AppCompatActivity {
+    private static final String latt = "latitude";
+    private static final String lngg = "longitude";
     private ServerProxy proxy;
     private User user_login = new User();
+    private List<Double>groupLat = new ArrayList<>();
+    private List<Double>groupLng = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         String token = SavedSharedPreference.getPrefUserToken(CreateGroupActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
+        extractDataFromIntent();
         getUserID();
         setupCreateNewGroupbtn();
     }
@@ -48,6 +56,8 @@ public class CreateGroupActivity extends AppCompatActivity {
                 leader.setId(id);
                 leader.setHref(href);
                 group.setLeader(leader);
+                group.setRouteLatArray(groupLat);
+                group.setRouteLngArray(groupLng);
 
                 // Make call
                 Call<Group> caller = proxy.createNewGroup(group);
@@ -77,7 +87,20 @@ public class CreateGroupActivity extends AppCompatActivity {
         user_login = user;
     }
 
+    private void extractDataFromIntent() {
+        Intent intent = getIntent();
+        groupLat.add(intent.getDoubleExtra(latt, 0));
+        groupLng.add(intent.getDoubleExtra(lngg, 0));
+    }
+
     public static Intent newIntent(Context context){
         return new Intent(context, CreateGroupActivity.class);
+    }
+
+    public static Intent intent(Context context, Double lat, Double lng){
+        Intent intent = new Intent(context, MemberInfo.class);
+        intent.putExtra(latt, lat);
+        intent.putExtra(lngg, lng);
+        return intent;
     }
 }

@@ -61,10 +61,10 @@ public interface ServerProxy {
     Call<Group> createNewGroup(@Body Group group);
 
     @GET("/groups/{id}")
-    Call<Group> getGroupDetails(@Path("id") long groupID);
+    Call<Group> getGroupDetails(@Path("id") long groupId);
 
     @POST("/groups/{id}")
-    Call<Group> updateGroupDetails(@Body Group group);
+    Call<Group> updateGroupDetails(@Path("id") long groupId, @Body Group group);
 
     @DELETE("/groups/{id}")
     Call<Void> deleteGroups(@Path("id") Long groupID);
@@ -77,6 +77,9 @@ public interface ServerProxy {
 
     @DELETE("/groups/{groupId}/memberUsers/{userId}")
     Call<Void> removeGroupMember(@Path("groupId") long groupID, @Path("userId") long userID);
+
+    @GET("/groups")
+    Call<Void> comminicate();
 /**
     //API #7 for In-app Messaging
     @GET("/messages")

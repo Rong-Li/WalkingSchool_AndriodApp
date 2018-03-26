@@ -18,6 +18,7 @@ public class ManageGroupActivity extends AppCompatActivity {
 
         createGroupActivityButton();
         listGroupActivityButton();
+        updateGroupActivityButton();
     }
 
     private void createGroupActivityButton() {
@@ -32,11 +33,22 @@ public class ManageGroupActivity extends AppCompatActivity {
     }
 
     private void listGroupActivityButton(){
-        Button btn = (Button) findViewById(R.id.list_groups_btn);
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button button = (Button) findViewById(R.id.list_groups_btn);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = ListGroupAsLeaderActivity.intent(ManageGroupActivity.this);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void updateGroupActivityButton(){
+        Button button = (Button) findViewById(R.id.update_group_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = UpdateGroupListActivity.intent(ManageGroupActivity.this);
                 startActivity(intent);
             }
         });
