@@ -13,6 +13,14 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private int birthYear;
+    private int birthMonth;
+    private String address;
+    private String cellPhone;
+    private String homePhone;
+    private String grade;
+    private String teacherName;
+    private String emergencyContactInfo;
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
@@ -35,13 +43,36 @@ public class User {
     public String getPassword() {
         return password;
     }
+    public int getBirthYear(){
+        return birthYear;
+    }
+    public int getBirthMonth(){
+        return birthMonth;
+    }
+    public String getAddress(){
+        return address;
+    }
+    public String getCellPhone(){
+        return cellPhone;
+    }
+    public String getHomePhone(){
+        return homePhone;
+    }
+    public String getGrade(){
+        return grade;
+    }
+    public String getTeacherName(){
+        return teacherName;
+    }
+    public String getEmergencyContactInfo(){
+        return emergencyContactInfo;
+    }
     public List<User> getMonitoredByUsers() {
         return monitoredByUsers;
     }
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
-
     public List<Group> getMemberOfGroups() {
         return  this.memberOfGroups;
     }
@@ -65,13 +96,36 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    public void setBirthYear(int birthYear){
+        this.birthYear = birthYear;
+    }
+    public void setBirthMonth(int birthMonth){
+        this.birthMonth = birthMonth;
+    }
+    public void setAddress(String address){
+        this.address = address;
+    }
+    public void setCellPhone(String cellPhone){
+        this.cellPhone = cellPhone;
+    }
+    public void setHomePhone(String homePhone){
+        this.homePhone = homePhone;
+    }
+    public void setGrade(String grade){
+        this.grade = grade;
+    }
+    public void setTeacherName(String teacherName){
+        this.teacherName = teacherName;
+    }
+    public void setEmergencyContactInfo(String emergencyContactInfo){
+        this.emergencyContactInfo = emergencyContactInfo;
+    }
     public void setMonitoredByUsers(List<User> monitoredByUsers) {
         this.monitoredByUsers = monitoredByUsers;
     }
     public void setMonitorsUsers(List<User> monitorsUsers) {
         this.monitorsUsers = monitorsUsers;
     }
-
     public void setMemberOfGroups(List<Group> memberOfGroups) {
         this.memberOfGroups = memberOfGroups;
     }

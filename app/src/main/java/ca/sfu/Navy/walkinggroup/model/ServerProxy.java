@@ -61,10 +61,10 @@ public interface ServerProxy {
     Call<Group> createNewGroup(@Body Group group);
 
     @GET("/groups/{id}")
-    Call<Group> getGroupDetails(@Path("id") long groupID);
+    Call<Group> getGroupDetails(@Path("id") long groupId);
 
     @POST("/groups/{id}")
-    Call<Group> updateGroupDetails(@Body Group group);
+    Call<Group> updateGroupDetails(@Path("id") long groupId, @Body Group group);
 
     @DELETE("/groups/{id}")
     Call<Void> deleteGroups(@Path("id") Long groupID);
@@ -73,11 +73,14 @@ public interface ServerProxy {
     Call<Group> getGroupMenberUsers();
 
     @POST("/groups/{id}/memberUsers")
-    Call<Group> addNewGroupMember(@Path("id") long userID);
+    Call<Group> addNewGroupMember(@Path("id") long userID, @Body User user);
 
     @DELETE("/groups/{groupId}/memberUsers/{userId}")
-    Call<Group> removeGroupMember(@Path("groupId") long groupID, @Path("userId") long userID);
+    Call<Void> removeGroupMember(@Path("groupId") long groupID, @Path("userId") long userID);
 
+    @GET("/groups")
+    Call<Void> comminicate();
+/**
     //API #7 for In-app Messaging
     @GET("/messages")
     Call<Message> listMessage();
@@ -95,5 +98,5 @@ public interface ServerProxy {
     Call<Void> deleteMessage();
 
     @POST("/messages/{messageID}/reaby/{userId}")
-    Call<Message> changeReadStatus(@Body Boolean status);
+    Call<Message> changeReadStatus(@Body Boolean status);*/
 }

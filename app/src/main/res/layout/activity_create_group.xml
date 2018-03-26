@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.sfu.Navy.walkinggroup.CreateGroupActivity">
+    tools:context="ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity">
 
     <Button
         android:id="@+id/creatgroup_btn"
