@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -53,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleApiClient mGoogleApiClient;
+    private LocationRequest locationRequest;
     private Location mLastLocation;
     private ServerProxy proxy;
     private List<Group> List_groups = new ArrayList<>();
@@ -88,6 +90,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .addApi(LocationServices.API)
                     .build();
         }
+
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(30*1000);
+        locationRequest.setFastestInterval(15 * 1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
 
@@ -145,7 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-        mMap.setMyLocationEnabled(true);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
 
         LocationAvailability locationAvailability =
                 LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
@@ -156,10 +163,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (mLastLocation != null) {
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
                         .getLongitude());
-                placeMarkerOnMap(currentLocation);
+                //placeMarkerOnMap(currentLocation);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
             }
         }
+        mMap.setMyLocationEnabled(true);
 
         //
         Function_callProxy();
@@ -169,15 +177,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Function_getUserInfo();
 
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        onStart();
-//
-//    }
 
 
 
@@ -299,7 +298,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-
+        Toast.makeText(getApplicationContext(),
+                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                Toast.LENGTH_LONG)
+                .show();
     }
 
 
