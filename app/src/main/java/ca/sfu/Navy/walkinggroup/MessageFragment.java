@@ -40,6 +40,7 @@ public class MessageFragment extends AppCompatDialogFragment {
 
                         Log.i("MyApp","YOU CLICK THE YESYESYESYES" + user);
                         Log.i("MyApp","YOU CLICK THE YESYESYESYES" + location.latitude);
+                        Log.i("MyApp","YOU CLICK THE YESYESYESYES" + groupID);
 
                         activity.join_group();
 
