@@ -13,7 +13,7 @@ import java.util.List;
 public class Group {
     private Long id;
     private String groupDescription;
-    private User leader = new User();
+    private User leader;
 
     private List<User> memberUsers = new ArrayList<>();
     private List<Double> routeLatArray = new ArrayList<>();
