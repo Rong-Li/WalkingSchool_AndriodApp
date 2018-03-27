@@ -27,6 +27,7 @@ public class User {
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
 
+
     private String href;
 
 
@@ -153,14 +154,22 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                "id :" + id +
+                ", name  :'" + name + '\'' +
+                ", email :'" + email + '\'' +
+                ", birthYear :" + birthYear +
+                ", birthMonth :" + birthMonth +
+                ", address :" + address +
+                ", cellPhone :" + cellPhone +
+                ", homePhone :" + homePhone +
+                ", grade :" + grade +
+                ", teacherName :" + teacherName +
+                ", emergencyContactInfo :" + emergencyContactInfo +
                 ", monitoredByUsers=" + monitoredByUsers +
                 ", monitorsUsers=" + monitorsUsers +
                 ", memberOfGroups=" + memberOfGroups +
                 ", leadsGroups=" + leadsGroups +
+                ", lastGpsLocation :" +
                 '}';
     }
 }
