@@ -163,10 +163,10 @@ public class User {
                 ", grade :" + grade +
                 ", teacherName :" + teacherName +
                 ", emergencyContactInfo :" + emergencyContactInfo +
-                ", monitoredByUsers=" + monitoredByUsers +
-                ", monitorsUsers=" + monitorsUsers +
-                ", memberOfGroups=" + memberOfGroups +
-                ", leadsGroups=" + leadsGroups +
+                ", monitoredByUsers :" + monitoredByUsers +
+                ", monitorsUsers :" + monitorsUsers +
+                ", memberOfGroups :" + memberOfGroups +
+                ", leadsGroups :" + leadsGroups +
                 ", lastGpsLocation :" +
                 '}';
     }
