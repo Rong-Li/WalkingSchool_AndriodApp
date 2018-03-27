@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -60,7 +59,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private User user_login = new User();
     private LatLng marker_clicked;
     private long groupID;
-    private boolean check = false;
 
 
 
@@ -161,9 +159,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
-        //
-        Function_callProxy();
         Function_Click();
+        Function_callProxy();
+
         //Join Group preparation
         //Get current user info
         Function_getUserInfo();
@@ -195,7 +193,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void Function_Click(){
-
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -268,13 +265,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //    }
 
     public long getGroupIDByLocation(LatLng location){
-        long temp = -1;
         for (int i = 0; i < List_startingLocations.size(); i++){
             if (List_startingLocations.get(i).latitude == location.latitude && List_startingLocations.get(i).longitude == location.longitude){
-                temp = List_groups.get(i).getId();
+                return List_groups.get(i).getId();
             }
         }
-        return temp;
+        return -1;
     }
 
     public User getCurrentUser(){
