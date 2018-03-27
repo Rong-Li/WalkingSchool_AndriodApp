@@ -16,13 +16,13 @@ import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 
-public class GroupListAdapter extends ArrayAdapter<Group> {
+public class GroupArrayAdapter extends ArrayAdapter<Group> {
     private Context temp_context;
     private List<Group> groupList = new ArrayList<>();
     private String groupDescription;
     private ServerProxy proxy;
 
-    public GroupListAdapter(@NonNull Context context, List<Group> list){
+    public GroupArrayAdapter(@NonNull Context context, List<Group> list){
         super(context, 0, list);
         temp_context = context;
         groupList = list;

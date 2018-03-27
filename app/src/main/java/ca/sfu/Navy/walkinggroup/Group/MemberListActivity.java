@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.R;
-import ca.sfu.Navy.walkinggroup.adapter.GroupListAdapter;
 import ca.sfu.Navy.walkinggroup.adapter.UserListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;

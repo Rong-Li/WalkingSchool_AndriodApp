@@ -16,7 +16,6 @@ import ca.sfu.Navy.walkinggroup.model.User;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
-
     private ServerProxy proxy;
     private EditText email_edit;
     private EditText pw_edit;
