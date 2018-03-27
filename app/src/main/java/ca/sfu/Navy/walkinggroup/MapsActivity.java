@@ -268,13 +268,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //    }
 
     public long getGroupIDByLocation(LatLng location){
-        long temp = -1;
+        //long temp = -1;
+
         for (int i = 0; i < List_startingLocations.size(); i++){
             if (List_startingLocations.get(i).latitude == location.latitude && List_startingLocations.get(i).longitude == location.longitude){
-                temp = List_groups.get(i).getId();
+                return List_groups.get(i).getId();
             }
         }
-        return temp;
+        return -1;
     }
 
     public User getCurrentUser(){
@@ -290,6 +291,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void response(Group group){
         Log.i("MyApp","SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Toast.makeText(getApplicationContext(),
+                "SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                Toast.LENGTH_LONG)
+                .show();
 
     }
 
