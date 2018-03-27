@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.Group.AddNewMemberActivity;
 import ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
@@ -57,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<LatLng> List_startingLocations = new ArrayList<>();
     private User user_login = new User();
     private LatLng marker_clicked;
+    private long groupID;
 
 
 
@@ -277,6 +279,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public LatLng getMarkerLocation(){
         return marker_clicked;
     }
+    public void join_group(){
+        groupID = getGroupIDByLocation(marker_clicked);
+        Call<Group> caller = proxy.addNewGroupMember(groupID, user_login);
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroup -> response(returnedGroup));
+    }
+    private void response(Group group){
+        Log.i("MyApp","SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+    }
+
     @Override
     public void onLocationChanged(Location location) {
 
