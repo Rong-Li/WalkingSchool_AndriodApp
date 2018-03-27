@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/txt_monitoringList"
+        android:textSize="15sp"
+        android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

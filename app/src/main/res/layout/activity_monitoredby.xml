@@ -13,6 +13,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:text="@string/txt_monitoredByList"
+        android:textSize="15sp"
+        android:textStyle="bold"
         android:layout_alignParentTop="true" />
 
     <ListView

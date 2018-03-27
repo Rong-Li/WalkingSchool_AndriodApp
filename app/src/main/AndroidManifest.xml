@@ -56,7 +56,8 @@
         <activity android:name=".Group.AddNewMemberActivity" />
         <activity android:name=".Group.UpdateGroupListActivity" />
         <activity android:name=".Group.UpdateGroupActivity" />
-        <activity android:name=".UserManager.UserCenterActivity"></activity>
+        <activity android:name=".UserManager.UserCenterActivity" />
+        <activity android:name=".UserManager.EditUserActivity" />
     </application>
 
 </manifest>

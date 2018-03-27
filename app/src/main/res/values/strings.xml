@@ -11,13 +11,37 @@
     <string name="signup_hint_password">Password</string>
     <string name="login_hint_email">Email</string>
     <string name="login_hint_password">Password</string>
-    <string name="txt_monitoringList">You are monitoring the following users:</string>
+    <string name="txt_monitoringList">You are monitoring the following users: \n Long click Item to edit the info of User you monitor</string>
     <string name="txt_monitoredByList">You are being monitored by the following users:</string>
     <string name="btn_addUser">Add user</string>
     <string name="btn_swapMonitor">Swap</string>
     <string name="Join" />
     <string name="NO" />
     <string name="CANCEL" />
+    <string name="edit_user_btn">Edit User Info</string>
+    <string name="monitor_btn">Monitor User</string>
+    <string name="user_name_is">Name: %1$s</string>
+    <string name="user_email_is">Email: %1$s</string>
+    <string name="user_birthYear_is">Birth Year: %1$d</string>
+    <string name="user_birthMonth_is">Birth Month: %1$d</string>
+    <string name="user_address_is">Address: %1$s</string>
+    <string name="user_cellPhone_is">Cellphone: %1$s</string>
+    <string name="user_homePhone_is">Homephone: %1$s</string>
+    <string name="user_grade_is">Grade: %1$s</string>
+    <string name="user_teacherName_is">Teacher Name: %1$s</string>
+    <string name="user_emergencyContactInfo_is">Emergency Contact: %1$s</string>
+    <string name="new_user_name">New User Name</string>
+    <string name="new_email_address">New Email Address</string>
+    <string name="new_password">New Password</string>
+    <string name="new_birth_year">New Birth Year</string>
+    <string name="new_birth_month">New Birth Month</string>
+    <string name="new_home_address">New Home Address</string>
+    <string name="new_cell_phone_number">New Cell Phone Number</string>
+    <string name="new_home_phone_number">New Home Phone Number</string>
+    <string name="new_grade">New Grade</string>
+    <string name="new_teacher_name">New Teacher Name</string>
+    <string name="new_emergency_contact_info">New Emergency Contact Info</string>
+    <string name="user_password_hidden">Password hidden</string>
 
 
 </resources>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="ca.sfu.Navy.walkinggroup.UserManager.EditUserActivity">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_name"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentTop="true"
+                android:text="@string/user_name_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/current_user_name"
+                android:layout_marginTop="10dp"
+                android:hint="@string/new_user_name"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_email"
+                android:layout_below="@+id/edit_user_name"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_email_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/current_user_email"
+                android:hint="@string/new_email_address"
+                android:layout_marginTop="10dp"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_birthYear"
+                android:layout_below="@+id/edit_user_email"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_birthYear_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_birthYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_birthYear"
+                android:hint="@string/new_birth_year"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_birthMonth"
+                android:layout_below="@+id/edit_user_birthYear"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_birthMonth_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_birthMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_birthMonth"
+                android:hint="@string/new_birth_month"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_address"
+                android:layout_below="@+id/edit_user_birthMonth"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_address_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_address"
+                android:hint="@string/new_home_address"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_cellPhone"
+                android:layout_below="@+id/edit_user_address"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_cellPhone_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_cellPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_cellPhone"
+                android:hint="@string/new_cell_phone_number"
+                android:inputType="phone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_homePhone"
+                android:layout_below="@+id/edit_user_cellPhone"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_homePhone_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_homePhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_homePhone"
+                android:hint="@string/new_home_phone_number"
+                android:inputType="phone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_grade"
+                android:layout_below="@+id/edit_user_homePhone"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_grade_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_grade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_grade"
+                android:hint="@string/new_grade"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_teacherName"
+                android:layout_below="@+id/edit_user_grade"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_teacherName_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_teacherName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_teacherName"
+                android:hint="@string/new_teacher_name"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_user_emergencyContactInfo"
+                android:layout_below="@+id/edit_user_teacherName"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_emergencyContactInfo_is"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/edit_user_emergencyContactInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/current_user_emergencyContactInfo"
+                android:hint="@string/new_emergency_contact_info"
+                android:inputType="text" />
+
+
+        </RelativeLayout>
+        
+    </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/edit_submit_btn"
+        android:text="Submit"/>
+
+
+</RelativeLayout>

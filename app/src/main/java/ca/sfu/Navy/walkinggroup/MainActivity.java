@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity;
 import ca.sfu.Navy.walkinggroup.Group.ManageGroupActivity;
-import ca.sfu.Navy.walkinggroup.UserManager.UserCenterActivity;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 
@@ -19,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkLoggedIn();
+
         UserCenterStart();
         MapActivityStart();
         logOutActivityStart();
@@ -63,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = UserCenterActivity.makeIntent(MainActivity.this);
+                Intent intent = ca.sfu.Navy.walkinggroup.UserManager.UserCenterActivity.makeIntent(MainActivity.this);
                 startActivity(intent);
             }
         });
