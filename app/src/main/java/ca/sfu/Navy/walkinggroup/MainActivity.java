@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         MapActivityStart();
         logOutActivityStart();
         manageGroupActivityStart();
-        monitorActivityStart();
     }
 
     private void manageGroupActivityStart() {
@@ -91,16 +90,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void monitorActivityStart(){
-        Button button = (Button) findViewById(R.id.monitor_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = MonitorActivity.newIntent(MainActivity.this);
-                startActivity(intent);
-            }
-        });
-    }
+
 
 
 

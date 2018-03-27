@@ -9,11 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import ca.sfu.Navy.walkinggroup.MainActivity;
 import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
+import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 import retrofit2.Call;
 
 public class UserCenterActivity extends AppCompatActivity {
@@ -58,6 +60,7 @@ public class UserCenterActivity extends AppCompatActivity {
         Log.w("Test receive", "server receive test " + user_loggedin.toString());
         saved_id = user.getId();
         EditUserStart();
+        monitorActivityStart();
     }
 
     private void EditUserStart() {
@@ -68,6 +71,17 @@ public class UserCenterActivity extends AppCompatActivity {
                 long userId = saved_id;
                 Intent intent = EditUserActivity.makeIntent(UserCenterActivity.this, userId);
                 startActivityForResult(intent, REQUEST_CODE_CHECK_EMAIL_CHANGED);
+            }
+        });
+    }
+
+    private void monitorActivityStart(){
+        Button button = (Button) findViewById(R.id.monitor_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MonitorActivity.newIntent(UserCenterActivity.this);
+                startActivity(intent);
             }
         });
     }
