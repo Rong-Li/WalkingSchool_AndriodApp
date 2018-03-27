@@ -8,7 +8,6 @@ import android.widget.Button;
 
 import ca.sfu.Navy.walkinggroup.Group.ManageGroupActivity;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
-import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 
 public class MainActivity extends AppCompatActivity {
 

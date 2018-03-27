@@ -26,6 +26,7 @@ public class User {
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
+    private GpsLocation lastGpsLocation = new GpsLocation();
     private String href;
 
 
@@ -82,6 +83,9 @@ public class User {
         return leadsGroups;
     }
 
+    public GpsLocation getLastGpsLocation(){
+        return lastGpsLocation;
+    }
 
 
     //setters
@@ -135,6 +139,10 @@ public class User {
         this.leadsGroups = leadsGroups;
     }
 
+    public void setLastGpsLocation(GpsLocation lastGpsLocation){
+        this.lastGpsLocation = lastGpsLocation;
+    }
+
     // List items modifiers
     public void addUsertoMonitor(User user){
         this.monitorsUsers.add(user);
@@ -167,7 +175,7 @@ public class User {
                 ", monitorsUsers :" + monitorsUsers +
                 ", memberOfGroups :" + memberOfGroups +
                 ", leadsGroups :" + leadsGroups +
-                ", lastGpsLocation :" +
+                ", lastGpsLocation :" + lastGpsLocation.toString() +
                 '}';
     }
 }
