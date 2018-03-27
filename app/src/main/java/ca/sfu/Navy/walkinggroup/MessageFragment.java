@@ -38,6 +38,9 @@ public class MessageFragment extends AppCompatDialogFragment {
                         groupID = activity.getGroupIDByLocation(location);
                         user = activity.getCurrentUser();
 
+                        Log.i("MyApp","YOU CLICK THE YESYESYESYES" + user);
+                        Log.i("MyApp","YOU CLICK THE YESYESYESYES" + location.latitude);
+
 
 
 
