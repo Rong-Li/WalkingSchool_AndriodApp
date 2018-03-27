@@ -32,7 +32,7 @@ public interface ServerProxy {
     Call<User> getUserByEmail(@Query("email") String email);
 
     @POST("users/{id}")
-    Call<User> editUser(@Path("id") User userInfo);
+    Call<User> editUser(@Path("id") long userId, @Body User userInfo);
 
     //API #5 for Monitoring
     @GET("/users/{id}/monitorsUsers")

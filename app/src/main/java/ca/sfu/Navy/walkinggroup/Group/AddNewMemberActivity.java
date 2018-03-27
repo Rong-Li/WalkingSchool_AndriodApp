@@ -27,7 +27,7 @@ public class AddNewMemberActivity extends AppCompatActivity {
     private static final String id = "groupId";
     private ServerProxy proxy;
     private User user_temp = new User();
-    EditText email_edit; 
+    EditText email_edit;
     private Long groupId;
 
     @Override
@@ -87,7 +87,7 @@ public class AddNewMemberActivity extends AppCompatActivity {
 
     private void setupEditText(){
         email_edit = (EditText) findViewById(R.id.edit_email);
-
+        
         email_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
