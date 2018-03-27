@@ -23,7 +23,6 @@ public class AddNewMemberActivity extends AppCompatActivity {
     private ServerProxy proxy;
     private User user_temp = new User();
     EditText email_edit;
-    private boolean check = false;
     private Long groupId;
 
     @Override
@@ -49,10 +48,6 @@ public class AddNewMemberActivity extends AppCompatActivity {
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.toString());
         user_temp = user;
-        check = true;
-        if(check == true){
-            Call<Group> caller = proxy.addNewGroupMember(groupId, user_temp);
-            ServerProxyBuilder.callProxy(AddNewMemberActivity.this, caller, returnedGroup -> response(returnedGroup));}
     }
 
     private void setUpAddButton() {
@@ -60,7 +55,8 @@ public class AddNewMemberActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getUserId();
+                Call<Group> caller = proxy.addNewGroupMember(groupId, user_temp);
+                ServerProxyBuilder.callProxy(AddNewMemberActivity.this, caller, returnedGroup -> response(returnedGroup));
             }
         });
     }
@@ -71,7 +67,6 @@ public class AddNewMemberActivity extends AppCompatActivity {
                 "Add new Member Successfully",
                 Toast.LENGTH_LONG)
                 .show();
-
         finish();
     }
 
@@ -87,8 +82,39 @@ public class AddNewMemberActivity extends AppCompatActivity {
 
     private void setupEditText(){
         email_edit = (EditText) findViewById(R.id.edit_email);
+        
+        email_edit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(checkEmail(s.toString()) == true){
+                    getUserId();
+                }
+            }
+        });
     }
 
+    private static boolean checkEmail(String email) {
+        boolean flag = false;
+        try {
+            String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+            Pattern regex = Pattern.compile(check);
+            Matcher matcher = regex.matcher(email);
+            flag = matcher.matches();
+        } catch (Exception e) {
+            flag = false;
+        }
+        return flag;
+    }
 
     private void extractDataFromIntent() {
         Intent intent = getIntent();
