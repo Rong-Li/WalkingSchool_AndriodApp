@@ -26,8 +26,6 @@ public class User {
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
-
-
     private String href;
 
 

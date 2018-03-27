@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -33,6 +34,7 @@ import com.google.android.gms.location.LocationListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.Group.AddNewMemberActivity;
 import ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
@@ -57,6 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<LatLng> List_startingLocations = new ArrayList<>();
     private User user_login = new User();
     private LatLng marker_clicked;
+    private long groupID;
+    private boolean check = false;
 
 
 
@@ -157,9 +161,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
-        Function_Click();
+        //
         Function_callProxy();
-
+        Function_Click();
         //Join Group preparation
         //Get current user info
         Function_getUserInfo();
@@ -191,6 +195,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void Function_Click(){
+
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -263,8 +268,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //    }
 
     public long getGroupIDByLocation(LatLng location){
+        //long temp = -1;
+
         for (int i = 0; i < List_startingLocations.size(); i++){
-            if (List_startingLocations.get(i) == location){
+            if (List_startingLocations.get(i).latitude == location.latitude && List_startingLocations.get(i).longitude == location.longitude){
                 return List_groups.get(i).getId();
             }
         }
@@ -277,6 +284,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public LatLng getMarkerLocation(){
         return marker_clicked;
     }
+    public void join_group(){
+        groupID = getGroupIDByLocation(marker_clicked);
+        Call<Group> caller = proxy.addNewGroupMember(groupID, user_login);
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroup -> response(returnedGroup));
+    }
+    private void response(Group group){
+        Log.i("MyApp","SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Toast.makeText(getApplicationContext(),
+                "SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                Toast.LENGTH_LONG)
+                .show();
+    }
+
     @Override
     public void onLocationChanged(Location location) {
 
