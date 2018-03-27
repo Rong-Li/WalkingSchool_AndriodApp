@@ -295,7 +295,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!",
                 Toast.LENGTH_LONG)
                 .show();
-
     }
 
     @Override
