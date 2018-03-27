@@ -56,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Group> List_groups = new ArrayList<>();
     private List<LatLng> List_startingLocations = new ArrayList<>();
     private User user_login = new User();
+    private LatLng marker_clicked;
 
 
 
@@ -193,6 +194,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                marker_clicked = marker.getPosition();
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 MessageFragment dialog = new MessageFragment();
                 dialog.show(manager, "MEssgaDialog");
@@ -260,7 +262,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        public static Intent newIntent(Context context){
 //    }
 
+    public long getGroupIDByLocation(LatLng location){
+        for (int i = 0; i < List_startingLocations.size(); i++){
+            if (List_startingLocations.get(i) == location){
+                return List_groups.get(i).getId();
+            }
+        }
+        return -1;
+    }
 
+    public User getCurrentUser(){
+        return user_login;
+    }
+    public LatLng getMarkerLocation(){
+        return marker_clicked;
+    }
     @Override
     public void onLocationChanged(Location location) {
 

@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
+import ca.sfu.Navy.walkinggroup.model.User;
 
 /**
  * Created by lirongl on 2018-03-13.
@@ -17,6 +20,9 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 
 public class MessageFragment extends AppCompatDialogFragment {
 
+    private LatLng location;
+    private long groupID;
+    private User user;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.custom_info_window,null);
@@ -27,6 +33,14 @@ public class MessageFragment extends AppCompatDialogFragment {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         Log.i("MyApp","YOU CLICK THE YESYESYESYES");
+                        MapsActivity activity = (MapsActivity) getActivity();
+                        location = activity.getMarkerLocation();
+                        groupID = activity.getGroupIDByLocation(location);
+                        user = activity.getCurrentUser();
+
+
+
+
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         Log.i("MyApp","YOU CLICK THE NONONONONONO");
