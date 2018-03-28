@@ -329,8 +329,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.LENGTH_LONG)
                 .show();
         if(user_login.getId() != null){
-            double a = location.getLatitude();
-            double b = location.getLongitude();
+            Double a = location.getLatitude();
+            Double b = location.getLongitude();
             Date c = Calendar.getInstance().getTime();
             GpsLocation temp = new GpsLocation();
             temp.setLat(a);
@@ -338,15 +338,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             temp.setTimestamp(c);
             Log.i("MyApp","&&&&" + a);
             Log.i("MyApp","&&&&" + b);
-            user_login.setLastGpsLocation(temp);
-            long userID = user_login.getId();
+            Long userID = user_login.getId();
             Log.i("MyApp","END OF SETTING USERRR");
             Log.i("MyApp","STARTS ENVOCING CALLPROXY");
 
-            Call<User> caller = proxy.editUser(userID, user_login);
+            Call<User> caller = proxy.uploadGps(userID, temp);
             ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response2(returnedUser));
         }
-
     }
 
     private void response2(User returnedUser) {
