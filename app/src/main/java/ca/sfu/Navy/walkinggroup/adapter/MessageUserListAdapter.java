@@ -10,15 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.sfu.Navy.walkinggroup.GroupSendMsgActivity;
 import ca.sfu.Navy.walkinggroup.R;
-import ca.sfu.Navy.walkinggroup.UserSendMsgActivity;
-import ca.sfu.Navy.walkinggroup.model.Message;
+import ca.sfu.Navy.walkinggroup.Message.UserSendMsgActivity;
 import ca.sfu.Navy.walkinggroup.model.MessageUser;
 
 public class MessageUserListAdapter extends BaseAdapter {

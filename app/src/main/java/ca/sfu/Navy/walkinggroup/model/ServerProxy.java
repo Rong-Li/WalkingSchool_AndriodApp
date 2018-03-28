@@ -88,7 +88,6 @@ public interface ServerProxy {
     @GET("/messages")
     Call<List<Message>> listMessage(@Query("is-emergency") boolean isEmergency);
 
-    //API #7 for In-app Messaging
     @GET("/messages")
     Call<List<Message>> listUserMessage(@Query("foruser") long user_id, @Query("is-emergency") boolean isEmergency);
 

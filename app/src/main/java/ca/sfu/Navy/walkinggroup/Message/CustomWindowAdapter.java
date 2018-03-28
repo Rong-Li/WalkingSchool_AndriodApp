@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup;
+package ca.sfu.Navy.walkinggroup.Message;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
+
+import ca.sfu.Navy.walkinggroup.R;
 
 /**
  * Created by lirongl on 2018-03-13.

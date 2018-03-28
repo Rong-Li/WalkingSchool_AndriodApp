@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup;
+package ca.sfu.Navy.walkinggroup.Message;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.adapter.MessageListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
@@ -23,7 +23,7 @@ import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import retrofit2.Call;
 
-public class UserSendMsgActivity extends AppCompatActivity {
+public class GroupSendMsgActivity extends AppCompatActivity {
 
     private EditText mInputText;
     private Button mSendBtn;
@@ -32,9 +32,7 @@ public class UserSendMsgActivity extends AppCompatActivity {
     private CheckBox emergencyBtn;
     private ListView mMessageList;
     private MessageListAdapter mMessageListAdapter;
-    private long user_id;
-    private long mId;
-    private ArrayList<Message> messages;
+    private long group_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,9 +42,8 @@ public class UserSendMsgActivity extends AppCompatActivity {
     }
 
     private void init() {
-        mId = SavedSharedPreference.getPrefUserId(this);
-        user_id = getIntent().getLongExtra("user_id", -1);
-        String token = SavedSharedPreference.getPrefUserToken(UserSendMsgActivity.this);
+        group_id = getIntent().getLongExtra("group_id", -1);
+        String token = SavedSharedPreference.getPrefUserToken(GroupSendMsgActivity.this);
         mProxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
         mInputText = findViewById(R.id.input_text);
@@ -59,10 +56,10 @@ public class UserSendMsgActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isEmergency = isChecked;
-                getUserList();
+                getGroupList();
             }
         });
-        getUserList();
+        getGroupList();
     }
 
     public void sendMsg(View view) {
@@ -71,38 +68,32 @@ public class UserSendMsgActivity extends AppCompatActivity {
             Toast.makeText(this, "The message should not be empty.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (user_id != -1) {
+        if (group_id != -1) {
             // Make call
             SendMessage msg = new SendMessage();
             msg.setText(message);
             msg.setEmergency(isEmergency);
-            Call<Message> caller = mProxy.messageToParents(user_id, msg);
-            ServerProxyBuilder.callProxy(UserSendMsgActivity.this, caller, this::response);
+            Call<Message> caller = mProxy.messageToGroup(group_id, msg);
+            ServerProxyBuilder.callProxy(GroupSendMsgActivity.this, caller, this::response);
         }
     }
 
     private void response(Message message) {
         mInputText.setText("");
-        getUserList();
+        getGroupList();
     }
 
-    public void getUserList() {
-        Log.e("test", isEmergency + "");
-        Call<List<Message>> caller = mProxy.listUserMessage(mId, isEmergency);
-        ServerProxyBuilder.callProxy(UserSendMsgActivity.this, caller, this::showMessage);
+    public void getGroupList() {
+        Log.e("test",isEmergency+"");
+        Call<List<Message>> caller = mProxy.listGroupMessage(group_id, isEmergency);
+        ServerProxyBuilder.callProxy(GroupSendMsgActivity.this, caller, this::showMessage);
     }
 
     private void showMessage(List<Message> messages) {
-        this.messages = new ArrayList<>();
-        for (Message message:messages){
-            if (message.getFromUser().getId()==user_id){
-                this.messages.add(message);
-            }
-        }
-        mMessageListAdapter.updateData(this.messages);
+        mMessageListAdapter.updateData(messages);
     }
 
     public void refresh(View view) {
-        getUserList();
+        getGroupList();
     }
 }

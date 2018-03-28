@@ -2,23 +2,18 @@ package ca.sfu.Navy.walkinggroup.adapter;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.sfu.Navy.walkinggroup.GroupSendMsgActivity;
 import ca.sfu.Navy.walkinggroup.R;
-import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.Message;
 
 public class MessageListAdapter extends BaseAdapter {

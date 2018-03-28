@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import ca.sfu.Navy.walkinggroup.Group.ManageGroupActivity;
+import ca.sfu.Navy.walkinggroup.Message.AllMessageActivity;
+import ca.sfu.Navy.walkinggroup.Message.ListUserMessageActivity;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
