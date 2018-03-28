@@ -8,8 +8,8 @@
 
 
     <Button
-        android:id="@+id/header"
-        android:text="Pause"
+        android:id="@+id/bottonID"
+        android:text="Pause GPS tracking Servive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -18,7 +18,7 @@
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
-    android:layout_below="@+id/header"
+    android:layout_below="@+id/bottonID"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

@@ -70,6 +70,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private long groupID;
     private boolean check = false;
     private boolean paused = false;
+    private Button btn;
+
 
 
     @Override
@@ -99,6 +101,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationRequest.setInterval(30 * 1000);
         locationRequest.setFastestInterval(15 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        btn = findViewById(R.id.bottonID);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseButtonClicked();
+            }
+        });
     }
 
 
@@ -320,6 +330,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!",
                 Toast.LENGTH_LONG)
                 .show();
+    }
+
+    public void pauseButtonClicked(){
+        if(paused == false){
+            Pause();
+            paused = true;
+            Toast.makeText(getApplicationContext(),
+                    "Paused tracking",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            btn.setText("Resume GPS tracking Servive");
+        }else{
+            Resume();;
+            paused = false;
+            Toast.makeText(getApplicationContext(),
+                    "Resumed tracking",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            btn.setText("Pause GPS tracking Servive");
+        }
     }
 
     @Override
