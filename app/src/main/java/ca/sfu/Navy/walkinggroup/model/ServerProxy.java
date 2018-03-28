@@ -35,7 +35,7 @@ public interface ServerProxy {
     Call<User> editUser(@Path("id") long userId, @Body User userInfo);
 
     @POST("users/{id}/lastGpsLocation")
-    Call<User> uploadGps(@Path("id") long userId, @Body GpsLocation lastGpsLocation);
+    Call<GpsLocation> uploadGps(@Path("id") long userId, @Body GpsLocation lastGpsLocation);
 
     //API #5 for Monitoring
     @GET("/users/{id}/monitorsUsers")
