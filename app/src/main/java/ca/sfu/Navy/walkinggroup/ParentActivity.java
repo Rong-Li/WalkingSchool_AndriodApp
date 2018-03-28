@@ -76,12 +76,13 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private LatLng Destination = new LatLng(49.287586, -123.113560);
     private int tool = 0;
     private Date EndTime;
-
+    private List<User> List_children = new ArrayList<>();
+    private List<GpsLocation> List_childrenLocations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_parent);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -222,10 +223,20 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     }
 
     private void response(User user){
-        Log.w("Register Server", "Server replied with user: " + user.toString());
+        Log.w("Register Server", "Server replied with user: " + user.getEmail());
+        Log.w("Register Server", "Server replied with user: " + user.getMonitorsUsers());
+        Log.w("Register Server", "Server replied with user: " + user.getLastGpsLocation());
         user_login = user;
+        List_children = user.getMonitorsUsers();
+        response_updateList();
+        response_showChildren();
     }
 
+    private void response_updateList(){
+        for(User user: List_children) {
+            List_childrenLocations.add(user.getLastGpsLocation());
+        }
+    }
 
 
 
@@ -239,8 +250,14 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         return user_login;
     }
 
-
-
+    private void response_showChildren(){
+        for (int i = 0; i < List_childrenLocations.size(); i++){
+            if(List_childrenLocations.get(i) != null){
+                LatLng temp = new LatLng(List_children.get(i).getLastGpsLocation().getLat(), List_children.get(i).getLastGpsLocation().getLng());
+                placeMarkerOnMap(temp);
+            }
+        }
+    }
 
     @Override
     public void onLocationChanged(Location location) {
