@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup;
+package ca.sfu.Navy.walkinggroup.Message;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.adapter.MessageListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;

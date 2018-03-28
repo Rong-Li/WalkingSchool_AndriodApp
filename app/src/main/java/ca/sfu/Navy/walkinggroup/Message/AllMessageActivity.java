@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup;
+package ca.sfu.Navy.walkinggroup.Message;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,12 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.RadioButton;
 
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.adapter.MessageListAdapter;
-import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
