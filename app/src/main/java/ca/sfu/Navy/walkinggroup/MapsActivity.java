@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -33,6 +35,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.Group.AddNewMemberActivity;
@@ -42,6 +46,8 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
+import ca.sfu.Navy.walkinggroup.model.GpsLocation;
+
 import retrofit2.Call;
 
 import static java.security.AccessController.getContext;
@@ -63,8 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng marker_clicked;
     private long groupID;
     private boolean check = false;
-
-
+    private boolean paused = false;
 
 
     @Override
@@ -78,21 +83,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String token = SavedSharedPreference.getPrefUserToken(MapsActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
-
-
+        Function_getUserInfo();
         // 1
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)//provides callbacks that are triggered when
-                                                // the client is connected (onConnected())
-                                                // or temporarily disconnected (onConnectionSuspended()) from the service
+                    // the client is connected (onConnected())
+                    // or temporarily disconnected (onConnectionSuspended()) from the service
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
         }
 
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(30*1000);
+        locationRequest.setInterval(30 * 1000);
         locationRequest.setFastestInterval(15 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
@@ -109,9 +113,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
 
     //
-
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -123,9 +124,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onStop() {
         super.onStop();
         // 3
-        if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Resume();
+    }
+
+    private void Resume() {
+        if (mGoogleApiClient.isConnected()) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Pause();
+    }
+
+    private PendingResult<Status> Pause() {
+        return LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
 
@@ -174,7 +200,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Function_Click();
         //Join Group preparation
         //Get current user info
-        Function_getUserInfo();
+
 
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -299,9 +325,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         Toast.makeText(getApplicationContext(),
-                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!" + location,
                 Toast.LENGTH_LONG)
                 .show();
+        if(user_login.getId() != null){
+            double a = location.getLatitude();
+            double b = location.getLongitude();
+            Date c = Calendar.getInstance().getTime();
+            GpsLocation temp = new GpsLocation();
+            temp.setLat(a);
+            temp.setLng(b);
+            temp.setTimestamp(c);
+            user_login.setLastGpsLocation(temp);
+            long userID = user_login.getId();
+            Call<User> caller = proxy.editUser(userID, user_login);
+
+            ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response2(returnedUser));
+        }
+
+    }
+
+    private void response2(User returnedUser) {
+        Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + returnedUser.toString());
+
     }
 
 
