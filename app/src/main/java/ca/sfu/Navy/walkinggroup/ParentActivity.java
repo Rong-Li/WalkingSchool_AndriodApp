@@ -1,6 +1,7 @@
 package ca.sfu.Navy.walkinggroup;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +55,7 @@ import retrofit2.Call;
 import static java.security.AccessController.getContext;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class ParentActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         /*GoogleMap.OnMarkerClickListener,*/ com.google.android.gms.location.LocationListener {
 
@@ -75,7 +76,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng Destination = new LatLng(49.287586, -123.113560);
     private int tool = 0;
     private Date EndTime;
-    private Button parentActivity_btn;
 
 
     @Override
@@ -86,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        String token = SavedSharedPreference.getPrefUserToken(MapsActivity.this);
+        String token = SavedSharedPreference.getPrefUserToken(ParentActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
         Function_getUserInfo();
@@ -101,27 +101,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .build();
         }
 
-        locationRequest = new LocationRequest();
-        locationRequest.setInterval(30 * 1000);
-        locationRequest.setFastestInterval(15 * 1000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        locationRequest = new LocationRequest();
+//        locationRequest.setInterval(30 * 1000);
+//        locationRequest.setFastestInterval(15 * 1000);
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        btn = findViewById(R.id.bottonID);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pauseButtonClicked();
-            }
-        });
-
-        parentActivity_btn = findViewById(R.id.ParentButtonID);
-        parentActivity_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = ParentActivity.newIntent(MapsActivity.this);
-                startActivity(intent);
-            }
-        });
     }
 
 
@@ -152,33 +136,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Resume();
-    }
-
-    private void Resume() {
-        if (mGoogleApiClient.isConnected()) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-
-        super.onPause();
-        Pause();
-    }
-
-    private PendingResult<Status> Pause() {
-        Log.i("MyApp","PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE");
-
-        return LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-    }
 
 
     @Override
@@ -202,10 +159,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-
-
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
-
         LocationAvailability locationAvailability =
                 LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
         if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
@@ -222,7 +175,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
 
         //
-        Function_callProxy();
         Function_Click();
         //Join Group preparation
         //Get current user info
@@ -261,16 +213,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    private void Function_callProxy(){
-        Call<List<Group>> caller = proxy.listGroups();
-        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroups -> response(returnedGroups));
-    }
 
     private void Function_getUserInfo() {
-        String email = SavedSharedPreference.getPrefUserEmail(MapsActivity.this);
+        String email = SavedSharedPreference.getPrefUserEmail(ParentActivity.this);
         // Make call to retrieve user info
         Call<User> caller = proxy.getUserByEmail(email);
-        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response(returnedUser));
+        ServerProxyBuilder.callProxy(ParentActivity.this, caller, returnedUser -> response(returnedUser));
     }
 
     private void response(User user){
@@ -278,158 +226,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         user_login = user;
     }
 
-    private void response(List<Group> returnedGroups) {
-//        Log.i("Register Server", "*********************** " + returnedGroups.toString());
-        List_groups = returnedGroups;
-        Response_updateList();
-        Response_showGroups();
-    }
 
-    private void Response_updateList(){
-        double ini_Lat;
-        double ini_Lng;
-        LatLng coord;
-        for(Group group: List_groups){
-            if(group.getRouteLatArray().isEmpty() || group.getRouteLngArray().isEmpty()){
-                coord = new LatLng(0.0, 0.0);
-                List_startingLocations.add(coord);
-            }
-            else{
-                ini_Lat = (double) group.getRouteLatArray().get(0);
-                ini_Lng = (double) group.getRouteLngArray().get(0);
-                Log.i("MyApp","！！！！！！$$$$$$$$$$$！！！！！" + ini_Lat);
-                Log.i("MyApp","！！！！！$$$$$$$$$$$！！！！！" + ini_Lng);
 
-                coord = new LatLng(ini_Lat, ini_Lng);
-                List_startingLocations.add(coord);
-            }
 
-        }
-    }
-
-    private void Response_showGroups(){
-        for (int i = 0; i < List_startingLocations.size(); i++){
-            placeMarkerOnMap(List_startingLocations.get(i));
-
-        }
-    }
 
 //    public static void joinGroup(){
 //        public static Intent newIntent(Context context){
 //    }
 
-    public long getGroupIDByLocation(LatLng location){
-        //long temp = -1;
-
-        for (int i = 0; i < List_startingLocations.size(); i++){
-            if (List_startingLocations.get(i).latitude == location.latitude && List_startingLocations.get(i).longitude == location.longitude){
-                return List_groups.get(i).getId();
-            }
-        }
-        return -1;
-    }
 
     public User getCurrentUser(){
         return user_login;
     }
-    public LatLng getMarkerLocation(){
-        return marker_clicked;
-    }
-    public void join_group(){
-        groupID = getGroupIDByLocation(marker_clicked);
-        Call<Group> caller = proxy.addNewGroupMember(groupID, user_login);
-        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroup -> response(returnedGroup));
-    }
-    private void response(Group group){
-        Log.i("MyApp","SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        Toast.makeText(getApplicationContext(),
-                "SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!",
-                Toast.LENGTH_LONG)
-                .show();
-    }
 
-    public void pauseButtonClicked(){
-        if(paused == false){
-            Pause();
-            paused = true;
-            Toast.makeText(getApplicationContext(),
-                    "Paused tracking",
-                    Toast.LENGTH_SHORT)
-                    .show();
-            btn.setText("Resume tracking Servive");
-        }else{
-            Resume();;
-            paused = false;
-            Toast.makeText(getApplicationContext(),
-                    "Resumed tracking",
-                    Toast.LENGTH_SHORT)
-                    .show();
-            btn.setText("Pause tracking Servive");
-        }
-    }
+
+
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(getApplicationContext(),
-                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!" + location,
-                Toast.LENGTH_LONG)
-                .show();
 
-        double Location_Lat = location.getLatitude();
-        double Location_Lng = location.getLongitude();
-        double Destination_Lat = Destination.latitude;
-        double Destination_Lng = Destination.longitude;
-
-        Location_Lat = roundThreeDecimals(Location_Lat);
-        Destination_Lat = roundThreeDecimals(Destination_Lat);
-
-        Location_Lng = roundThreeDecimals(Location_Lng);
-        Destination_Lng = roundThreeDecimals(Destination_Lng);
-
-        if (Location_Lat == Destination_Lat && Location_Lng == Destination_Lng){
-
-            Log.i("MyApp","Arrived Arrived!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-
-            tool++;
-
-        }
-        if(tool == 21){ //purpose of waiting for 10 minutes, i.e 20 round of 30secs
-//            EndTime = Calendar.getInstance().getTime();
-//            int temp = EndTime.getMinutes() + 1;
-//            EndTime.setMinutes(temp);
-            Pause();
-            tool = 0;
-        }
-        if(user_login.getId() != null){
-
-            Double a = location.getLatitude();
-            Double b = location.getLongitude();
-            Date c = Calendar.getInstance().getTime();
-            GpsLocation temp = new GpsLocation();
-            temp.setLat(a);
-            temp.setLng(b);
-            temp.setTimestamp(c);
-            Log.i("MyApp","&&&&" + a);
-            Log.i("MyApp","&&&&" + b);
-            Long userID = user_login.getId();
-            Log.i("MyApp","END OF SETTING USERRR");
-            Log.i("MyApp","STARTS ENVOCING CALLPROXY");
-
-            Call<GpsLocation> caller = proxy.uploadGps(userID, temp);
-            ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedLocation -> response2(returnedLocation));
-        }
-    }
-
-    private void response2(GpsLocation location) {
-        Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + location.getLat());
-
-    }
-
-    private double roundThreeDecimals(double d)
-    {
-        DecimalFormat twoDForm = new DecimalFormat("#.###");
-        return Double.valueOf(twoDForm.format(d));
     }
 
     @Override
@@ -457,7 +272,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(markerOptions);
     }
     public static Intent newIntent(Context context){
-        return new Intent(context, MapsActivity.class);
+        return new Intent(context, ParentActivity.class);
     }
 }
 
