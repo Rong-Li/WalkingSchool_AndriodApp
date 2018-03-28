@@ -336,17 +336,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             temp.setLat(a);
             temp.setLng(b);
             temp.setTimestamp(c);
+            Log.i("MyApp","&&&&" + a);
+            Log.i("MyApp","&&&&" + b);
             user_login.setLastGpsLocation(temp);
             long userID = user_login.getId();
-            Call<User> caller = proxy.editUser(userID, user_login);
+            Log.i("MyApp","END OF SETTING USERRR");
+            Log.i("MyApp","STARTS ENVOCING CALLPROXY");
 
+            Call<User> caller = proxy.editUser(userID, user_login);
             ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response2(returnedUser));
         }
 
     }
 
     private void response2(User returnedUser) {
-        Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + returnedUser.toString());
+        Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + returnedUser.getLastGpsLocation().getLat());
 
     }
 
