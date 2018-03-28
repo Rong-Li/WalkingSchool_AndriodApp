@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,7 +72,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean check = false;
     private boolean paused = false;
     private Button btn;
-
+    private LatLng Destination = new LatLng(49.287586, -123.113560);
+    private int tool = 0;
+    private Date EndTime;
 
 
     @Override
@@ -156,11 +159,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onPause() {
+
         super.onPause();
         Pause();
     }
 
     private PendingResult<Status> Pause() {
+        Log.i("MyApp","PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE");
+
         return LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
@@ -358,10 +364,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!" + location,
                 Toast.LENGTH_LONG)
                 .show();
+
+        double Location_Lat = location.getLatitude();
+        double Location_Lng = location.getLongitude();
+        double Destination_Lat = Destination.latitude;
+        double Destination_Lng = Destination.longitude;
+
+        Location_Lat = roundThreeDecimals(Location_Lat);
+        Destination_Lat = roundThreeDecimals(Destination_Lat);
+
+        Location_Lng = roundThreeDecimals(Location_Lng);
+        Destination_Lng = roundThreeDecimals(Destination_Lng);
+
+        if (Location_Lat == Destination_Lat && Location_Lng == Destination_Lng){
+
+            Log.i("MyApp","Arrived Arrived!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+            tool++;
+
+        }
+        if(tool == 21){ //purpose of waiting for 10 minutes, i.e 20 round of 30secs
+//            EndTime = Calendar.getInstance().getTime();
+//            int temp = EndTime.getMinutes() + 1;
+//            EndTime.setMinutes(temp);
+            Pause();
+            tool = 0;
+        }
         if(user_login.getId() != null){
+
             Double a = location.getLatitude();
             Double b = location.getLongitude();
             Date c = Calendar.getInstance().getTime();
+//            if(c == EndTime){
+//                Pause();
+//                tool = 0;
+//            }
             GpsLocation temp = new GpsLocation();
             temp.setLat(a);
             temp.setLng(b);
@@ -382,6 +420,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    private double roundThreeDecimals(double d)
+    {
+        DecimalFormat twoDForm = new DecimalFormat("#.###");
+        return Double.valueOf(twoDForm.format(d));
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
