@@ -396,10 +396,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Double a = location.getLatitude();
             Double b = location.getLongitude();
             Date c = Calendar.getInstance().getTime();
-//            if(c == EndTime){
-//                Pause();
-//                tool = 0;
-//            }
             GpsLocation temp = new GpsLocation();
             temp.setLat(a);
             temp.setLng(b);
