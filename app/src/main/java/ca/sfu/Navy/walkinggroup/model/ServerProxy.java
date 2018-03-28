@@ -83,7 +83,7 @@ public interface ServerProxy {
 
     @GET("/groups")
     Call<Void> comminicate();
-/**
+
     //API #7 for In-app Messaging
     @GET("/messages")
     Call<List<Message>> listMessage(@Query("is-emergency") boolean isEmergency);

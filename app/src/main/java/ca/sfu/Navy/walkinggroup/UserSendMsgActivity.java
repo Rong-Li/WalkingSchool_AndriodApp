@@ -44,7 +44,7 @@ public class UserSendMsgActivity extends AppCompatActivity {
     }
 
     private void init() {
-        mId = SavedSharedPreference.getPrefUserId(this);
+        mId = SavedSharedPreference.getPreUserId(this);
         user_id = getIntent().getLongExtra("user_id", -1);
         String token = SavedSharedPreference.getPrefUserToken(UserSendMsgActivity.this);
         mProxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
