@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -32,7 +34,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.Group.AddNewMemberActivity;
@@ -42,6 +47,8 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
+import ca.sfu.Navy.walkinggroup.model.GpsLocation;
+
 import retrofit2.Call;
 
 import static java.security.AccessController.getContext;
@@ -63,8 +70,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng marker_clicked;
     private long groupID;
     private boolean check = false;
-
-
+    private boolean paused = false;
+    private Button btn;
+    private LatLng Destination = new LatLng(49.287586, -123.113560);
+    private int tool = 0;
+    private Date EndTime;
 
 
     @Override
@@ -78,23 +88,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String token = SavedSharedPreference.getPrefUserToken(MapsActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
-
-
+        Function_getUserInfo();
         // 1
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)//provides callbacks that are triggered when
-                                                // the client is connected (onConnected())
-                                                // or temporarily disconnected (onConnectionSuspended()) from the service
+                    // the client is connected (onConnected())
+                    // or temporarily disconnected (onConnectionSuspended()) from the service
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
         }
 
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(30*1000);
+        locationRequest.setInterval(30 * 1000);
         locationRequest.setFastestInterval(15 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        btn = findViewById(R.id.bottonID);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseButtonClicked();
+            }
+        });
     }
 
 
@@ -109,9 +126,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
 
     //
-
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -123,9 +137,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onStop() {
         super.onStop();
         // 3
-        if( mGoogleApiClient != null && mGoogleApiClient.isConnected() ) {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Resume();
+    }
+
+    private void Resume() {
+        if (mGoogleApiClient.isConnected()) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        Pause();
+    }
+
+    private PendingResult<Status> Pause() {
+        Log.i("MyApp","PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE");
+
+        return LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
 
@@ -174,7 +216,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Function_Click();
         //Join Group preparation
         //Get current user info
-        Function_getUserInfo();
+
 
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -296,14 +338,93 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .show();
     }
 
+    public void pauseButtonClicked(){
+        if(paused == false){
+            Pause();
+            paused = true;
+            Toast.makeText(getApplicationContext(),
+                    "Paused tracking",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            btn.setText("Resume GPS tracking Servive");
+        }else{
+            Resume();;
+            paused = false;
+            Toast.makeText(getApplicationContext(),
+                    "Resumed tracking",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            btn.setText("Pause GPS tracking Servive");
+        }
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         Toast.makeText(getApplicationContext(),
-                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!" + location,
                 Toast.LENGTH_LONG)
                 .show();
+
+        double Location_Lat = location.getLatitude();
+        double Location_Lng = location.getLongitude();
+        double Destination_Lat = Destination.latitude;
+        double Destination_Lng = Destination.longitude;
+
+        Location_Lat = roundThreeDecimals(Location_Lat);
+        Destination_Lat = roundThreeDecimals(Destination_Lat);
+
+        Location_Lng = roundThreeDecimals(Location_Lng);
+        Destination_Lng = roundThreeDecimals(Destination_Lng);
+
+        if (Location_Lat == Destination_Lat && Location_Lng == Destination_Lng){
+
+            Log.i("MyApp","Arrived Arrived!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+            tool++;
+
+        }
+        if(tool == 21){ //purpose of waiting for 10 minutes, i.e 20 round of 30secs
+//            EndTime = Calendar.getInstance().getTime();
+//            int temp = EndTime.getMinutes() + 1;
+//            EndTime.setMinutes(temp);
+            Pause();
+            tool = 0;
+        }
+        if(user_login.getId() != null){
+
+            Double a = location.getLatitude();
+            Double b = location.getLongitude();
+            Date c = Calendar.getInstance().getTime();
+//            if(c == EndTime){
+//                Pause();
+//                tool = 0;
+//            }
+            GpsLocation temp = new GpsLocation();
+            temp.setLat(a);
+            temp.setLng(b);
+            temp.setTimestamp(c);
+            Log.i("MyApp","&&&&" + a);
+            Log.i("MyApp","&&&&" + b);
+            Long userID = user_login.getId();
+            Log.i("MyApp","END OF SETTING USERRR");
+            Log.i("MyApp","STARTS ENVOCING CALLPROXY");
+
+            Call<GpsLocation> caller = proxy.uploadGps(userID, temp);
+            ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedLocation -> response2(returnedLocation));
+        }
     }
 
+    private void response2(GpsLocation location) {
+        Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + location.getLat());
+
+    }
+
+    private double roundThreeDecimals(double d)
+    {
+        DecimalFormat twoDForm = new DecimalFormat("#.###");
+        return Double.valueOf(twoDForm.format(d));
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {

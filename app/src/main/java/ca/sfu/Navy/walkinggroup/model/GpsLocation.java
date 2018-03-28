@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by kfhg on 2018/3/27.
  */
 
-class GpsLocation {
+public class GpsLocation {
     private Double lat;
     private Double lng;
     @JsonFormat

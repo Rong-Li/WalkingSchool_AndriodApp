@@ -82,8 +82,10 @@ public class User {
     public List<Group> getLeadsGroups() {
         return leadsGroups;
     }
-
     public GpsLocation getLastGpsLocation(){
+        if (lastGpsLocation == null) {
+            lastGpsLocation = new GpsLocation();
+        }
         return lastGpsLocation;
     }
 
