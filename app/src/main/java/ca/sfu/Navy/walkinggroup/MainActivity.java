@@ -29,8 +29,16 @@ public class MainActivity extends AppCompatActivity {
         manageGroupActivityStart();
     }
 
-    private void manageGroupActivityStart() {
-        Button button = (Button) findViewById(R.id.managegroup_btn);
+    public void list_group(View view){
+        startActivity(new Intent(this,ListGroupActivity.class));
+    }
+
+    public void all_message(View view) {
+        startActivity(new Intent(this,AllMessageActivity.class));
+    }
+
+    private void createGroupActivityStart() {
+        Button button = (Button) findViewById(R.id.creatgroup_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,15 +54,12 @@ public class MainActivity extends AppCompatActivity {
         checkLoggedIn();
     }
 
-    private void checkLoggedIn(){
-        if(SavedSharedPreference.getPrefUserEmail(MainActivity.this).length() == 0)
-        {
+    private void checkLoggedIn() {
+        if (SavedSharedPreference.getPrefUserEmail(MainActivity.this).length() == 0) {
             // call Login Activity
             Intent intent = LoginActivity.newIntent(MainActivity.this);
             startActivity(intent);
-        }
-        else
-        {
+        } else {
             // Stay at the current activity.
             // Assume the JWT authorization token of the user is still valid
             String token = SavedSharedPreference.getPrefUserToken(MainActivity.this);
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void logOutActivityStart(){
+    private void logOutActivityStart() {
         Button button = (Button) findViewById(R.id.logout_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +111,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void monitorActivityStart() {
+        Button button = (Button) findViewById(R.id.monitor_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = MonitorActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
+    }
 
-
-
-
+    public void user_message(View view) {
+        startActivity(new Intent(this,ListUserMessageActivity.class));
+    }
 }
