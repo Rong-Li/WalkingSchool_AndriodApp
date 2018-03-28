@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Group {
     private Long id;
     private String groupDescription;
@@ -72,11 +71,11 @@ public class Group {
     public String toString() {
         return "Group{" +
                 "id=" + id +
-                ", groupDescription='" + groupDescription + '\'' +
-                ", routeLatArray=" + routeLatArray +
-                ", routeLngArray=" + routeLngArray +
-                ", leader=" + leader.toString() +
-                ", memberUsers=" + memberUsers +
+                ", groupDescription '" + groupDescription + '\'' +
+                ", routeLatArray " + routeLatArray +
+                ", routeLngArray " + routeLngArray +
+                ", leader " + leader.toString() +
+                ", memberUsers " + memberUsers +
                 '}';
     }
 }

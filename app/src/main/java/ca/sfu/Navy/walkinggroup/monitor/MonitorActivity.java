@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.R;
+import ca.sfu.Navy.walkinggroup.UserManager.EditUserActivity;
 import ca.sfu.Navy.walkinggroup.adapter.UserListAdapter;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -24,6 +25,7 @@ import retrofit2.Call;
 public class MonitorActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADDUSER = 301;
+    private static final int REQUEST_CODE_EDITUSER = 599;
     private User user_loggedin = new User();
     private User tmp_user = new User();
     private ServerProxy proxy;
@@ -53,6 +55,11 @@ public class MonitorActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
+                break;
+            case REQUEST_CODE_EDITUSER:
+                Intent intent2 = getIntent();
+                finish();
+                startActivity(intent2);
                 break;
         }
     }
@@ -107,6 +114,18 @@ public class MonitorActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
+            }
+        });
+        listView.setLongClickable(true);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                User user = monitorList.get(position);
+                long editUserId = user.getId();
+                // Make intent for edit
+                Intent edit_itent = EditUserActivity.makeIntent(MonitorActivity.this, editUserId);
+                startActivityForResult(edit_itent, REQUEST_CODE_EDITUSER);
+                return true;
             }
         });
     }

@@ -9,20 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import ca.sfu.Navy.walkinggroup.model.ServerProxy;
-import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
+import com.google.android.gms.maps.model.LatLng;
+
+import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
+import ca.sfu.Navy.walkinggroup.model.User;
 
 /**
  * Created by lirongl on 2018-03-13.
  */
 
 public class MessageFragment extends AppCompatDialogFragment {
-    private ServerProxy proxy;
 
+    private LatLng location;
+    private long groupID;
+    private User user;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
-
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.custom_info_window,null);
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -31,6 +33,17 @@ public class MessageFragment extends AppCompatDialogFragment {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         Log.i("MyApp","YOU CLICK THE YESYESYESYES");
+                        MapsActivity activity = (MapsActivity) getActivity();
+                        location = activity.getMarkerLocation();
+                        groupID = activity.getGroupIDByLocation(location);
+                        user = activity.getCurrentUser();
+
+                        Log.i("MyApp","YOU CLICK THE YESYESYESYES" + user);
+                        Log.i("MyApp","YOU CLICK THE YESYESYESYES" + location.latitude);
+                        Log.i("MyApp","YOU CLICK THE YESYESYESYES" + groupID);
+
+                        activity.join_group();
+
 
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -38,7 +51,7 @@ public class MessageFragment extends AppCompatDialogFragment {
                         break;
 //                    case DialogInterface.BUTTON_NEUTRAL:
 //                        Log.i("MyApp","YOU CLICK THE CANCELCANCELCANCEL");
-//                        break;
+//                        break
                 }
             }
         };

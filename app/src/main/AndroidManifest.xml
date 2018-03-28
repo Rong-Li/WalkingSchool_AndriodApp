@@ -44,14 +44,20 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".monitor.AddMonitorActivity" />
         <activity android:name=".monitor.MonitoredbyActivity" />
-        <activity android:name=".monitor.AddMonitoredbyActivity"></activity>
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".CreateGroupActivity"></activity>
-        <activity android:name=".AllMessageActivity" />
-        <activity android:name=".ListGroupActivity" />
-        <activity android:name=".GroupSendMsgActivity" />
-        <activity android:name=".ListUserMessageActivity" />
-        <activity android:name=".UserSendMsgActivity" />
+        <activity android:name=".monitor.AddMonitoredbyActivity" />
+        android:label="@string/title_activity_maps" />
+        <activity android:name=".Group.CreateGroupActivity" />
+        <activity android:name=".Group.ManageGroupActivity" />
+        <activity android:name=".Group.ListGroupAsLeaderActivity" />
+        <activity android:name=".Group.ListGroupAsMemberActivity" />
+        <activity android:name=".Group.ListGroupAsParentActivity" />
+        <activity android:name=".Group.MemberListActivity" />
+        <activity android:name=".Group.MemberInfo" />
+        <activity android:name=".Group.AddNewMemberActivity" />
+        <activity android:name=".Group.UpdateGroupListActivity" />
+        <activity android:name=".Group.UpdateGroupActivity" />
+        <activity android:name=".UserManager.UserCenterActivity" />
+        <activity android:name=".UserManager.EditUserActivity" />
     </application>
 
 </manifest>

@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,12 +35,16 @@ import com.google.android.gms.location.LocationListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.Group.AddNewMemberActivity;
+import ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
 import retrofit2.Call;
+
+import static java.security.AccessController.getContext;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -49,9 +54,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleApiClient mGoogleApiClient;
+    private LocationRequest locationRequest;
     private Location mLastLocation;
     private ServerProxy proxy;
-    private List<Group> groups = new ArrayList<>();
+    private List<Group> List_groups = new ArrayList<>();
+    private List<LatLng> List_startingLocations = new ArrayList<>();
+    private User user_login = new User();
+    private LatLng marker_clicked;
+    private long groupID;
+    private boolean check = false;
 
 
 
@@ -68,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
 
+
         // 1
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -79,6 +91,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .build();
         }
 
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(30*1000);
+        locationRequest.setFastestInterval(15 * 1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
 
@@ -116,10 +132,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        /////enable zoom in zoom out; enable
+
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
-        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(MapsActivity.this));
 
 
     }
@@ -127,50 +141,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //checks if the app has been granted the ACCESS_FINE_LOCATION permission.//////******main purpose
     //If it hasn’t, then request it from the user.
     //it is called by onconnected() function, and onconnected() is called if the clients is connected!!!!!!*********
-
     private void setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
                     {android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
             return;
+
         }
 
-            Function_Click();
-            Function_callProxy();
 
-            mMap.setMyLocationEnabled(true);
-            LocationAvailability locationAvailability =
-                    LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
-            if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
-                // 3
-                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                // 4
-                if (mLastLocation != null) {
-                    LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
-                            .getLongitude());
-                    placeMarkerOnMap(currentLocation);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
-                }
+
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
+
+        LocationAvailability locationAvailability =
+                LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient);
+        if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
+            // 3
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            // 4
+            if (mLastLocation != null) {
+                LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
+                        .getLongitude());
+                //placeMarkerOnMap(currentLocation);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
             }
+        }
+        mMap.setMyLocationEnabled(true);
+
+        //
+        Function_callProxy();
+        Function_Click();
+        //Join Group preparation
+        //Get current user info
+        Function_getUserInfo();
+
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                return;
+            } else {
+                onStart();
+            }
+        }
+    }
+
     private void Function_Click(){
+
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-//                View mWindow;
-//                mWindow = LayoutInflater.from(MapsActivity.this).inflate(R.layout.custom_info_window, null);
-//                //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
-//                Button button = (Button) mWindow.findViewById(R.id.YESbtnID);
-//                button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
-//                Log.i("MyApp","****************************");
-//                }
-//            });
+                marker_clicked = marker.getPosition();
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 MessageFragment dialog = new MessageFragment();
                 dialog.show(manager, "MEssgaDialog");
@@ -186,21 +214,94 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ServerProxyBuilder.callProxy(MapsActivity.this, caller, this::response);
     }
 
-
-    private void response(List<Group> returnedGroups) {
-        Log.w("Register Server", "*********************** " + returnedGroups.toString());
-        for(int i =0; i < returnedGroups.size(); i++)
-        {
-            Group temp = returnedGroups.get(i);
-            groups.add(temp);
-        }
-        Log.w("Register Server", "*********************** " + returnedGroups.toString());
+    private void Function_getUserInfo() {
+        String email = SavedSharedPreference.getPrefUserEmail(MapsActivity.this);
+        // Make call to retrieve user info
+        Call<User> caller = proxy.getUserByEmail(email);
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response(returnedUser));
     }
 
+    private void response(User user){
+        Log.w("Register Server", "Server replied with user: " + user.toString());
+        user_login = user;
+    }
+
+    private void response(List<Group> returnedGroups) {
+//        Log.i("Register Server", "*********************** " + returnedGroups.toString());
+        List_groups = returnedGroups;
+        Response_updateList();
+        Response_showGroups();
+    }
+
+    private void Response_updateList(){
+        double ini_Lat;
+        double ini_Lng;
+        LatLng coord;
+        for(Group group: List_groups){
+            if(group.getRouteLatArray().isEmpty() || group.getRouteLngArray().isEmpty()){
+                coord = new LatLng(0.0, 0.0);
+                List_startingLocations.add(coord);
+            }
+            else{
+                ini_Lat = (double) group.getRouteLatArray().get(0);
+                ini_Lng = (double) group.getRouteLngArray().get(0);
+                Log.i("MyApp","！！！！！！$$$$$$$$$$$！！！！！" + ini_Lat);
+                Log.i("MyApp","！！！！！$$$$$$$$$$$！！！！！" + ini_Lng);
+
+                coord = new LatLng(ini_Lat, ini_Lng);
+                List_startingLocations.add(coord);
+            }
+
+        }
+    }
+
+    private void Response_showGroups(){
+        for (int i = 0; i < List_startingLocations.size(); i++){
+            placeMarkerOnMap(List_startingLocations.get(i));
+
+        }
+    }
+
+//    public static void joinGroup(){
+//        public static Intent newIntent(Context context){
+//    }
+
+    public long getGroupIDByLocation(LatLng location){
+        //long temp = -1;
+
+        for (int i = 0; i < List_startingLocations.size(); i++){
+            if (List_startingLocations.get(i).latitude == location.latitude && List_startingLocations.get(i).longitude == location.longitude){
+                return List_groups.get(i).getId();
+            }
+        }
+        return -1;
+    }
+
+    public User getCurrentUser(){
+        return user_login;
+    }
+    public LatLng getMarkerLocation(){
+        return marker_clicked;
+    }
+    public void join_group(){
+        groupID = getGroupIDByLocation(marker_clicked);
+        Call<Group> caller = proxy.addNewGroupMember(groupID, user_login);
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroup -> response(returnedGroup));
+    }
+    private void response(Group group){
+        Log.i("MyApp","SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Toast.makeText(getApplicationContext(),
+                "SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                Toast.LENGTH_LONG)
+                .show();
+    }
 
     @Override
     public void onLocationChanged(Location location) {
-
+        Toast.makeText(getApplicationContext(),
+                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!",
+                Toast.LENGTH_LONG)
+                .show();
     }
 
 
@@ -218,12 +319,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-//    @Override
-//    public boolean onMarkerClick(Marker marker) {
-//        Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
-//        return false;
-//    }
 
 
 
