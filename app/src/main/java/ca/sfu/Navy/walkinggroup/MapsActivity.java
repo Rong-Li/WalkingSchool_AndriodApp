@@ -424,6 +424,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void response2(GpsLocation location) {
         Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + location.getLat());
+        Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + location.getLng());
 
     }
 

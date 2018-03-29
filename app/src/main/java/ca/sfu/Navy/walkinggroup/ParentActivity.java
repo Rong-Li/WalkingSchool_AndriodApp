@@ -78,6 +78,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private Date EndTime;
     private List<User> List_children = new ArrayList<>();
     private List<GpsLocation> List_childrenLocations = new ArrayList<>();
+    private GpsLocation default_location = new GpsLocation();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +103,8 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
                     .build();
         }
 
-//        locationRequest = new LocationRequest();
-//        locationRequest.setInterval(30 * 1000);
-//        locationRequest.setFastestInterval(15 * 1000);
-//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        default_location.setLat(0.0);
+        default_location.setLng(0.0);
 
     }
 
@@ -225,6 +224,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.getEmail());
         Log.w("Register Server", "Server replied with user: " + user.getMonitorsUsers());
+        Log.w("Register Server", "Server replied with user: " + user.getMonitoredByUsers());
         Log.w("Register Server", "Server replied with user: " + user.getLastGpsLocation());
         user_login = user;
         List_children = user.getMonitorsUsers();
@@ -233,8 +233,12 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     }
 
     private void response_updateList(){
-        for(User user: List_children) {
-            List_childrenLocations.add(user.getLastGpsLocation());
+        for(User child: List_children) {
+            if(child.getLastGpsLocation().getLat() == null || child.getLastGpsLocation().getLng() == null){
+                child.setLastGpsLocation(default_location);
+            }
+            List_childrenLocations.add(child.getLastGpsLocation());
+            Log.w("Register Server", "SUCCESSFULLY ADDED to List_childrenLocations");
         }
     }
 
@@ -246,14 +250,10 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
 //    }
 
 
-    public User getCurrentUser(){
-        return user_login;
-    }
-
     private void response_showChildren(){
         for (int i = 0; i < List_childrenLocations.size(); i++){
-            if(List_childrenLocations.get(i) != null){
-                LatLng temp = new LatLng(List_children.get(i).getLastGpsLocation().getLat(), List_children.get(i).getLastGpsLocation().getLng());
+            if(List_childrenLocations.get(i) != default_location){
+                LatLng temp = new LatLng(List_childrenLocations.get(i).getLat(), List_childrenLocations.get(i).getLng());
                 placeMarkerOnMap(temp);
             }
         }
