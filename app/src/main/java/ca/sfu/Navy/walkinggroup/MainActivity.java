@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import ca.sfu.Navy.walkinggroup.Group.ManageGroupActivity;
+import ca.sfu.Navy.walkinggroup.Message.AllMessageActivity;
+import ca.sfu.Navy.walkinggroup.Message.ListUserMessageActivity;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -30,16 +32,12 @@ public class MainActivity extends AppCompatActivity {
 //        manageGroupActivityStart();
     }
 
-    public void list_group(View view){
-        startActivity(new Intent(this,ListGroupActivity.class));
-    }
-
     public void all_message(View view) {
         startActivity(new Intent(this,AllMessageActivity.class));
     }
 
-    private void createGroupActivityStart() {
-        Button button = (Button) findViewById(R.id.creatgroup_btn);
+    private void manageGroupActivityStart() {
+        Button button = (Button) findViewById(R.id.managegroup_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,16 +110,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void monitorActivityStart() {
-        Button button = (Button) findViewById(R.id.monitor_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = MonitorActivity.newIntent(MainActivity.this);
-                startActivity(intent);
-            }
-        });
-    }
 
     public void user_message(View view) {
         startActivity(new Intent(this,ListUserMessageActivity.class));

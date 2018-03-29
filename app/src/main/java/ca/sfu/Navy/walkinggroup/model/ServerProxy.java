@@ -111,4 +111,6 @@ public interface ServerProxy {
     Call<MarkResponse> changeReadStatus(@Path("messageId") long messageId, @Path("userId") long userId, @Body Boolean status);
 
 
+    @POST("/messages/{messageID}/reaby/{userId}")
+    Call<Message> changeReadStatus(@Body Boolean status);
 }
