@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -168,12 +169,26 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                marker_clicked = marker.getPosition();
-                android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-                MessageFragment dialog = new MessageFragment();
-                dialog.show(manager, "MEssgaDialog");
 
-                Log.i("MyApp","showed the dialog");
+                User temp = new User();
+                marker_clicked = marker.getPosition();
+                for (int i = 0; i < List_children.size(); i++){
+                    if (List_children.get(i).getLastGpsLocation().getLat() == marker_clicked.latitude && List_children.get(i).getLastGpsLocation().getLng() == marker_clicked.longitude){
+                        temp = List_children.get(i);
+                    }
+                }
+                if (temp.getName() == null){
+                    Toast.makeText(getApplicationContext(),
+                            "Didn't find the child",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+                else{
+                    android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+                    SecondMessageFragment dialog = new SecondMessageFragment();
+                    dialog.show(manager, "MEssgaDialog");
+                }
+
                 return false;
             }
         });
