@@ -27,7 +27,7 @@ import ca.sfu.Navy.walkinggroup.model.User;
 public class SecondMessageFragment extends AppCompatDialogFragment {
 
     private User user;
-
+    TextView textView;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,7 +53,12 @@ public class SecondMessageFragment extends AppCompatDialogFragment {
                 .create();
     }
 
-
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        textView = (TextView) getDialog().findViewById(R.id.infoText1);
+//        textView.setText("qefeqf");
+//    }
 
 
 }

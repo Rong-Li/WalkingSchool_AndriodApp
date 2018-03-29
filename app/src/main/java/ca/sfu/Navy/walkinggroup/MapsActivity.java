@@ -453,6 +453,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // 2
         mMap.addMarker(markerOptions);
     }
+
+
     public static Intent newIntent(Context context){
         return new Intent(context, MapsActivity.class);
     }
