@@ -13,10 +13,10 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
+import ca.sfu.Navy.walkinggroup.monitor.AddMonitorActivity;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
-
     private ServerProxy proxy;
     private EditText email_edit;
     private EditText pw_edit;
@@ -34,13 +34,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void setupEditText(){
-        email_edit = (EditText) findViewById(R.id.login_edit_email);
-        pw_edit = (EditText) findViewById(R.id.login_edit_pw);
+    private void setupEditText() {
+        email_edit = findViewById(R.id.login_edit_email);
+        pw_edit = findViewById(R.id.login_edit_pw);
     }
 
-    private void setupSignupButton(){
-        Button signup = (Button) findViewById(R.id.login_btn_signup);
+    private void setupSignupButton() {
+        Button signup = findViewById(R.id.login_btn_signup);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void setupLoginButton(){
-        Button login = (Button) findViewById(R.id.login_btn_login);
+    private void setupLoginButton() {
+        Button login = findViewById(R.id.login_btn_login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,12 +63,11 @@ public class LoginActivity extends AppCompatActivity {
                 user.setPassword(pw);
 
                 // Receive token
-                ServerProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
+                ServerProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
 
                 // Make call
                 Call<Void> caller = proxy.login(user);
                 ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
-
             }
         });
     }
@@ -84,12 +83,20 @@ public class LoginActivity extends AppCompatActivity {
         Log.w("Login Server", "Server replied to login request (no content was expected).");
         String email = email_edit.getText().toString();
         String pw = pw_edit.getText().toString();
-        SavedSharedPreference.setUserEmail(LoginActivity.this,email);
+        SavedSharedPreference.setUserEmail(LoginActivity.this, email);
         SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
+        Call<User> caller = proxy.getUserByEmail(email);
+        ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUser(returnedUser));
+    }
+
+    private void getUser(User returnedUser) {
+        SavedSharedPreference.setPrefUserId(this, returnedUser.getId());
+        SavedSharedPreference.setPrefUserPw(this, returnedUser.getPassword());
+        SavedSharedPreference.setUserEmail(this, returnedUser.getEmail());
         finish();
     }
 
-    public static Intent newIntent(Context context){
+    public static Intent newIntent(Context context) {
         return new Intent(context, LoginActivity.class);
     }
 }

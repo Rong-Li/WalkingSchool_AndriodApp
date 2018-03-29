@@ -49,9 +49,9 @@ public class UpdateGroupActivity extends AppCompatActivity {
     }
 
     private void setUpEditText() {
-        description = (EditText) findViewById(R.id.group_description_txt);
-        latitude = (EditText) findViewById(R.id.group_latitude_txt);
-        longitude = (EditText) findViewById(R.id.group_longitude_txt);
+        description = findViewById(R.id.group_description_txt);
+        latitude = findViewById(R.id.group_latitude_txt);
+        longitude = findViewById(R.id.group_longitude_txt);
 
         Call<Void> caller = proxy.comminicate();
         ServerProxyBuilder.callProxy(UpdateGroupActivity.this, caller, returnedNothing -> responses(returnedNothing));
@@ -66,7 +66,7 @@ public class UpdateGroupActivity extends AppCompatActivity {
     }
 
     private void setUpUpdateButton() {
-        Button button = (Button) findViewById(R.id.update_btn);
+        Button button = findViewById(R.id.update_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +104,7 @@ public class UpdateGroupActivity extends AppCompatActivity {
     }
 
     private void setUpDeleteButton() {
-        Button button = (Button) findViewById(R.id.delete_btn);
+        Button button = findViewById(R.id.delete_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

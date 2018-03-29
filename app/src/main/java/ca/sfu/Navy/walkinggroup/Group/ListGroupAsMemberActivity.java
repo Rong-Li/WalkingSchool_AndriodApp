@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.R;
-import ca.sfu.Navy.walkinggroup.adapter.GroupListAdapter;
+import ca.sfu.Navy.walkinggroup.adapter.GroupArrayAdapter;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -27,7 +27,7 @@ public class ListGroupAsMemberActivity extends AppCompatActivity {
     private User user_id;
     private Group temp_group;
     private ListView listView;
-    private GroupListAdapter mAdapter;
+    private GroupArrayAdapter mAdapter;
     private int index = 0;
     private List<Group> groupList = new ArrayList<>();
 
@@ -113,7 +113,7 @@ public class ListGroupAsMemberActivity extends AppCompatActivity {
         // Configure the list view
         listView = (ListView) findViewById(R.id.group_leader_list);
         // Build Adapter
-        mAdapter = new GroupListAdapter(ListGroupAsMemberActivity.this, groupList);
+        mAdapter = new GroupArrayAdapter(ListGroupAsMemberActivity.this, groupList);
         listView.setAdapter(mAdapter);
         clickCallBack();
     }

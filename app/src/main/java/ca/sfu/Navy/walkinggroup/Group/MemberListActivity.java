@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.R;
-import ca.sfu.Navy.walkinggroup.adapter.GroupListAdapter;
 import ca.sfu.Navy.walkinggroup.adapter.UserListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
@@ -46,7 +45,7 @@ public class MemberListActivity extends AppCompatActivity {
         setUpAddMemberButton();
         extractDataFromIntent();
         getGroupMemberId();
-        TextView groupName = (TextView) findViewById(R.id.group_description_txt);
+        TextView groupName = findViewById(R.id.group_description_txt);
         groupName.setText(groupDescription);
     }
 
