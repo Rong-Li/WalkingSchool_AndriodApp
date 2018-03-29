@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -19,12 +20,19 @@ import java.util.List;
 import ca.sfu.Navy.walkinggroup.GroupSendMsgActivity;
 import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.HandleMsgStatusListener;
 import ca.sfu.Navy.walkinggroup.model.Message;
+import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 
 public class MessageListAdapter extends BaseAdapter {
     private List<Message> messages;
     private LayoutInflater mInflater;
     private Context context;
+    private HandleMsgStatusListener listener;
+
+    public void setListener(HandleMsgStatusListener listener) {
+        this.listener = listener;
+    }
 
     public MessageListAdapter(Context context) {
         this.messages = new ArrayList<>();
@@ -62,6 +70,8 @@ public class MessageListAdapter extends BaseAdapter {
             viewHolder.mUserIdText = convertView.findViewById(R.id.user_text);
             viewHolder.mMessageText = convertView.findViewById(R.id.message_text);
             viewHolder.mTimeText = convertView.findViewById(R.id.time_text);
+            viewHolder.mReadBtn = convertView.findViewById(R.id.msg_read);
+            viewHolder.mUnreadBtn = convertView.findViewById(R.id.msg_unread);
         }
         viewHolder = (ViewHolder) convertView.getTag();
         Message message = messages.get(position);
@@ -69,6 +79,14 @@ public class MessageListAdapter extends BaseAdapter {
         viewHolder.mTimeText.setText(sdf.format(message.getTimestamp()));
         viewHolder.mMessageText.setText(message.getText());
         viewHolder.mUserIdText.setText(message.getFromUser().getId() + "");
+        viewHolder.mReadBtn.setOnClickListener(v -> {
+            if (listener != null)
+                listener.read(message.getId(), SavedSharedPreference.getPreUserId(context), true);
+        });
+        viewHolder.mUnreadBtn.setOnClickListener(v -> {
+            if (listener != null)
+                listener.read(message.getId(), SavedSharedPreference.getPreUserId(context), false);
+        });
         return convertView;
     }
 
@@ -76,5 +94,7 @@ public class MessageListAdapter extends BaseAdapter {
         private TextView mUserIdText;
         private TextView mTimeText;
         private TextView mMessageText;
+        private Button mReadBtn;
+        private Button mUnreadBtn;
     }
 }

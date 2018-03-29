@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.adapter.MessageListAdapter;
+import ca.sfu.Navy.walkinggroup.model.HandleMsgStatusListener;
+import ca.sfu.Navy.walkinggroup.model.MarkResponse;
 import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.SendMessage;
@@ -35,6 +37,9 @@ public class UserSendMsgActivity extends AppCompatActivity {
     private long user_id;
     private long mId;
     private ArrayList<Message> messages;
+    private HandleMsgStatusListener listener;
+    private boolean isRead;
+    private CheckBox readCheckBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +49,7 @@ public class UserSendMsgActivity extends AppCompatActivity {
     }
 
     private void init() {
-        mId = SavedSharedPreference.getPrefUserId(this);
+        mId = SavedSharedPreference.getPreUserId(this);
         user_id = getIntent().getLongExtra("user_id", -1);
         String token = SavedSharedPreference.getPrefUserToken(UserSendMsgActivity.this);
         mProxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
@@ -62,6 +67,21 @@ public class UserSendMsgActivity extends AppCompatActivity {
                 getUserList();
             }
         });
+        readCheckBtn = findViewById(R.id.read_btn);
+        readCheckBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRead = isChecked;
+                getUserList();
+            }
+        });
+        listener = (msgId, userId, status) -> {
+            Call<MarkResponse> caller = mProxy.changeReadStatus(msgId, userId, status);
+            ServerProxyBuilder.callProxy(UserSendMsgActivity.this, caller, ans -> {
+                Toast.makeText(UserSendMsgActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+            });
+        };
+        mMessageListAdapter.setListener(listener);
         getUserList();
     }
 
@@ -88,14 +108,14 @@ public class UserSendMsgActivity extends AppCompatActivity {
 
     public void getUserList() {
         Log.e("test", isEmergency + "");
-        Call<List<Message>> caller = mProxy.listUserMessage(mId, isEmergency);
+        Call<List<Message>> caller = mProxy.listUserMessage(mId, isEmergency,isRead ? "read" : "unread");
         ServerProxyBuilder.callProxy(UserSendMsgActivity.this, caller, this::showMessage);
     }
 
     private void showMessage(List<Message> messages) {
         this.messages = new ArrayList<>();
-        for (Message message:messages){
-            if (message.getFromUser().getId()==user_id){
+        for (Message message : messages) {
+            if (message.getFromUser().getId() == user_id) {
                 this.messages.add(message);
             }
         }

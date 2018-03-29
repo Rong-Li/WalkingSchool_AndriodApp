@@ -38,7 +38,7 @@ public class ListGroupActivity extends AppCompatActivity {
         String token = SavedSharedPreference.getPrefUserToken(ListGroupActivity.this);
         mProxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
         mGroupList = findViewById(R.id.group_list);
-        mId = SavedSharedPreference.getPrefUserId(this);
+        mId = SavedSharedPreference.getPreUserId(this);
         mGroupListAdapter = new GroupListAdapter(this);
         mGroupList.setAdapter(mGroupListAdapter);
 

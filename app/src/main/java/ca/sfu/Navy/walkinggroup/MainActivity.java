@@ -12,6 +12,7 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
+import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         UserCenterStart();
         MapActivityStart();
         logOutActivityStart();
-        manageGroupActivityStart();
+//        manageGroupActivityStart();
     }
 
     public void list_group(View view){
