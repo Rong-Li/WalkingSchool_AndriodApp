@@ -7,11 +7,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.adapter.MessageListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.HandleMsgStatusListener;
+import ca.sfu.Navy.walkinggroup.model.MarkResponse;
 import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -25,6 +28,9 @@ public class AllMessageActivity extends AppCompatActivity {
     private ServerProxy mProxy;
     private MessageListAdapter mMessageListAdapter;
     private boolean isEmergency;
+    private HandleMsgStatusListener listener;
+    private boolean isRead;
+    private CheckBox readCheckBtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +46,14 @@ public class AllMessageActivity extends AppCompatActivity {
         mListView = findViewById(R.id.message_list);
         mMessageListAdapter = new MessageListAdapter(this);
         mListView.setAdapter(mMessageListAdapter);
+        readCheckBtn = findViewById(R.id.read_btn);
+        readCheckBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRead = isChecked;
+                getMessage();
+            }
+        });
         mRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -47,12 +61,19 @@ public class AllMessageActivity extends AppCompatActivity {
                 getMessage();
             }
         });
+        listener = (msgId, userId, status) -> {
+            Call<MarkResponse> caller = mProxy.changeReadStatus(msgId, userId, status);
+            ServerProxyBuilder.callProxy(AllMessageActivity.this, caller, ans -> {
+                Toast.makeText(AllMessageActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+            });
+        };
+        mMessageListAdapter.setListener(listener);
         getMessage();
     }
 
-    public void getMessage(){
+    public void getMessage() {
         // Make call
-        Call<List<Message>> caller = mProxy.listMessage(isEmergency);
+        Call<List<Message>> caller = mProxy.listMessage(isEmergency, isRead ? "read" : "unread");
         ServerProxyBuilder.callProxy(AllMessageActivity.this, caller, this::response);
     }
 

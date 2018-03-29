@@ -37,7 +37,7 @@ public class ListUserMessageActivity extends AppCompatActivity {
 
     private void init() {
         this.messageUsers = new ArrayList<>();
-        mId = SavedSharedPreference.getPrefUserId(this);
+        mId = SavedSharedPreference.getPreUserId(this);
         String token = SavedSharedPreference.getPrefUserToken(ListUserMessageActivity.this);
         mProxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
         mUserList = findViewById(R.id.user_list);

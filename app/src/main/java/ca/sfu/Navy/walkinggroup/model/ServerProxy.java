@@ -83,17 +83,17 @@ public interface ServerProxy {
 
     @GET("/groups")
     Call<Void> comminicate();
-/**
-    //API #7 for In-app Messaging
-    @GET("/messages")
-    Call<List<Message>> listMessage(@Query("is-emergency") boolean isEmergency);
 
     //API #7 for In-app Messaging
     @GET("/messages")
-    Call<List<Message>> listUserMessage(@Query("foruser") long user_id, @Query("is-emergency") boolean isEmergency);
+    Call<List<Message>> listMessage(@Query("is-emergency") boolean isEmergency, @Query("status") String status);
+
+    //API #7 for In-app Messaging
+    @GET("/messages")
+    Call<List<Message>> listUserMessage(@Query("foruser") long user_id, @Query("is-emergency") boolean isEmergency, @Query("status") String status);
 
     @GET("/messages")
-    Call<List<Message>> listGroupMessage(@Query("togroup") long group_id, @Query("is-emergency") boolean isEmergency);
+    Call<List<Message>> listGroupMessage(@Query("togroup") long group_id, @Query("is-emergency") boolean isEmergency, @Query("status") String status);
 
     @POST("/messages/togroup/{groupId}")
     Call<Message> messageToGroup(@Path("groupId") long groupId, @Body SendMessage sendMessage);
@@ -107,8 +107,8 @@ public interface ServerProxy {
     @DELETE("/messages/{id}")
     Call<Void> deleteMessage();
 
-    @POST("/messages/{messageID}/reaby/{userId}")
-    Call<Message> changeReadStatus(@Body Boolean status);
+    @POST("/messages/{messageId}/readby/{userId}")
+    Call<MarkResponse> changeReadStatus(@Path("messageId") long messageId, @Path("userId") long userId, @Body Boolean status);
 
 
 }

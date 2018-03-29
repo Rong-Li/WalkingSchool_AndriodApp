@@ -15,6 +15,8 @@ import android.widget.Toast;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.adapter.MessageListAdapter;
+import ca.sfu.Navy.walkinggroup.model.HandleMsgStatusListener;
+import ca.sfu.Navy.walkinggroup.model.MarkResponse;
 import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.SendMessage;
@@ -32,6 +34,9 @@ public class GroupSendMsgActivity extends AppCompatActivity {
     private ListView mMessageList;
     private MessageListAdapter mMessageListAdapter;
     private long group_id;
+    private HandleMsgStatusListener listener;
+    private boolean isRead;
+    private CheckBox readCheckBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +56,14 @@ public class GroupSendMsgActivity extends AppCompatActivity {
         mMessageList = findViewById(R.id.message_list);
         mMessageListAdapter = new MessageListAdapter(this);
         mMessageList.setAdapter(mMessageListAdapter);
+        readCheckBtn = findViewById(R.id.read_btn);
+        readCheckBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRead = isChecked;
+                getGroupList();
+            }
+        });
         emergencyBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -58,6 +71,13 @@ public class GroupSendMsgActivity extends AppCompatActivity {
                 getGroupList();
             }
         });
+        listener = (msgId, userId, status) -> {
+            Call<MarkResponse> caller = mProxy.changeReadStatus(msgId, userId, status);
+            ServerProxyBuilder.callProxy(GroupSendMsgActivity.this, caller, ans -> {
+                Toast.makeText(GroupSendMsgActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+            });
+        };
+        mMessageListAdapter.setListener(listener);
         getGroupList();
     }
 
@@ -83,8 +103,8 @@ public class GroupSendMsgActivity extends AppCompatActivity {
     }
 
     public void getGroupList() {
-        Log.e("test",isEmergency+"");
-        Call<List<Message>> caller = mProxy.listGroupMessage(group_id, isEmergency);
+        Log.e("test", isEmergency + "");
+        Call<List<Message>> caller = mProxy.listGroupMessage(group_id, isEmergency,isRead ? "read" : "unread");
         ServerProxyBuilder.callProxy(GroupSendMsgActivity.this, caller, this::showMessage);
     }
 

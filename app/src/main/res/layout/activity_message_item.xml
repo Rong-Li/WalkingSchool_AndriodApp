@@ -33,6 +33,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="2013.09.12" />
+
+            <Button
+                android:id="@+id/msg_read"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:background="@drawable/ic_launcher_background"
+                android:gravity="center"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/msg_unread"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/ic_launcher_background"
+                android:gravity="center"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
