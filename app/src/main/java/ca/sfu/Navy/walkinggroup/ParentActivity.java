@@ -1,5 +1,6 @@
 package ca.sfu.Navy.walkinggroup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +11,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -154,7 +158,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
             }
         }
         mMap.setMyLocationEnabled(true);
-
+        mMap.setInfoWindowAdapter(new CustomWindowAdapter(ParentActivity.this));
         //
         Function_Click();
         //Join Group preparation
@@ -184,9 +188,22 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
                             .show();
                 }
                 else{
-                    android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-                    SecondMessageFragment dialog = new SecondMessageFragment();
-                    dialog.show(manager, "MEssgaDialog");
+                    Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+                    View mWindow;
+                    mWindow = LayoutInflater.from(ParentActivity.this).inflate(R.layout.custom_info_window, null);
+                    TextView textView1 = (TextView) mWindow.findViewById(R.id.infoText1);
+                    TextView textView2 = (TextView) mWindow.findViewById(R.id.infoText2);
+
+                    textView1.setText("**********!!!!!!!!@@@@@@@@@@");
+                    //textView2.setText(user_clicked.getLastGpsLocation().getTimestamp().toString());
+                    //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+//                    Button button = (Button) mWindow.findViewById(R.id.YESbtnID);
+//                    button.setOnClickListener(new View.OnClickListener() {
+//                 @Override
+//                    public void onClick(View view) {
+//                    //Toast.makeText(getApplicationContext(),"The Marker is Clicked!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+//                    Log.i("MyApp","****************************");
+//
                 }
 
                 return false;
