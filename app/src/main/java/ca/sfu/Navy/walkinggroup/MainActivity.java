@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void manageGroupActivityStart() {
-        Button button = (Button) findViewById(R.id.creatgroup_btn);
+        Button button = (Button) findViewById(R.id.managegroup_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
