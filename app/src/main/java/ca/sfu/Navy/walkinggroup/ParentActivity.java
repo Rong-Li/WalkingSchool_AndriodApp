@@ -60,6 +60,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private GpsLocation default_location = new GpsLocation();
     private User user_onPurpose = new User();
     private int index = 0;
+    private User user_clicked = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,14 +171,13 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                User temp = new User();
                 marker_clicked = marker.getPosition();
                 for (int i = 0; i < List_children.size(); i++){
                     if (List_children.get(i).getLastGpsLocation().getLat() == marker_clicked.latitude && List_children.get(i).getLastGpsLocation().getLng() == marker_clicked.longitude){
-                        temp = List_children.get(i);
+                        user_clicked = List_children.get(i);
                     }
                 }
-                if (temp.getName() == null){
+                if (user_clicked.getName() == null){
                     Toast.makeText(getApplicationContext(),
                             "Didn't find the child",
                             Toast.LENGTH_SHORT)
@@ -195,6 +195,9 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     }
 
 
+    public User getUserClicked_forFragment(){
+        return user_clicked;
+    }
     private void Function_getUserInfo() {
         String email = SavedSharedPreference.getPrefUserEmail(ParentActivity.this);
         // Make call to retrieve user info

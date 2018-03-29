@@ -1,5 +1,6 @@
 package ca.sfu.Navy.walkinggroup;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,8 +9,13 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import org.w3c.dom.Text;
 
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.User;
@@ -20,13 +26,14 @@ import ca.sfu.Navy.walkinggroup.model.User;
 
 public class SecondMessageFragment extends AppCompatDialogFragment {
 
-    private LatLng location;
-    private long groupID;
     private User user;
+
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.custom_info_window,null);
-
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.second_custom_info_window,null);
+//        ParentActivity activity = (ParentActivity) getActivity();
+//        user = activity.getUserClicked_forFragment();
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
@@ -45,4 +52,8 @@ public class SecondMessageFragment extends AppCompatDialogFragment {
 
                 .create();
     }
+
+
+
+
 }
