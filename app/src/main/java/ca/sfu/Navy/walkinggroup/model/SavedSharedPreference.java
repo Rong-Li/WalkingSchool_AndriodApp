@@ -56,7 +56,7 @@ public class SavedSharedPreference {
         return getSharedPreferences(context).getString(PREF_USER_TOKEN, "");
     }
 
-    public static Long getPrefUserId(Context context){
+    public static Long getPreUserId(Context context){
         return getSharedPreferences(context).getLong(PREF_USER_ID, 0);
     }
 

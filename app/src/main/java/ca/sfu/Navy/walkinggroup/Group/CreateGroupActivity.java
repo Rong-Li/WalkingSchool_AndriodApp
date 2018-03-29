@@ -41,7 +41,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     }
 
     private void setupCreateNewGroupbtn() {
-        Button btn = (Button) findViewById(R.id.creatgroup_btn);
+        Button btn = findViewById(R.id.creatgroup_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

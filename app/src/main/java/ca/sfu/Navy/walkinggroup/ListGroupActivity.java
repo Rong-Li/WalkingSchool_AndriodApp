@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup.Message;
+package ca.sfu.Navy.walkinggroup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,10 +8,11 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.adapter.GroupListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;

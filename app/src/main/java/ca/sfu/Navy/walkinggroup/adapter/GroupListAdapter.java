@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import ca.sfu.Navy.walkinggroup.Message.GroupSendMsgActivity;
+import ca.sfu.Navy.walkinggroup.GroupSendMsgActivity;
 import ca.sfu.Navy.walkinggroup.R;
 import ca.sfu.Navy.walkinggroup.model.Group;
 

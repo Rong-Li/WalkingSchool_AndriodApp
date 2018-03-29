@@ -66,7 +66,7 @@ public class AddNewMemberActivity extends AppCompatActivity {
         });
     }
 
-    private void response(Group group) {
+    private void response(Group group){
         Log.w("Register Server", "Server replied with: " + group.toString());
         Toast.makeText(getApplicationContext(),
                 "Add new Member Successfully",
@@ -75,7 +75,7 @@ public class AddNewMemberActivity extends AppCompatActivity {
         finish();
     }
 
-    private void setUpCancelButton(){
+    private void setUpCancelButton() {
         Button button = (Button) findViewById(R.id.cancel_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

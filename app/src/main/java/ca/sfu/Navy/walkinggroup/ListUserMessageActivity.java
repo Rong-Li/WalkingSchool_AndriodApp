@@ -1,16 +1,18 @@
-package ca.sfu.Navy.walkinggroup.Message;
+package ca.sfu.Navy.walkinggroup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.sfu.Navy.walkinggroup.R;
+import ca.sfu.Navy.walkinggroup.adapter.GroupListAdapter;
 import ca.sfu.Navy.walkinggroup.adapter.MessageUserListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.MessageUser;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
