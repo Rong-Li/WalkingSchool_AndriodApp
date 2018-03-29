@@ -79,6 +79,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private List<User> List_children = new ArrayList<>();
     private List<GpsLocation> List_childrenLocations = new ArrayList<>();
     private GpsLocation default_location = new GpsLocation();
+    private User user_onPurpose = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,7 +228,11 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         Log.w("Register Server", "Server replied with user: " + user.getMonitoredByUsers());
         Log.w("Register Server", "Server replied with user: " + user.getLastGpsLocation());
         user_login = user;
-        List_children = user.getMonitorsUsers();
+        for (int i = 0; i < user.getMonitorsUsers().size(); i++){
+            long temp_ID = user.getMonitorsUsers().get(i).getId();
+            List_children.add(getUserByID(temp_ID));
+        }
+
         response_updateList();
         response_showChildren();
     }
@@ -243,6 +248,17 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     }
 
 
+    private User getUserByID(long id){
+        Call<User> caller = proxy.getUserById(id);
+        ServerProxyBuilder.callProxy(ParentActivity.this, caller, returnedUser -> response2(returnedUser));
+
+        return user_onPurpose;
+    }
+
+    private void response2(User returnedUser) {
+        Log.i("MyApp","Got complete User with correct lastGpsLocation");
+        user_onPurpose = returnedUser;
+    }
 
 
 //    public static void joinGroup(){
