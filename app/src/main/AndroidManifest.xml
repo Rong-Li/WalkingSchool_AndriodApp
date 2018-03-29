@@ -57,11 +57,9 @@
         <activity android:name=".Group.UpdateGroupActivity" />
         <activity android:name=".UserManager.UserCenterActivity" />
         <activity android:name=".UserManager.EditUserActivity" />
-        <activity android:name=".AllMessageActivity" />
-        <activity android:name=".UserSendMsgActivity" />
-        <activity android:name=".ListUserMessageActivity" />
-        <activity android:name=".ListGroupActivity" />
-        <activity android:name=".GroupSendMsgActivity" />
+        <activity
+            android:name=".ParentActivity"
+            android:label="@string/title_activity_parent"></activity>
     </application>
 
 </manifest>

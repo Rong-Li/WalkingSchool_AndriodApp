@@ -43,6 +43,7 @@
     <string name="new_emergency_contact_info">New Emergency Contact Info</string>
     <string name="user_password_hidden">Password hidden</string>
     <string name="Pause_Map">pause</string>
+    <string name="title_activity_parent">Map</string>
 
 
 </resources>
