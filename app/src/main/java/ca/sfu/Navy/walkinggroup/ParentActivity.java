@@ -58,6 +58,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private List<GpsLocation> List_childrenLocations = new ArrayList<>();
     private GpsLocation default_location = new GpsLocation();
     private User user_onPurpose = new User();
+    private int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,68 +191,28 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         Log.w("Register Server", "Server replied with user: " + user.getEmail());
         Log.w("Register Server", "Server replied with user: " + user.getMonitorsUsers());
         Log.w("Register Server", "Server replied with user: " + user.getMonitoredByUsers());
-        user_login = user;
-        for (int i = 0; i < user.getMonitorsUsers().size(); i++){
-            long temp_ID = user.getMonitorsUsers().get(i).getId();
-            updateUserDetail(temp_ID);
-            while (user_onPurpose.getLastGpsLocation().getLng() == null || user_onPurpose.getLastGpsLocation().getLat() == null){
-                Log.i("MyApp","WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT ");
-            }
-            List_children.add(user_onPurpose);
-            Log.w("Register Server", "SUCCESSFULLY ADDED to List_children" + List_children.get(i).getLastGpsLocation());
-
-        }
+        List_children = user.getMonitorsUsers();
 
         response_updateList();
-        response_showChildren();
     }
 
     private void response_updateList(){
         for(User child: List_children) {
-            if(child.getLastGpsLocation().getLat() == null || child.getLastGpsLocation().getLng() == null){
-                child.setLastGpsLocation(default_location);
-            }
-            List_childrenLocations.add(child.getLastGpsLocation());
-            Log.w("Register Server", "SUCCESSFULLY ADDED to List_childrenLocations");
+            updateUserDetail(child.getId());
         }
     }
 
-
-    private User getUserByID(long id){
-        Call<User> caller = proxy.getUserById(id);
-        ServerProxyBuilder.callProxy(ParentActivity.this, caller, returnedUser -> response2(returnedUser));
-
-        Log.w("Register Server", "**********************" + user_onPurpose);
-
-        while (user_onPurpose.getLastGpsLocation().getLng() == null || user_onPurpose.getLastGpsLocation().getLat() == null){
-            Log.i("MyApp","WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT ");
-        }
-        return user_onPurpose;
-    }
 
     private void updateUserDetail(long id){
         Call<User> caller = proxy.getUserById(id);
         ServerProxyBuilder.callProxy(ParentActivity.this, caller, returnedUser -> response2(returnedUser));
     }
     private void response2(User returnedUser) {
-        Log.i("MyApp","Got complete User with correct lastGpsLocation");
-        user_onPurpose = returnedUser;
+        List_children.set(index, returnedUser);
+        LatLng temp = new LatLng(returnedUser.getLastGpsLocation().getLat(), returnedUser.getLastGpsLocation().getLng());
+        placeMarkerOnMap(temp);
     }
 
-
-//    public static void joinGroup(){
-//        public static Intent newIntent(Context context){
-//    }
-
-
-    private void response_showChildren(){
-        for (int i = 0; i < List_childrenLocations.size(); i++){
-            if(List_childrenLocations.get(i) != default_location){
-                LatLng temp = new LatLng(List_childrenLocations.get(i).getLat(), List_childrenLocations.get(i).getLng());
-                placeMarkerOnMap(temp);
-            }
-        }
-    }
 
     @Override
     public void onLocationChanged(Location location) {
