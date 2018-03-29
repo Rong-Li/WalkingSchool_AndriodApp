@@ -45,7 +45,7 @@ public class MemberListActivity extends AppCompatActivity {
         setUpAddMemberButton();
         extractDataFromIntent();
         getGroupMemberId();
-        TextView groupName = findViewById(R.id.group_description_txt);
+        TextView groupName = (TextView) findViewById(R.id.group_description_txt);
         groupName.setText(groupDescription);
     }
 

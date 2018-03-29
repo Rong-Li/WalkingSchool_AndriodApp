@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         UserCenterStart();
         MapActivityStart();
         logOutActivityStart();
-//        manageGroupActivityStart();
+        manageGroupActivityStart();
     }
 
     public void all_message(View view) {

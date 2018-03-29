@@ -22,7 +22,7 @@ public class ManageGroupActivity extends AppCompatActivity {
     }
 
     private void createGroupActivityButton() {
-        Button button = findViewById(R.id.creatgroup_btn);
+        Button button = (Button) findViewById(R.id.creatgroup_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

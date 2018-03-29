@@ -1,4 +1,4 @@
-package ca.sfu.Navy.walkinggroup.Message;
+package ca.sfu.Navy.walkinggroup.model;
 
 import android.content.Context;
 import android.content.Intent;

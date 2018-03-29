@@ -57,11 +57,11 @@
         <activity android:name=".Group.UpdateGroupActivity" />
         <activity android:name=".UserManager.UserCenterActivity" />
         <activity android:name=".UserManager.EditUserActivity" />
-        <activity android:name=".AllMessageActivity" />
-        <activity android:name=".UserSendMsgActivity" />
-        <activity android:name=".ListUserMessageActivity" />
-        <activity android:name=".ListGroupActivity" />
-        <activity android:name=".GroupSendMsgActivity" />
+        <activity android:name=".Message.AllMessageActivity" />
+        <activity android:name=".Message.UserSendMsgActivity" />
+        <activity android:name=".Message.ListUserMessageActivity" />
+        <activity android:name=".Message.ListGroupActivity" />
+        <activity android:name=".Message.GroupSendMsgActivity" />
     </application>
 
 </manifest>
