@@ -12,13 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pause tracking Servive"
-        app:layout_constraintStart_toStartOf="@+id/map"
+        app:layout_constraintStart_toStartOf="@+id/parentMap"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
+        android:id="@+id/parentMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -36,7 +36,7 @@
         android:layout_marginStart="43dp"
         android:text="Parent DashBoard"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/map"
+        app:layout_constraintBottom_toTopOf="@+id/parentMap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bottonID" />
 

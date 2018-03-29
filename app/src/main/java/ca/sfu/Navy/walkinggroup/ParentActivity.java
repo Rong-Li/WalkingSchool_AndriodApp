@@ -1,28 +1,19 @@
 package ca.sfu.Navy.walkinggroup;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -33,17 +24,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.LocationListener;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ca.sfu.Navy.walkinggroup.Group.AddNewMemberActivity;
-import ca.sfu.Navy.walkinggroup.Group.CreateGroupActivity;
-import ca.sfu.Navy.walkinggroup.model.Group;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -51,8 +36,6 @@ import ca.sfu.Navy.walkinggroup.model.User;
 import ca.sfu.Navy.walkinggroup.model.GpsLocation;
 
 import retrofit2.Call;
-
-import static java.security.AccessController.getContext;
 
 
 public class ParentActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -65,13 +48,8 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private LocationRequest locationRequest;
     private Location mLastLocation;
     private ServerProxy proxy;
-    private List<Group> List_groups = new ArrayList<>();
-    private List<LatLng> List_startingLocations = new ArrayList<>();
     private User user_login = new User();
     private LatLng marker_clicked;
-    private long groupID;
-    private boolean check = false;
-    private boolean paused = false;
     private Button btn;
     private LatLng Destination = new LatLng(49.287586, -123.113560);
     private int tool = 0;
@@ -85,9 +63,8 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.parentMap);
         mapFragment.getMapAsync(this);
         String token = SavedSharedPreference.getPrefUserToken(ParentActivity.this);
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
@@ -185,19 +162,6 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
 
 
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                return;
-            } else {
-                onStart();
-            }
-        }
-    }
-
     private void Function_Click(){
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -226,11 +190,16 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         Log.w("Register Server", "Server replied with user: " + user.getEmail());
         Log.w("Register Server", "Server replied with user: " + user.getMonitorsUsers());
         Log.w("Register Server", "Server replied with user: " + user.getMonitoredByUsers());
-        Log.w("Register Server", "Server replied with user: " + user.getLastGpsLocation());
         user_login = user;
         for (int i = 0; i < user.getMonitorsUsers().size(); i++){
             long temp_ID = user.getMonitorsUsers().get(i).getId();
-            List_children.add(getUserByID(temp_ID));
+            updateUserDetail(temp_ID);
+            while (user_onPurpose.getLastGpsLocation().getLng() == null || user_onPurpose.getLastGpsLocation().getLat() == null){
+                Log.i("MyApp","WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT ");
+            }
+            List_children.add(user_onPurpose);
+            Log.w("Register Server", "SUCCESSFULLY ADDED to List_children" + List_children.get(i).getLastGpsLocation());
+
         }
 
         response_updateList();
@@ -252,9 +221,18 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         Call<User> caller = proxy.getUserById(id);
         ServerProxyBuilder.callProxy(ParentActivity.this, caller, returnedUser -> response2(returnedUser));
 
+        Log.w("Register Server", "**********************" + user_onPurpose);
+
+        while (user_onPurpose.getLastGpsLocation().getLng() == null || user_onPurpose.getLastGpsLocation().getLat() == null){
+            Log.i("MyApp","WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT WAIT ");
+        }
         return user_onPurpose;
     }
 
+    private void updateUserDetail(long id){
+        Call<User> caller = proxy.getUserById(id);
+        ServerProxyBuilder.callProxy(ParentActivity.this, caller, returnedUser -> response2(returnedUser));
+    }
     private void response2(User returnedUser) {
         Log.i("MyApp","Got complete User with correct lastGpsLocation");
         user_onPurpose = returnedUser;
