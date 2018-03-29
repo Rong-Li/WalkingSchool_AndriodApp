@@ -12,7 +12,6 @@ import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
-import ca.sfu.Navy.walkinggroup.monitor.MonitorActivity;
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         UserCenterStart();
         MapActivityStart();
         logOutActivityStart();
-//        manageGroupActivityStart();
+        manageGroupActivityStart();
     }
 
     public void list_group(View view){
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this,AllMessageActivity.class));
     }
 
-    private void createGroupActivityStart() {
+    private void manageGroupActivityStart() {
         Button button = (Button) findViewById(R.id.creatgroup_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,17 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 SavedSharedPreference.clearUserLogged(MainActivity.this);
                 Intent intent = getIntent();
                 finish();
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void monitorActivityStart() {
-        Button button = (Button) findViewById(R.id.monitor_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = MonitorActivity.newIntent(MainActivity.this);
                 startActivity(intent);
             }
         });
