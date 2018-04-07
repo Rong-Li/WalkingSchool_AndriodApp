@@ -65,6 +65,7 @@
         <activity android:name=".AllMessageActivity" />
         <activity android:name=".UserSendMsgActivity" />
         <activity android:name=".GroupSendMsgActivity" />
+        <activity android:name=".CustomerActivity" />
     </application>
 
 </manifest>

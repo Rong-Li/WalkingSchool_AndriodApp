@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
 import ca.sfu.Navy.walkinggroup.model.User;
@@ -21,6 +22,29 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText pw_edit;
     private ServerProxy proxy;
 
+    private MyThemeUtils.Theme currentTheme;
+
+    private void initTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        currentTheme = theme;
+        MyThemeUtils.changTheme(this, theme);
+    }
+
+    public void checkTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        if (currentTheme == theme)
+            return;
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkTheme();
+    }
+
     public static Intent makeRegisterIntent(Context context){
         Intent intent = new Intent(context, SignUpActivity.class);
         return intent;
@@ -29,6 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_sign_up);
 
         // Build the server proxy

@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ca.sfu.Navy.walkinggroup.adapter.CustomWindowAdapter;
+import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -63,9 +65,33 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     private int index = 0;
     private User user_clicked = new User();
 
+    private MyThemeUtils.Theme currentTheme;
+
+    private void initTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        currentTheme = theme;
+        MyThemeUtils.changTheme(this, theme);
+    }
+
+    public void checkTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        if (currentTheme == theme)
+            return;
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkTheme();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_parent);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.parentMap);

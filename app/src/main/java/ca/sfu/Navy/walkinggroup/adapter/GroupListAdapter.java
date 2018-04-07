@@ -7,13 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 import ca.sfu.Navy.walkinggroup.GroupSendMsgActivity;
 import ca.sfu.Navy.walkinggroup.R;
+import ca.sfu.Navy.walkinggroup.model.CustomerJson;
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 
 public class GroupListAdapter extends BaseAdapter {
     private ArrayList<Group> groups;
@@ -54,21 +59,31 @@ public class GroupListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView.setTag(viewHolder);
             viewHolder.mDescText = convertView.findViewById(R.id.group_des);
+            viewHolder.group_icon = convertView.findViewById(R.id.group_icon);
         }
         viewHolder = (ViewHolder) convertView.getTag();
+        Gson gson = new Gson();
+        String json = SavedSharedPreference.getPreUserCus(context);
+        CustomerJson customerJson;
+        if (json.isEmpty()) {
+            customerJson = new CustomerJson();
+        } else {
+            customerJson = gson.fromJson(json, CustomerJson.class);
+        }
+        if (customerJson.getGroupCuses().size() > 0) {
+            viewHolder.group_icon.setImageResource(customerJson.getCurrent_grou().getIconName());
+        }
         viewHolder.mDescText.setText(groups.get(position).getGroupDescription());
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, GroupSendMsgActivity.class);
-                intent.putExtra("group_id",groups.get(position).getId());
-                context.startActivity(intent);
-            }
+        convertView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, GroupSendMsgActivity.class);
+            intent.putExtra("group_id", groups.get(position).getId());
+            context.startActivity(intent);
         });
         return convertView;
     }
 
     private class ViewHolder {
         private TextView mDescText;
+        private ImageView group_icon;
     }
 }

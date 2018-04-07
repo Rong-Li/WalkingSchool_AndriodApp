@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.model.Group;
+import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -69,10 +70,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button parentActivity_btn;
 
 
+    private MyThemeUtils.Theme currentTheme;
+
+    private void initTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        currentTheme = theme;
+        MyThemeUtils.changTheme(this, theme);
+    }
+
+    public void checkTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        if (currentTheme == theme)
+            return;
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -147,6 +166,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
+        checkTheme();
         Resume();
     }
 

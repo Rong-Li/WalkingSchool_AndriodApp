@@ -1,19 +1,18 @@
 package ca.sfu.Navy.walkinggroup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.sfu.Navy.walkinggroup.adapter.GroupListAdapter;
 import ca.sfu.Navy.walkinggroup.adapter.MessageUserListAdapter;
 import ca.sfu.Navy.walkinggroup.model.Group;
-import ca.sfu.Navy.walkinggroup.model.Message;
 import ca.sfu.Navy.walkinggroup.model.MessageUser;
+import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -28,9 +27,33 @@ public class ListUserMessageActivity extends AppCompatActivity {
     private ArrayList<MessageUser> messageUsers;
     private long mId;
 
+    private MyThemeUtils.Theme currentTheme;
+
+    private void initTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        currentTheme = theme;
+        MyThemeUtils.changTheme(this, theme);
+    }
+
+    public void checkTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        if (currentTheme == theme)
+            return;
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkTheme();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_message_user_list);
         init();
     }

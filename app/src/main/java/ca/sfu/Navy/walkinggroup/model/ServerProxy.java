@@ -31,6 +31,9 @@ public interface ServerProxy {
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
 
+    @GET("/users/byEmail")
+    Call<String> getUserByEmail11(@Query("email") String email);
+
     @POST("users/{id}")
     Call<User> editUser(@Path("id") long userId, @Body User userInfo);
 

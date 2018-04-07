@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -21,9 +22,33 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email_edit;
     private EditText pw_edit;
 
+    private MyThemeUtils.Theme currentTheme;
+
+    private void initTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        currentTheme = theme;
+        MyThemeUtils.changTheme(this, theme);
+    }
+
+    public void checkTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        if (currentTheme == theme)
+            return;
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkTheme();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_login);
         // Build the server proxy
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), null);
@@ -86,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         SavedSharedPreference.setUserEmail(LoginActivity.this, email);
         SavedSharedPreference.setPrefUserPw(LoginActivity.this, pw);
         Call<User> caller = proxy.getUserByEmail(email);
-        ServerProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUser(returnedUser));
+        ServerProxyBuilder.callProxy(LoginActivity.this, caller, this::getUser);
     }
 
     private void getUser(User returnedUser) {

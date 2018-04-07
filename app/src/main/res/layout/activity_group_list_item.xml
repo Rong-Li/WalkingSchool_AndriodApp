@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
         android:padding="5dp">
 
         <TextView
+            android:id="@+id/desc_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
@@ -21,6 +22,16 @@
             android:id="@+id/group_des"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toEndOf="@id/desc_text"
+            android:layout_toStartOf="@id/group_icon"
             android:gravity="center_vertical" />
-    </LinearLayout>
+
+        <ImageView
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/group_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 </RelativeLayout>
