@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         locationRequest = new LocationRequest();
         locationRequest.setInterval(30 * 1000);
-        locationRequest.setFastestInterval(15 * 1000);
+        locationRequest.setFastestInterval(30 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         btn = findViewById(R.id.bottonID);
@@ -153,7 +153,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void Resume() {
         if (mGoogleApiClient.isConnected()) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
@@ -358,7 +361,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //locationRequest.setInterval(30 * 1000);
         Toast.makeText(getApplicationContext(),
                 "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!" + location.getLatitude() + ", " + location.getLongitude(),
-                Toast.LENGTH_LONG)
+                Toast.LENGTH_SHORT)
                 .show();
 
         double Location_Lat = location.getLatitude();
@@ -375,7 +378,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (Location_Lat == Destination_Lat && Location_Lng == Destination_Lng){
 
             //purpose of testing, won't give points if the kid open up device at school
-            if (Location_Lat != StartingLocation.latitude && Location_Lng != StartingLocation.longitude && checker_getOnlyOne == 0){
+            if (Location_Lat != StartingLocation.latitude && Location_Lng
+                    != StartingLocation.longitude && checker_getOnlyOne == 0){
                 Log.i("MyApp","Arrived Arrived!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 Toast.makeText(getApplicationContext(),
                         "You have Arrived, you can choose pause GPS or leave it", Toast.LENGTH_LONG).show();
@@ -387,7 +391,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response3(returnedUser));
             }
             else{
-                Toast.makeText(getApplicationContext(), "you are in school!! Don't try to get points!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),
+                        "you are in school!! Don't try to get points!!!",
+                        Toast.LENGTH_LONG)
+                        .show();
             }
 
             tool++;
@@ -399,6 +406,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            EndTime.setMinutes(temp);
             Pause();
             tool = 0;
+            checker_getOnlyOne = 0;
         }
 //        if(user_login.getId() != null){
 

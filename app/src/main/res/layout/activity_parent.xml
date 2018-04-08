@@ -1,33 +1,36 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/relativeLayout9"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".ParentActivity">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout9"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    tools:context=".ParentActivity">
 
 
     <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parentMap"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    map:layout_constraintBottom_toBottomOf="parent"
-    map:layout_constraintEnd_toEndOf="parent"
-    map:layout_constraintStart_toStartOf="parent"
-    map:layout_constraintTop_toBottomOf="@+id/textViewView1"
-    tools:context="ca.sfu.Navy.walkinggroup.ParentActivity" />
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/parentMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/textViewView1"
+        tools:context="ca.sfu.Navy.walkinggroup.ParentActivity" />
 
 
     <TextView
         android:id="@+id/textViewView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="Last recorded at:"
+        android:background="@android:color/holo_orange_light"
+        android:text="Last recorded at: "
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/parentMap"
         app:layout_constraintEnd_toStartOf="@+id/textViewView2"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +40,7 @@ tools:context=".ParentActivity">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="26dp"
-        android:layout_marginStart="16dp"
+        android:background="@android:color/holo_orange_light"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/parentMap"
         app:layout_constraintEnd_toEndOf="parent"
