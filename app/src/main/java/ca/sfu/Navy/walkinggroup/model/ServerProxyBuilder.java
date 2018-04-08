@@ -15,7 +15,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 
 public class ServerProxyBuilder {
@@ -127,6 +126,8 @@ public class ServerProxyBuilder {
             if (token != null) {
                 builder.header("Authorization", token);
             }
+//            // Enabled Permissions
+//            builder.header("permissions-enabled", true);
             Request modifiedRequest = builder.build();
 
             return chain.proceed(modifiedRequest);

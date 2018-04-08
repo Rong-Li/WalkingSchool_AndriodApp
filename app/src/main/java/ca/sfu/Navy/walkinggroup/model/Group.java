@@ -14,12 +14,9 @@ public class Group {
     private List<User> memberUsers = new ArrayList<>();
     private List<Double> routeLatArray = new ArrayList<>();
     private List<Double> routeLngArray = new ArrayList<>();
-    private String href;
-    /**
-     * customJson : null
-     */
+    private String customJson;
 
-    private Object customJson;
+    private String href;
 
     //getters
     public Long getId() {
@@ -40,10 +37,12 @@ public class Group {
     public List<Double> getRouteLngArray() {
         return routeLngArray;
     }
+    public String getCustomJson() {
+        return customJson;
+    }
     public String getHref() {
         return href;
     }
-
 
 
 
@@ -54,9 +53,11 @@ public class Group {
     public void setGroupDescription(String groupDescription) {
         this.groupDescription = groupDescription;
     }
-
     public void setLeader(User leader){
         this.leader = leader;
+    }
+    public void setMemberUsers(List<User> memberUsers){
+        this.memberUsers = memberUsers;
     }
     public void setRouteLatArray(List<Double> routeLatArray) {
         this.routeLatArray = routeLatArray;
@@ -64,13 +65,13 @@ public class Group {
     public void setRouteLngArray(List<Double> routeLngArray) {
         this.routeLngArray = routeLngArray;
     }
+    public void setCustomJson(String customJson) {
+        this.customJson = customJson;
+    }
     public void setHref(String href) {
         this.href = href;
     }
-    public void setMemberUsers(List<User> memberUsers){
-        this.memberUsers = memberUsers;
-    }
-    
+
     @Override
     public String toString() {
         return "Group{" +
@@ -80,16 +81,8 @@ public class Group {
                 ", memberUsers=" + memberUsers +
                 ", routeLatArray=" + routeLatArray +
                 ", routeLngArray=" + routeLngArray +
-                ", href='" + href + '\'' +
                 ", customJson=" + customJson +
+                ", href='" + href + '\'' +
                 '}';
-    }
-
-    public Object getCustomJson() {
-        return customJson;
-    }
-
-    public void setCustomJson(Object customJson) {
-        this.customJson = customJson;
     }
 }

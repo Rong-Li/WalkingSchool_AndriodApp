@@ -91,7 +91,6 @@ public interface ServerProxy {
     @GET("/messages")
     Call<List<Message>> listMessage(@Query("is-emergency") boolean isEmergency, @Query("status") String status);
 
-    //API #7 for In-app Messaging
     @GET("/messages")
     Call<List<Message>> listUserMessage(@Query("foruser") long user_id, @Query("is-emergency") boolean isEmergency, @Query("status") String status);
 
@@ -113,5 +112,22 @@ public interface ServerProxy {
     @POST("/messages/{messageId}/readby/{userId}")
     Call<MarkResponse> changeReadStatus(@Path("messageId") long messageId, @Path("userId") long userId, @Body Boolean status);
 
+    //API #8 for Permissions
+    @GET("/permissions")
+    Call<List<PermissionRequest>> getPermissions();
 
+    @GET("/permissions/{id}")
+    Call<PermissionRequest> getPermissionById(@Path("id") long permissionId);
+
+    @POST("/permissions/{id}")
+    Call<PermissionRequest> approveOrDenyPermissionRequest(
+            @Path("id") long permissionId,
+            @Body PermissionStatus status
+    );
+
+    enum PermissionStatus {
+        PENDING,
+        APPROVED,
+        DENIED
+    }
 }

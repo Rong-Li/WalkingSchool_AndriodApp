@@ -14,8 +14,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private int birthYear;
-    private int birthMonth;
+    private int birthYear = 0;
+    private int birthMonth = 0;
     private String address;
     private String cellPhone;
     private String homePhone;
@@ -27,34 +27,19 @@ public class User {
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
+
+    private List<Message> unreadMessages;
+    private List<Message> readMessages;
     private GpsLocation lastGpsLocation = new GpsLocation();
 
+    private int currentPoints = 0;
+    private int totalPointsEarned = 0;
+    private String customJson;
+    private List<PermissionRequest> pendingPermissionRequests = new ArrayList<>();
+
     private String href;
-    /**
-     * unreadMessages : [{"id":20,"href":"/messages/20"},{"id":23,"href":"/messages/23"},{"id":24,"href":"/messages/24"}]
-     * readMessages : [{"id":22,"href":"/messages/22"}]
-     * currentPoints : null
-     * totalPointsEarned : null
-     * customJson : null
-     * pendingPermissionRequests : []
-     */
 
-    private Object currentPoints;
-    private Object totalPointsEarned;
-    private Object customJson;
-    /**
-     * id : 20
-     * href : /messages/20
-     */
 
-    private List<UnreadMessagesBean> unreadMessages;
-    /**
-     * id : 22
-     * href : /messages/22
-     */
-
-    private List<ReadMessagesBean> readMessages;
-    private List<?> pendingPermissionRequests;
 
 
     //getters
@@ -109,13 +94,30 @@ public class User {
     public List<Group> getLeadsGroups() {
         return leadsGroups;
     }
+    public List<Message> getUnreadMessages() {
+        return unreadMessages;
+    }
+    public List<Message> getReadMessages() {
+        return readMessages;
+    }
     public GpsLocation getLastGpsLocation(){
         if (lastGpsLocation == null) {
             lastGpsLocation = new GpsLocation();
         }
         return lastGpsLocation;
     }
-
+    public Integer getCurrentPoints() {
+        return currentPoints;
+    }
+    public Integer getTotalPointsEarned() {
+        return totalPointsEarned;
+    }
+    public String getCustomJson() {
+        return customJson;
+    }
+    public List<PermissionRequest> getPendingPermissionRequests() {
+        return pendingPermissionRequests;
+    }
 
     //setters
     public void setId(Long id) {
@@ -167,9 +169,26 @@ public class User {
     public void setLeadsGroups(List<Group> leadsGroups) {
         this.leadsGroups = leadsGroups;
     }
-
+    public void setUnreadMessages(List<Message> unreadMessages) {
+        this.unreadMessages = unreadMessages;
+    }
+    public void setReadMessages(List<Message> readMessages) {
+        this.readMessages = readMessages;
+    }
     public void setLastGpsLocation(GpsLocation lastGpsLocation){
         this.lastGpsLocation = lastGpsLocation;
+    }
+    public void setCurrentPoints(Integer currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+    public void setTotalPointsEarned(Integer totalPointsEarned) {
+        this.totalPointsEarned = totalPointsEarned;
+    }
+    public void setCustomJson(String customJson) {
+        this.customJson = customJson;
+    }
+    public void setPendingPermissionRequests(List<PermissionRequest> pendingPermissionRequests) {
+        this.pendingPermissionRequests = pendingPermissionRequests;
     }
 
     // List items modifiers
@@ -204,97 +223,13 @@ public class User {
                 ", monitorsUsers :" + monitorsUsers +
                 ", memberOfGroups :" + memberOfGroups +
                 ", leadsGroups :" + leadsGroups +
+                ", unreadMessages :" + unreadMessages +
+                ", readMessages :" + readMessages +
                 ", lastGpsLocation :" + lastGpsLocation.toString() +
+                ", currentPoints :" + currentPoints +
+                ", totalPointsEarned :" + totalPointsEarned +
+                ", customJson :" + customJson +
+                ", pendingPermissionRequests :" + pendingPermissionRequests +
                 '}';
-    }
-
-    public Object getCurrentPoints() {
-        return currentPoints;
-    }
-
-    public void setCurrentPoints(Object currentPoints) {
-        this.currentPoints = currentPoints;
-    }
-
-    public Object getTotalPointsEarned() {
-        return totalPointsEarned;
-    }
-
-    public void setTotalPointsEarned(Object totalPointsEarned) {
-        this.totalPointsEarned = totalPointsEarned;
-    }
-
-    public Object getCustomJson() {
-        return customJson;
-    }
-
-    public void setCustomJson(Object customJson) {
-        this.customJson = customJson;
-    }
-
-    public List<UnreadMessagesBean> getUnreadMessages() {
-        return unreadMessages;
-    }
-
-    public void setUnreadMessages(List<UnreadMessagesBean> unreadMessages) {
-        this.unreadMessages = unreadMessages;
-    }
-
-    public List<ReadMessagesBean> getReadMessages() {
-        return readMessages;
-    }
-
-    public void setReadMessages(List<ReadMessagesBean> readMessages) {
-        this.readMessages = readMessages;
-    }
-
-    public List<?> getPendingPermissionRequests() {
-        return pendingPermissionRequests;
-    }
-
-    public void setPendingPermissionRequests(List<?> pendingPermissionRequests) {
-        this.pendingPermissionRequests = pendingPermissionRequests;
-    }
-
-    public static class UnreadMessagesBean {
-        private int id;
-        private String href;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getHref() {
-            return href;
-        }
-
-        public void setHref(String href) {
-            this.href = href;
-        }
-    }
-
-    public static class ReadMessagesBean {
-        private int id;
-        private String href;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getHref() {
-            return href;
-        }
-
-        public void setHref(String href) {
-            this.href = href;
-        }
     }
 }
