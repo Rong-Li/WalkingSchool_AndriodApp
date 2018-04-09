@@ -127,6 +127,7 @@ public class ServerProxyBuilder {
             if (token != null) {
                 builder.header("Authorization", token);
             }
+            builder.header("permissions-enabled", "true");
             Request modifiedRequest = builder.build();
 
             return chain.proceed(modifiedRequest);

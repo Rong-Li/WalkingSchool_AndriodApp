@@ -27,9 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/request_btn"
-        android:text="@string/monitor_btn"
+        android:text="Pending Requests"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/edit_user_btn"
+        android:layout_below="@+id/monitor_btn"
         android:layout_marginTop="40dp"/>
 
 
