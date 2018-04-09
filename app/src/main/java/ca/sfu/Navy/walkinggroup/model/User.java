@@ -54,7 +54,7 @@ public class User {
      */
 
     private List<ReadMessagesBean> readMessages;
-    private List<?> pendingPermissionRequests;
+    private List<PermissionRecord> pendingPermissionRequests;
 
 
     //getters
@@ -248,11 +248,11 @@ public class User {
         this.readMessages = readMessages;
     }
 
-    public List<?> getPendingPermissionRequests() {
+    public List<PermissionRecord> getPendingPermissionRequests() {
         return pendingPermissionRequests;
     }
 
-    public void setPendingPermissionRequests(List<?> pendingPermissionRequests) {
+    public void setPendingPermissionRequests(List<PermissionRecord> pendingPermissionRequests) {
         this.pendingPermissionRequests = pendingPermissionRequests;
     }
 
