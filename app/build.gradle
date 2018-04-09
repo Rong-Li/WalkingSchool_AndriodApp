@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
     defaultConfig {
         applicationId "ca.sfu.Navy.walkinggroup"
         minSdkVersion 18
@@ -37,5 +37,10 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    compile 'com.google.code.gson:gson:2.8.2'
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 }

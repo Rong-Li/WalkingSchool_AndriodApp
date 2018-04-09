@@ -31,6 +31,9 @@ public interface ServerProxy {
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
 
+    @GET("/users/byEmail")
+    Call<String> getUserByEmail11(@Query("email") String email);
+
     @POST("users/{id}")
     Call<User> editUser(@Path("id") long userId, @Body User userInfo);
 
@@ -110,5 +113,12 @@ public interface ServerProxy {
     @POST("/messages/{messageId}/readby/{userId}")
     Call<MarkResponse> changeReadStatus(@Path("messageId") long messageId, @Path("userId") long userId, @Body Boolean status);
 
+    //API #8 for Permission Request
+    @GET("/permissions?status=PENDING")
+    Call<List<PermissionRecord>> getPendingRequest();
 
+    @POST("/permissions/{Id}")
+    Call<PermissionRecord> requestPost(@Path("Id") long requestId, @Body String status);
+
+    
 }

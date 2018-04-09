@@ -8,6 +8,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class User {
     private Long id;
     private String name;
@@ -31,7 +32,33 @@ public class User {
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
     private GpsLocation lastGpsLocation = new GpsLocation();
+
     private String href;
+    /**
+     * unreadMessages : [{"id":20,"href":"/messages/20"},{"id":23,"href":"/messages/23"},{"id":24,"href":"/messages/24"}]
+     * readMessages : [{"id":22,"href":"/messages/22"}]
+     * currentPoints : null
+     * totalPointsEarned : null
+     * customJson : null
+     * pendingPermissionRequests : []
+     */
+
+    private Object currentPoints;
+    private Object totalPointsEarned;
+    private Object customJson;
+    /**
+     * id : 20
+     * href : /messages/20
+     */
+
+    private List<UnreadMessagesBean> unreadMessages;
+    /**
+     * id : 22
+     * href : /messages/22
+     */
+
+    private List<ReadMessagesBean> readMessages;
+    private List<PermissionRecord> pendingPermissionRequests;
 
 
     //getters
@@ -199,5 +226,95 @@ public class User {
                 ", leadsGroups :" + leadsGroups +
                 ", lastGpsLocation :" + lastGpsLocation.toString() +
                 '}';
+    }
+
+    public Object getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(Object currentPoints) {
+        this.currentPoints = currentPoints;
+    }
+
+    public Object getTotalPointsEarned() {
+        return totalPointsEarned;
+    }
+
+    public void setTotalPointsEarned(Object totalPointsEarned) {
+        this.totalPointsEarned = totalPointsEarned;
+    }
+
+    public Object getCustomJson() {
+        return customJson;
+    }
+
+    public void setCustomJson(Object customJson) {
+        this.customJson = customJson;
+    }
+
+    public List<UnreadMessagesBean> getUnreadMessages() {
+        return unreadMessages;
+    }
+
+    public void setUnreadMessages(List<UnreadMessagesBean> unreadMessages) {
+        this.unreadMessages = unreadMessages;
+    }
+
+    public List<ReadMessagesBean> getReadMessages() {
+        return readMessages;
+    }
+
+    public void setReadMessages(List<ReadMessagesBean> readMessages) {
+        this.readMessages = readMessages;
+    }
+
+    public List<PermissionRecord> getPendingPermissionRequests() {
+        return pendingPermissionRequests;
+    }
+
+    public void setPendingPermissionRequests(List<PermissionRecord> pendingPermissionRequests) {
+        this.pendingPermissionRequests = pendingPermissionRequests;
+    }
+
+    public static class UnreadMessagesBean {
+        private int id;
+        private String href;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getHref() {
+            return href;
+        }
+
+        public void setHref(String href) {
+            this.href = href;
+        }
+    }
+
+    public static class ReadMessagesBean {
+        private int id;
+        private String href;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getHref() {
+            return href;
+        }
+
+        public void setHref(String href) {
+            this.href = href;
+        }
     }
 }

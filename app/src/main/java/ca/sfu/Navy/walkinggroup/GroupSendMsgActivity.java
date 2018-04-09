@@ -1,5 +1,6 @@
 package ca.sfu.Navy.walkinggroup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import ca.sfu.Navy.walkinggroup.adapter.MessageListAdapter;
 import ca.sfu.Navy.walkinggroup.model.HandleMsgStatusListener;
 import ca.sfu.Navy.walkinggroup.model.MarkResponse;
 import ca.sfu.Navy.walkinggroup.model.Message;
+import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.SendMessage;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -38,9 +40,33 @@ public class GroupSendMsgActivity extends AppCompatActivity {
     private boolean isRead;
     private CheckBox readCheckBtn;
 
+    private MyThemeUtils.Theme currentTheme;
+
+    private void initTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        currentTheme = theme;
+        MyThemeUtils.changTheme(this, theme);
+    }
+
+    public void checkTheme() {
+        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
+        if (currentTheme == theme)
+            return;
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkTheme();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_message_layout);
         init();
     }

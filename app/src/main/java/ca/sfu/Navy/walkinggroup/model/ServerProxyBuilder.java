@@ -14,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 
@@ -38,7 +39,7 @@ public class ServerProxyBuilder {
         // Build Retrofit proxy object for server
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(SERVER_URL)
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
 
@@ -126,6 +127,7 @@ public class ServerProxyBuilder {
             if (token != null) {
                 builder.header("Authorization", token);
             }
+            builder.header("permissions-enabled", "true");
             Request modifiedRequest = builder.build();
 
             return chain.proceed(modifiedRequest);

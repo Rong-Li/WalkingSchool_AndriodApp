@@ -1,9 +1,6 @@
 package ca.sfu.Navy.walkinggroup.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +15,11 @@ public class Group {
     private List<Double> routeLatArray = new ArrayList<>();
     private List<Double> routeLngArray = new ArrayList<>();
     private String href;
+    /**
+     * customJson : null
+     */
+
+    private Object customJson;
 
     //getters
     public Long getId() {
@@ -43,6 +45,8 @@ public class Group {
     }
 
 
+
+
     //setters
     public void setId(Long id) {
         this.id = id;
@@ -66,16 +70,26 @@ public class Group {
     public void setMemberUsers(List<User> memberUsers){
         this.memberUsers = memberUsers;
     }
-
+    
     @Override
     public String toString() {
         return "Group{" +
                 "id=" + id +
-                ", groupDescription '" + groupDescription + '\'' +
-                ", routeLatArray " + routeLatArray +
-                ", routeLngArray " + routeLngArray +
-                ", leader " + leader.toString() +
-                ", memberUsers " + memberUsers +
+                ", groupDescription='" + groupDescription + '\'' +
+                ", leader=" + leader +
+                ", memberUsers=" + memberUsers +
+                ", routeLatArray=" + routeLatArray +
+                ", routeLngArray=" + routeLngArray +
+                ", href='" + href + '\'' +
+                ", customJson=" + customJson +
                 '}';
+    }
+
+    public Object getCustomJson() {
+        return customJson;
+    }
+
+    public void setCustomJson(Object customJson) {
+        this.customJson = customJson;
     }
 }

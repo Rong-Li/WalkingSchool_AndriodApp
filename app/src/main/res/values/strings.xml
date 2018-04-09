@@ -44,6 +44,7 @@
     <string name="user_password_hidden">Password hidden</string>
     <string name="Pause_Map">pause</string>
     <string name="title_activity_parent">Map</string>
+    <string name="request_pending_text">You have the following Pending requests:</string>
 
 
 </resources>
