@@ -50,11 +50,9 @@ public class CreateGroupActivity extends AppCompatActivity {
                 String description = groupDescription.getText().toString();
                 Group group = new Group();
                 Long id = user_login.getId();
-                String href = user_login.getHref();
                 group.setGroupDescription(description);
                 User leader = new User();
                 leader.setId(id);
-                leader.setHref(href);
                 group.setLeader(leader);
                 group.setRouteLatArray(groupLat);
                 group.setRouteLngArray(groupLng);

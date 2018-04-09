@@ -53,6 +53,7 @@ public class ChangeLeaderListActivity extends AppCompatActivity {
         Log.w("Test receive", "server receive test " + user_id.toString());
         // Create list of item
         groupList = user_id.getLeadsGroups();
+        groupList.addAll(user_id.getMemberOfGroups());
         updateList();
     }
 

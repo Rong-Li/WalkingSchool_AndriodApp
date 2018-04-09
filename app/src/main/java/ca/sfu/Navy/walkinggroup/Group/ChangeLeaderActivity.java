@@ -38,6 +38,7 @@ public class ChangeLeaderActivity extends AppCompatActivity {
         proxy = ServerProxyBuilder.getProxy(getString(R.string.apikey), token);
 
         extractDataFromIntent();
+        getGroups();
         setupEditText();
         setUpChangeButton();
         setUpCancelButton();
@@ -89,6 +90,16 @@ public class ChangeLeaderActivity extends AppCompatActivity {
     private void response(User user){
         Log.w("Register Server", "Server replied with user: " + user.toString());
         group_temp.setLeader(user);
+    }
+
+    private void getGroups() {
+        Call<Group> caller = proxy.getGroupDetails(groupId);
+        ServerProxyBuilder.callProxy(ChangeLeaderActivity.this, caller, returnedGroup -> responses(returnedGroup));
+    }
+
+    private void responses(Group group) {
+        Log.w("Register Server", "Server replied with: " + group.toString());
+        group_temp = group;
     }
 
     private void setUpChangeButton() {
