@@ -69,7 +69,8 @@
         <activity android:name=".GroupSendMsgActivity" />
         <activity android:name=".CustomerActivity" />
         <activity android:name=".LeaderboardActivity" />
-        <activity android:name=".ParentDashBoardActivity"></activity>
+        <activity android:name=".Group.ChangeLeaderActivity" />
+        <activity android:name=".Group.ChangeLeaderListActivity"></activity>
     </application>
 
 </manifest>

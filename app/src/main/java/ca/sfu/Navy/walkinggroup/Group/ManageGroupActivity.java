@@ -19,6 +19,18 @@ public class ManageGroupActivity extends AppCompatActivity {
         createGroupActivityButton();
         listGroupActivityButton();
         updateGroupActivityButton();
+        changeLeaderActivityButton();
+    }
+
+    private void changeLeaderActivityButton() {
+        Button button = findViewById(R.id.change_leader_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ChangeLeaderListActivity.intent(ManageGroupActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void createGroupActivityButton() {
