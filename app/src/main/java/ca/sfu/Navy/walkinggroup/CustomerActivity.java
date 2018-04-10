@@ -270,7 +270,7 @@ public class CustomerActivity extends AppCompatActivity {
 
     public void changeTheme(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(CustomerActivity.this);
-        builder.setTitle("设置主题");
+        builder.setTitle("Change Theme");
         Integer[] res = new Integer[]{R.drawable.red_round, R.drawable.brown_round, R.drawable.blue_round,
                 R.drawable.blue_grey_round, R.drawable.yellow_round, R.drawable.deep_purple_round,
                 R.drawable.pink_round, R.drawable.green_round};

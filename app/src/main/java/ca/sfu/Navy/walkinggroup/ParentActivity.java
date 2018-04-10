@@ -299,6 +299,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         // 2
         mMap.addMarker(markerOptions.title(name));
     }
+
     public static Intent newIntent(Context context){
         return new Intent(context, ParentActivity.class);
     }

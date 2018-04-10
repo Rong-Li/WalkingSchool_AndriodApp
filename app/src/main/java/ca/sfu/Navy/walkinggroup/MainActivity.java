@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import ca.sfu.Navy.walkinggroup.Group.ManageGroupActivity;
+import ca.sfu.Navy.walkinggroup.adapter.LeaderBoardAdapter;
 import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         MapActivityStart();
         logOutActivityStart();
         manageGroupActivityStart();
+        leaderBoardActivityStart();
     }
 
     private void initTheme() {
@@ -53,6 +55,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void all_message(View view) {
         startActivity(new Intent(this, AllMessageActivity.class));
+    }
+
+    private void leaderBoardActivityStart() {
+        Button button = (Button) findViewById(R.id.leaderboard_button);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = LeaderboardActivity.intent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void manageGroupActivityStart() {
