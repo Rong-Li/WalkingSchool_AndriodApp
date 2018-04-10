@@ -50,7 +50,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         for(int i = 0; i < userList.size(); i ++){
             User max = new User();
             for(User user: userList){
-                if(user.getTotalPointsEarned() > max.getTotalPointsEarned()){
+                if(user.getTotalPointsEarned() >= max.getTotalPointsEarned()){
                     if(i > 0 && user.getTotalPointsEarned() < sortedUserList.get(i-1).getTotalPointsEarned()) {
                         max = user;
                     }
