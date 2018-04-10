@@ -43,8 +43,8 @@ public class User {
      * pendingPermissionRequests : []
      */
 
-    private Object currentPoints;
-    private Object totalPointsEarned;
+//    private Object currentPoints;
+//    private Object totalPointsEarned;
     private Object customJson;
     /**
      * id : 20
@@ -228,21 +228,21 @@ public class User {
                 '}';
     }
 
-    public Object getCurrentPoints() {
-        return currentPoints;
-    }
+//    public Object getCurrentPoints() {
+//        return currentPoints;
+//    }
 
-    public void setCurrentPoints(Object currentPoints) {
-        this.currentPoints = currentPoints;
-    }
-
-    public Object getTotalPointsEarned() {
-        return totalPointsEarned;
-    }
-
-    public void setTotalPointsEarned(Object totalPointsEarned) {
-        this.totalPointsEarned = totalPointsEarned;
-    }
+//    public void setCurrentPoints(Object currentPoints) {
+//        this.currentPoints = currentPoints;
+//    }
+//
+//    public Object getTotalPointsEarned() {
+//        return totalPointsEarned;
+//    }
+//
+//    public void setTotalPointsEarned(Object totalPointsEarned) {
+//        this.totalPointsEarned = totalPointsEarned;
+//    }
 
     public Object getCustomJson() {
         return customJson;

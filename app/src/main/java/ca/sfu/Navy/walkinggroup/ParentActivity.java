@@ -256,8 +256,10 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     }
     private void response2(User returnedUser) {
         List_children.set(index, returnedUser);
-        LatLng temp = new LatLng(returnedUser.getLastGpsLocation().getLat(), returnedUser.getLastGpsLocation().getLng());
-        placeMarkerOnMap(temp, returnedUser.getName());
+        if(returnedUser.getLastGpsLocation() != null){
+            LatLng temp = new LatLng(returnedUser.getLastGpsLocation().getLat(), returnedUser.getLastGpsLocation().getLng());
+            placeMarkerOnMap(temp, returnedUser.getName());
+        }
     }
 
 
