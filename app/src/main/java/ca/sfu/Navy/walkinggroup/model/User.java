@@ -23,10 +23,6 @@ public class User {
     private String teacherName;
     private String emergencyContactInfo;
 
-
-    private int currentPoints;
-    private int totalPointsEarned;
-
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();
@@ -36,15 +32,12 @@ public class User {
     private List<Message> readMessages;
     private GpsLocation lastGpsLocation = new GpsLocation();
 
-    private int currentPoints = 0;
-    private int totalPointsEarned = 0;
+    private int currentPoints;
+    private int totalPointsEarned;
     private String customJson;
     private List<PermissionRequest> pendingPermissionRequests = new ArrayList<>();
 
     private String href;
-
-
-
 
     //getters
     public Long getId() {
@@ -121,14 +114,6 @@ public class User {
     }
     public List<PermissionRequest> getPendingPermissionRequests() {
         return pendingPermissionRequests;
-    }
-
-    public int getCurrentPoints() {
-        return currentPoints;
-    }
-
-    public int getTotalPointsEarned() {
-        return totalPointsEarned;
     }
 
     //setters
