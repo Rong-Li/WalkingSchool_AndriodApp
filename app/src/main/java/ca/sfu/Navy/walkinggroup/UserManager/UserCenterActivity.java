@@ -61,6 +61,7 @@ public class UserCenterActivity extends AppCompatActivity {
         saved_id = user.getId();
         EditUserStart();
         monitorActivityStart();
+        requestActivityStart();
     }
 
     private void EditUserStart() {
@@ -81,6 +82,17 @@ public class UserCenterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = MonitorActivity.newIntent(UserCenterActivity.this);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void requestActivityStart(){
+        Button button = (Button) findViewById(R.id.request_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = RequestActivity.startIntent(UserCenterActivity.this);
                 startActivity(intent);
             }
         });

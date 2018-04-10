@@ -181,7 +181,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
             }
         }
         mMap.setMyLocationEnabled(true);
-        mMap.setInfoWindowAdapter(new CustomWindowAdapter(ParentActivity.this));
+        //mMap.setInfoWindowAdapter(new CustomWindowAdapter(ParentActivity.this));
         //
         Function_Click();
         //Join Group preparation
@@ -211,8 +211,8 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
                             .show();
                 }
                 else{
-                    TextView text1 = findViewById(R.id.textViewView1);
-                    text1.setText(user_clicked.getName());
+//                    TextView text1 = findViewById(R.id.textViewView1);
+//                    text1.setText(user_clicked.getName());
                     TextView text2 = findViewById(R.id.textViewView2);
                     text2.setText(user_clicked.getLastGpsLocation().getTimestamp().toString());
 
@@ -256,8 +256,17 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     }
     private void response2(User returnedUser) {
         List_children.set(index, returnedUser);
-        LatLng temp = new LatLng(returnedUser.getLastGpsLocation().getLat(), returnedUser.getLastGpsLocation().getLng());
-        placeMarkerOnMap(temp);
+        if(returnedUser.getLastGpsLocation() == null
+                || returnedUser.getLastGpsLocation().getLat() == null
+                || returnedUser.getLastGpsLocation().getLng() == null){
+            Toast.makeText(getApplicationContext(),
+                    "child's last location hasnt been uploaded yet",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
+            LatLng temp = new LatLng(returnedUser.getLastGpsLocation().getLat(), returnedUser.getLastGpsLocation().getLng());
+            placeMarkerOnMap(temp, returnedUser.getName());
+        }
     }
 
 
@@ -284,11 +293,11 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
 
 
     //function for placing a marker on the map based on its latitude and longtitude
-    protected void placeMarkerOnMap(LatLng location) {
+    protected void placeMarkerOnMap(LatLng location, String name) {
         // 1
         MarkerOptions markerOptions = new MarkerOptions().position(location);
         // 2
-        mMap.addMarker(markerOptions);
+        mMap.addMarker(markerOptions.title(name));
     }
 
     public static Intent newIntent(Context context){
