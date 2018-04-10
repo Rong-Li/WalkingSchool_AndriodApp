@@ -178,11 +178,11 @@ public class User {
     public void setLastGpsLocation(GpsLocation lastGpsLocation){
         this.lastGpsLocation = lastGpsLocation;
     }
-    public void setCurrentPoints(Integer currentPoints) {
-        this.currentPoints = currentPoints;
+    public void setCurrentPoints() {
+        this.currentPoints ++;
     }
-    public void setTotalPointsEarned(Integer totalPointsEarned) {
-        this.totalPointsEarned = totalPointsEarned;
+    public void setTotalPointsEarned() {
+        this.totalPointsEarned ++;
     }
     public void setCustomJson(String customJson) {
         this.customJson = customJson;

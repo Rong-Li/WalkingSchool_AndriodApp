@@ -132,12 +132,8 @@ public interface ServerProxy {
     }
 
     @GET("/permissions?status=PENDING")
-    Call<List<PermissionRequest>> getPermissions();
     Call<List<PermissionRecord>> getPendingRequest();
 
-
-    @GET("/permissions/{id}")
     @POST("/permissions/{Id}")
-    Call<PermissionRequest> getPermissionById(@Path("id") long permissionId);
     Call<PermissionRecord> requestPost(@Path("Id") long requestId, @Body String status);
 }

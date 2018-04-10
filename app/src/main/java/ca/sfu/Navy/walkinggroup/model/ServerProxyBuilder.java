@@ -126,9 +126,8 @@ public class ServerProxyBuilder {
             if (token != null) {
                 builder.header("Authorization", token);
             }
+            // Enabled Permissions
             builder.header("permissions-enabled", "true");
-//            // Enabled Permissions
-//            builder.header("permissions-enabled", true);
             Request modifiedRequest = builder.build();
 
             return chain.proceed(modifiedRequest);
