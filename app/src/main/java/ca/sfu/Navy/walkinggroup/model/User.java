@@ -23,6 +23,10 @@ public class User {
     private String teacherName;
     private String emergencyContactInfo;
 
+
+    private int currentPoints;
+    private int totalPointsEarned;
+
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
     private List<Group> memberOfGroups = new ArrayList<>();
@@ -39,8 +43,8 @@ public class User {
      * pendingPermissionRequests : []
      */
 
-    private Object currentPoints;
-    private Object totalPointsEarned;
+//    private Object currentPoints;
+//    private Object totalPointsEarned;
     private Object customJson;
     /**
      * id : 20
@@ -117,6 +121,14 @@ public class User {
     }
 
 
+    public int getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public int getTotalPointsEarned() {
+        return totalPointsEarned;
+    }
+
     //setters
     public void setId(Long id) {
         this.id = id;
@@ -171,6 +183,14 @@ public class User {
     public void setLastGpsLocation(GpsLocation lastGpsLocation){
         this.lastGpsLocation = lastGpsLocation;
     }
+    public void setCurrentPoints() {
+        this.currentPoints++;
+    }
+
+    public void setTotalPointsEarned() {
+        this.totalPointsEarned++;
+    }
+
 
     // List items modifiers
     public void addUsertoMonitor(User user){
@@ -208,21 +228,21 @@ public class User {
                 '}';
     }
 
-    public Object getCurrentPoints() {
-        return currentPoints;
-    }
+//    public Object getCurrentPoints() {
+//        return currentPoints;
+//    }
 
-    public void setCurrentPoints(Object currentPoints) {
-        this.currentPoints = currentPoints;
-    }
-
-    public Object getTotalPointsEarned() {
-        return totalPointsEarned;
-    }
-
-    public void setTotalPointsEarned(Object totalPointsEarned) {
-        this.totalPointsEarned = totalPointsEarned;
-    }
+//    public void setCurrentPoints(Object currentPoints) {
+//        this.currentPoints = currentPoints;
+//    }
+//
+//    public Object getTotalPointsEarned() {
+//        return totalPointsEarned;
+//    }
+//
+//    public void setTotalPointsEarned(Object totalPointsEarned) {
+//        this.totalPointsEarned = totalPointsEarned;
+//    }
 
     public Object getCustomJson() {
         return customJson;

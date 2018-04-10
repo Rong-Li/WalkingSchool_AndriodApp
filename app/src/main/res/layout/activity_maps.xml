@@ -4,14 +4,21 @@
     android:id="@+id/relativeLayout9"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:backgroundTint="?attr/colorPrimary"
     tools:context=".MapsActivity">
 
 
     <Button
         android:id="@+id/bottonID"
-        android:layout_width="wrap_content"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
+        android:background="@android:color/holo_orange_dark"
         android:text="Pause tracking Servive"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/parentMap"
+        app:layout_constraintEnd_toStartOf="@+id/ParentButtonID"
         app:layout_constraintStart_toStartOf="@+id/parentMap"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,14 +37,17 @@
 
     <Button
         android:id="@+id/ParentButtonID"
-        android:layout_width="wrap_content"
+        android:layout_width="196dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="54dp"
-        android:layout_marginStart="43dp"
+        android:background="?android:attr/colorPressedHighlight"
         android:text="Parent DashBoard"
-        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textStyle="bold|italic"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/parentMap"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bottonID" />
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toEndOf="@+id/bottonID"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

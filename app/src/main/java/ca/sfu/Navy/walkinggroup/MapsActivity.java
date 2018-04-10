@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 import ca.sfu.Navy.walkinggroup.model.Group;
-import ca.sfu.Navy.walkinggroup.model.MyThemeUtils;
 import ca.sfu.Navy.walkinggroup.model.SavedSharedPreference;
 import ca.sfu.Navy.walkinggroup.model.ServerProxy;
 import ca.sfu.Navy.walkinggroup.model.ServerProxyBuilder;
@@ -66,32 +65,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean paused = false;
     private Button btn;
     private LatLng Destination = new LatLng(49.287586, -123.113560);
+    private LatLng StartingLocation;
     private int tool = 0;
     private Button parentActivity_btn;
-
-
-    private MyThemeUtils.Theme currentTheme;
-
-    private void initTheme() {
-        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
-        currentTheme = theme;
-        MyThemeUtils.changTheme(this, theme);
-    }
-
-    public void checkTheme() {
-        MyThemeUtils.Theme theme = MyThemeUtils.getCurrentTheme(this);
-        if (currentTheme == theme)
-            return;
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
-    }
+    private boolean walking_WithGroup = false;
+    private int checker_getOnlyOne;
+    private boolean StartingLocation_setted = false;
+    private boolean FisrtLocation_getted = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initTheme();
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -113,8 +98,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(30 * 1000);
-        locationRequest.setFastestInterval(15 * 1000);
+        locationRequest.setInterval(5 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         btn = findViewById(R.id.bottonID);
@@ -133,6 +118,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+
+        checker_getOnlyOne = 0;
     }
 
 
@@ -153,7 +140,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // 2
         mGoogleApiClient.connect();
     }
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -162,30 +148,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mGoogleApiClient.disconnect();
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
-        checkTheme();
         Resume();
     }
-
     private void Resume() {
         if (mGoogleApiClient.isConnected()) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
         }
     }
-
     @Override
     protected void onPause() {
 
         super.onPause();
         Pause();
     }
-
     private PendingResult<Status> Pause() {
         Log.i("MyApp","PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE PAUSE");
 
@@ -196,10 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-
     }
 
     //checks if the app has been granted the ACCESS_FINE_LOCATION permission.//////******main purpose
@@ -233,12 +214,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
 
-        //
         Function_callProxy();
         Function_Click();
         //Join Group preparation
         //Get current user info
-
 
     }//END of SetUpMap!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -247,19 +226,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         finish();
     }
-
-
-    //    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 100) {
-//            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            } else {
-//                finish();
-//            }
-//        }
-//    }
 
     private void Function_Click(){
 
@@ -348,14 +314,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public User getCurrentUser(){
         return user_login;
     }
+
     public LatLng getMarkerLocation(){
         return marker_clicked;
     }
+
     public void join_group(){
         groupID = getGroupIDByLocation(marker_clicked);
         Call<Group> caller = proxy.addNewGroupMember(groupID, user_login);
         ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedGroup -> response(returnedGroup));
     }
+
     private void response(Group group){
         Log.i("MyApp","SUCCESSFULLY JOIN THE GROUP!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Toast.makeText(getApplicationContext(),
@@ -386,9 +355,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
+        if(user_login.getId() == null){
+            return;
+        }
+        if(FisrtLocation_getted == true && StartingLocation_setted == false){
+            StartingLocation = new LatLng(roundThreeDecimals(user_login.getLastGpsLocation().getLat()),
+                    roundThreeDecimals(user_login.getLastGpsLocation().getLng()));
+            StartingLocation_setted = true;
+        }
+        //locationRequest.setInterval(30 * 1000);
         Toast.makeText(getApplicationContext(),
-                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!" + location,
-                Toast.LENGTH_LONG)
+                "Changed location!!!!!!!!!!!!!!!!!!!!!!!!!!" + location.getLatitude() + ", " + location.getLongitude(),
+                Toast.LENGTH_SHORT)
                 .show();
 
         double Location_Lat = location.getLatitude();
@@ -404,8 +382,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (Location_Lat == Destination_Lat && Location_Lng == Destination_Lng){
 
-            Log.i("MyApp","Arrived Arrived!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            //purpose of testing, won't give points if the kid open up device at school
+            if (Location_Lat != StartingLocation.latitude && Location_Lng
+                    != StartingLocation.longitude && checker_getOnlyOne == 0){
+                Log.i("MyApp","Arrived Arrived!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Toast.makeText(getApplicationContext(),
+                        "You have Arrived, you can choose pause GPS or leave it", Toast.LENGTH_LONG).show();
+                Long userID = user_login.getId();
 
+                user_login.setCurrentPoints();
+                user_login.setTotalPointsEarned();
+                Call<User> caller = proxy.editUser(userID, user_login);
+                ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedUser -> response3(returnedUser));
+            }
+            else{
+                Toast.makeText(getApplicationContext(),
+                        "you are in school!! Don't try to get points!!!",
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
 
             tool++;
 
@@ -416,31 +411,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            EndTime.setMinutes(temp);
             Pause();
             tool = 0;
+            checker_getOnlyOne = 0;
         }
-        if(user_login.getId() != null){
+//        if(user_login.getId() != null){
 
-            Double a = location.getLatitude();
-            Double b = location.getLongitude();
-            Date c = Calendar.getInstance().getTime();
-            GpsLocation temp = new GpsLocation();
-            temp.setLat(a);
-            temp.setLng(b);
-            temp.setTimestamp(c);
-            Log.i("MyApp","&&&&" + a);
-            Log.i("MyApp","&&&&" + b);
-            Long userID = user_login.getId();
-            Log.i("MyApp","END OF SETTING USERRR");
-            Log.i("MyApp","STARTS ENVOCING CALLPROXY");
+        Double a = location.getLatitude();
+        Double b = location.getLongitude();
+        Date c = Calendar.getInstance().getTime();
+        GpsLocation temp = new GpsLocation();
+        temp.setLat(a);
+        temp.setLng(b);
+        temp.setTimestamp(c);
+        Log.i("MyApp","&&&&" + a);
+        Log.i("MyApp","&&&&" + b);
+        Long userID = user_login.getId();
+        Log.i("MyApp","&&&&" + userID);
 
-            Call<GpsLocation> caller = proxy.uploadGps(userID, temp);
-            ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedLocation -> response2(returnedLocation));
-        }
+        Log.i("MyApp","END OF SETTING USERRR");
+        Log.i("MyApp","STARTS ENVOCING CALLPROXY");
+
+
+        Call<GpsLocation> caller = proxy.uploadGps(userID, temp);
+        ServerProxyBuilder.callProxy(MapsActivity.this, caller, returnedLocation -> response2(returnedLocation));
+//        }
     }
+
 
     private void response2(GpsLocation location) {
         Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + location.getLat());
         Log.i("MyApp","@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%" + location.getLng());
+        FisrtLocation_getted = true;
+    }
 
+    private void response3(User returnedUser) {
+        Log.i("MyApp",  "\n \n \n \n Awarded Point!!!!!!!!!!!!!!\n \n \n \n ");
+        checker_getOnlyOne = 1;
     }
 
     private double roundThreeDecimals(double d)
