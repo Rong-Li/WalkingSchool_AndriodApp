@@ -256,7 +256,14 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     }
     private void response2(User returnedUser) {
         List_children.set(index, returnedUser);
-        if(returnedUser.getLastGpsLocation() != null){
+        if(returnedUser.getLastGpsLocation() == null
+                || returnedUser.getLastGpsLocation().getLat() == null
+                || returnedUser.getLastGpsLocation().getLng() == null){
+            Toast.makeText(getApplicationContext(),
+                    "child's last location hasnt been uploaded yet",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
             LatLng temp = new LatLng(returnedUser.getLastGpsLocation().getLat(), returnedUser.getLastGpsLocation().getLng());
             placeMarkerOnMap(temp, returnedUser.getName());
         }
