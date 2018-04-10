@@ -68,6 +68,7 @@
         <activity android:name=".UserSendMsgActivity" />
         <activity android:name=".GroupSendMsgActivity" />
         <activity android:name=".CustomerActivity" />
+        <activity android:name=".UserManager.RequestActivity"></activity>
         <activity android:name=".LeaderboardActivity" />
         <activity android:name=".Group.ChangeLeaderActivity" />
         <activity android:name=".Group.ChangeLeaderListActivity"></activity>

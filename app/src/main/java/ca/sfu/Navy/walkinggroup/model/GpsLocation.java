@@ -9,8 +9,8 @@ import java.util.Date;
  */
 
 public class GpsLocation {
-    private Double lat;
-    private Double lng;
+    private Double lat = 0.0;
+    private Double lng = 0.0;
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private Date timestamp;
